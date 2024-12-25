@@ -1,0 +1,22 @@
+# Dependencias de Node.js
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Entornos
+.env
+
+# Directorios de construcción
+dist/
+build/
+
+# Configuración del editor
+.vscode/
+.idea/
+.DS_Store
+
+# Dependencias locales
+*.local
