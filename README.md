@@ -3,7 +3,7 @@
 
 ## Descripción del Proyecto
 
-Este proyecto es un blog desarrollado con tecnologías modernas y un enfoque full-stack, diseñado para ser escalable, bien estructurado y mantenible. Es un espacio donde se publicarán artículos relacionados con programación y desarrollo web, documentando el crecimiento como desarrollador y compartiendo conocimientos con la comunidad.
+Este proyecto es un blog desarrollado con tecnologías modernas y un enfoque full-stack, diseñado para ser escalable, bien estructurado y mantenible. Es un espacio donde se publicarán artículos relacionados con programación y desarrollo web, documentando mi crecimiento como desarrollador y compartiendo conocimientos con la comunidad.
 
 ## Características Principales
 
