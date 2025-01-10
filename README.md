@@ -1,5 +1,5 @@
 
-# Blog - Proyecto de Desarrollo Web
+# Blog - Desarrollo Web
 
 ## Descripción del Proyecto
 
