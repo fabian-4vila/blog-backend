@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "/home/dante/Documentos/Practica/blog-backend/src/logs/error/.0e35c1433738b721e5e47a5dc0cb0dd051803eae-audit.json",
+    "files": [
+        {
+            "date": 1736730883685,
+            "name": "/home/dante/Documentos/Practica/blog-backend/src/logs/error/2025-01-12.log",
+            "hash": "d811c88b8f7603e0a36202170e23783a7c3a88779b318a45c67f374eef762b30"
+        }
+    ],
+    "hashType": "sha256"
+}
