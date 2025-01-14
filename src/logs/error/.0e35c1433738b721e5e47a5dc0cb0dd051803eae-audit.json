@@ -9,6 +9,11 @@
             "date": 1736730883685,
             "name": "/home/dante/Documentos/Practica/blog-backend/src/logs/error/2025-01-12.log",
             "hash": "d811c88b8f7603e0a36202170e23783a7c3a88779b318a45c67f374eef762b30"
+        },
+        {
+            "date": 1736878829597,
+            "name": "/home/dante/Documentos/Practica/blog-backend/src/logs/error/2025-01-14.log",
+            "hash": "c821f70bc02da3cd35e025ac697ee569f4093c14aa76d039561e05f8033a429f"
         }
     ],
     "hashType": "sha256"
