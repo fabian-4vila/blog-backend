@@ -33,6 +33,7 @@ class App  {
 
 
      //getServer
+
     public getServer(){
         return this.app;
     }
@@ -44,6 +45,7 @@ class App  {
     }
 
     //connectToDatabase
+    
     private connectToDatabase(){
     //Inicializar la conexion 
     }
@@ -77,9 +79,11 @@ class App  {
             logger.info(`========================================`);
         })
     }
+
     private initializeSwagger() {
         //init swagger
     }
+    
     private initializeErrorHandling(){
         // configure Error handling
     }
