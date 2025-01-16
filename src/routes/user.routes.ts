@@ -32,8 +32,7 @@ class UserRoute implements Routes{
         });
         //createUser
         this.router.post(`${this.path}`,(req:Request, res:Response)=>{
-            const { body:userBody } = req;
-            console.log(userBody);
+            console.log("Body de la req",req.body);
             
             res.status(200).json({
                 ok:true,
@@ -43,8 +42,9 @@ class UserRoute implements Routes{
         //updateUserById
         this.router.put(`${this.path}/:id`,(req:Request, res:Response)=>{
             const {id:userId} = req.params;
-            const {body:userBody}=req
-            console.log(userBody,userId);
+            
+            console.log(`Parametros de la req: `,req.params);
+            console.log(`userId: ${userId}`);
             
             res.status(200).json({
                 ok:true,
