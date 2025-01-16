@@ -58,6 +58,7 @@
     "hpp": "^0.2.3",
     "http-status-codes": "^2.3.0",
     "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.20",
