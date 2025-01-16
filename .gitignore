@@ -11,7 +11,7 @@ build/
 .env
 # Add any directories, files, or patterns you don't want to be tracked by version control
 .vscode/
-logs/
+src/logs/
 .idea/
 coverage/
 lcov.info
