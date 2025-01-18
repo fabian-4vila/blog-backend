@@ -1,4 +1,6 @@
 import { config } from "dotenv";
+import { DataSource } from "typeorm";
+import { AppDataSource } from "./data.source";
 
 
 config({path: `.env.${process.env.NODE_ENV || 'development' }.local`});
@@ -16,3 +18,9 @@ export const {
     DB_PASSWORD,
     DB_USER 
 } = process.env
+
+export abstract class ConfigServer {
+    get initConnect():Promise<DataSource>{
+        return AppDataSource.initialize();
+    }
+};

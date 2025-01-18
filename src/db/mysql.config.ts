@@ -3,6 +3,8 @@ import { AppDataSource } from "../config/data.source";
 import { logger } from "../utils/logger";
 import { DB_NAME, DB_PORT } from "../config/config";
 
+//Posiblemente lo elimine ya que no lo he usado 
+
 export const mySqlConnection = async(): Promise<DataSource> => {
     try {
         logger.info(`==========================`)

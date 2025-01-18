@@ -6,20 +6,28 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
 
-import { API_VERSION, LOG_FORMAT, NODE_ENV, PORT } from "./config/config";
+import { 
+    API_VERSION,
+    ConfigServer, 
+    LOG_FORMAT, 
+    NODE_ENV, 
+    PORT 
+} from "./config/config";
 import { Routes } from "./interfaces/route.interface";
 
 import { logger, stream } from './utils/logger';
 import corsConfig from './config/cors.config';
-import { mySqlConnection } from './db/mysql.config';
+//import { mySqlConnection } from './db/mysql.config';
+import { DataSource } from 'typeorm';
 
-class App  {
+class App extends ConfigServer {
     public app: express.Application;
     public env: string;
     public port: number;
     public server: any;
 
     constructor(routes: Routes[]){
+        super();
         this.app =express(); 
         this.env =NODE_ENV || 'development' 
         this.port =Number(PORT) || 5000
@@ -47,8 +55,17 @@ class App  {
 
     //connectToDatabase
     
-    private connectToDatabase(){
-    mySqlConnection();
+    private async connectToDatabase(): Promise<DataSource | void>{
+    // mySqlConnection();
+    return this.initConnect.then(()=>{
+        logger.info(`========================================`);
+        logger.info(`======== DB conexion exitosa!! =========`);
+        logger.info(`========================================`);
+        
+    }).catch((err)=>{
+        console.error(err.message);
+        
+    });
     }
 
     private initializeMiddlewares (){
