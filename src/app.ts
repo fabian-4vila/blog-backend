@@ -11,6 +11,7 @@ import { Routes } from "./interfaces/route.interface";
 
 import { logger, stream } from './utils/logger';
 import corsConfig from './config/cors.config';
+import { mySqlConnection } from './db/mysql.config';
 
 class App  {
     public app: express.Application;
@@ -47,7 +48,7 @@ class App  {
     //connectToDatabase
     
     private connectToDatabase(){
-    //Inicializar la conexion 
+    mySqlConnection();
     }
 
     private initializeMiddlewares (){
