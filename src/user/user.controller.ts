@@ -31,7 +31,6 @@ class UserController {
      * */
     public createUser= async (req:Request,res:Response) =>  {
         console.log("Body de la req",req.body);
-            
             res.status(200).json({
                 ok:true,
                 message:`Usuario creado `
