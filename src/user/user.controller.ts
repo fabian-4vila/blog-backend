@@ -31,7 +31,6 @@ class UserController {
      * */
     public createUser= async (req:Request,res:Response) =>  {
         console.log("Body de la req",req.body);
-            
             res.status(200).json({
                 ok:true,
                 message:`Usuario creado `
@@ -41,8 +40,28 @@ class UserController {
     /**
      * updateUserById
      */
-    public updateUserById = async (_req:Request ,res:Response) => {
-        
+    public updateUserById = async (req:Request ,res:Response) => {
+        const {id:userId} = req.params;
+            console.log(`Parametros de la req: `,req.params);
+            console.log(`userId: ${userId}`);
+            res.status(200).json({
+                ok:true,
+                message:`Usuario actualizado `
+            });
+    }
+    /**
+     * deleteUserById
+     */
+    public deleteUserById= async (req:Request, res:Response) => {
+        const {id:userId} = req.params;
+            
+            console.log(`Parametros de la req: `,req.params);
+            console.log(`userId: ${userId}`);
+            
+            res.status(200).json({
+                ok:true,
+                message:`Usuario borrado`
+            });
     }
 };
 
