@@ -13,3 +13,7 @@ services:
       MYSQL_USER: userrfv
       MYSQL_ROOT_PASSWORD: SECRET
       MYSQL_PASSWORD: SECRET
+
+networks:
+  app_network:
+    driver: bridge
