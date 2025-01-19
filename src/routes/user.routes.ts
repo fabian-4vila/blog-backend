@@ -1,10 +1,12 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import { Routes } from "../interfaces/route.interface";
+import UserController from "../user/user.controller";
 
 
 class UserRoute implements Routes{
     public path = '/user';
     public router = Router();
+    public userController = new UserController();
     constructor (){
         this.initUserRoute();
     }
@@ -12,57 +14,16 @@ class UserRoute implements Routes{
      * init
      */
     public initUserRoute() {
-        this.router.get(`${this.path}`,(_req:Request, res:Response)=>{
-            res.status(200).json({
-                ok:true,
-                message:`lista de usuarios`
-            });
-        });
+        //getAllUser
+        this.router.get(`${this.path}s`,this.userController.getAllUsers);
         //getUserById
-        this.router.get(`${this.path}/:id`,(req:Request, res:Response)=>{
-            const {id:userId} = req.params;
-
-            console.log(`Parametros de la req: `,req.params);
-            console.log(`userId: ${userId}`);
-            
-            res.status(200).json({
-                ok:true,
-                message:`Detalles de usuario `
-            });
-        });
+        this.router.get(`${this.path}/:id`,this.userController.getUserById);
         //createUser
-        this.router.post(`${this.path}`,(req:Request, res:Response)=>{
-            console.log("Body de la req",req.body);
-            
-            res.status(200).json({
-                ok:true,
-                message:`Usuario creado `
-            });
-        });
+        this.router.post(`${this.path}`,this.userController.createUser);
         //updateUserById
-        this.router.put(`${this.path}/:id`,(req:Request, res:Response)=>{
-            const {id:userId} = req.params;
-            
-            console.log(`Parametros de la req: `,req.params);
-            console.log(`userId: ${userId}`);
-            
-            res.status(200).json({
-                ok:true,
-                message:`Usuario actualizado `
-            });
-        });
+        this.router.put(`${this.path}/:id`,this.userController.updateUserById);
         //deleteUserById
-        this.router.delete(`${this.path}/:id`,(req:Request, res:Response)=>{
-            const {id:userId} = req.params;
-            
-            console.log(`Parametros de la req: `,req.params);
-            console.log(`userId: ${userId}`);
-            
-            res.status(200).json({
-                ok:true,
-                message:`Usuario borrado`
-            });
-        });
+        this.router.delete(`${this.path}/:id`,this.userController.deleteUserById);
     }
 }
 
