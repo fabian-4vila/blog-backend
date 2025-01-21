@@ -24,7 +24,7 @@ class UserController {
      * getUserById
      * */
     public getUserById = async (req:Request, res:Response) => {
-        const {id:userId} = req.params;
+        const {id: userId} = req.params;
         logger.info(`${UserController.name}-getUserById`);
         const user =  await this.userService.getUserById(userId)
             res.status(200).json({
@@ -37,12 +37,13 @@ class UserController {
     /**
      * createUser
      * */
-    public createUser= async (_req:Request,res:Response) =>  {
+    public createUser= async (req:Request,res:Response) =>  {
+        const {body: userBody} = req;
         logger.info(`${UserController.name}-CreateUser`);
-        const user = await this.userService.createUser();
+        const newuser = await this.userService.createUser(userBody);
             res.status(200).json({
                 ok:true,
-                user,
+                user:newuser,
                 message:`Usuario creado `
             });
     }
@@ -52,11 +53,12 @@ class UserController {
      */
     public updateUserById = async (req:Request ,res:Response) => {
         const {id:userId} = req.params;
+        const {body: userBody}=req
         logger.info(`${UserController.name}-updateUserById`);
-        const user = await this.userService.UpdateUserById(userId);
+        const updateUser = await this.userService.UpdateUserById(userId,userBody);
             res.status(200).json({
                 ok:true,
-                user,
+                user:updateUser,
                 message:`Usuario actualizado `
             });
     }
@@ -66,10 +68,10 @@ class UserController {
     public deleteUserById= async (req:Request, res:Response) => {
         const {id:userId} = req.params;
         logger.info(`${UserController.name}-deleteUserById`);
-        const user = await this.userService.deleteUserById(userId);
+        const userDeleted = await this.userService.deleteUserById(userId);
             res.status(200).json({
                 ok:true,
-                user,
+                user:userDeleted,
                 message:`Usuario borrado`
             });
     }
