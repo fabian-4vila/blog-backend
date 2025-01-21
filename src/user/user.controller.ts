@@ -12,11 +12,11 @@ class UserController {
      */
     public getAllUsers= async(_req:Request, res:Response) => {
         logger.info(`${UserController.name}-getAllUser`);
-        const usersResp =await this.userService.getAllUser();
-        res.json({
-            ok:true,
-            users:usersResp,
-            message:`lista de usuarios`
+        const users =await this.userService.getAllUser();
+            res.json({
+                ok:true,
+                users:users,
+                message:`lista de usuarios`
         });
     };
 
@@ -27,10 +27,10 @@ class UserController {
         const {id:userId} = req.params;
         logger.info(`${UserController.name}-getUserById`);
         const user =  await this.userService.getUserById(userId)
-        res.status(200).json({
-            ok:true,
-            user,
-            message:`Detalles de usuario `
+            res.status(200).json({
+                ok:true,
+                user,
+                message:`Detalles de usuario `
         });
     };
     
@@ -38,7 +38,7 @@ class UserController {
      * createUser
      * */
     public createUser= async (_req:Request,res:Response) =>  {
-        logger.info(`${UserController.name}-getUserById`);
+        logger.info(`${UserController.name}-CreateUser`);
         const user = await this.userService.createUser();
             res.status(200).json({
                 ok:true,
@@ -52,10 +52,11 @@ class UserController {
      */
     public updateUserById = async (req:Request ,res:Response) => {
         const {id:userId} = req.params;
-            console.log(`Parametros de la req: `,req.params);
-            console.log(`userId: ${userId}`);
+        logger.info(`${UserController.name}-updateUserById`);
+        const user = await this.userService.UpdateUserById(userId);
             res.status(200).json({
                 ok:true,
+                user,
                 message:`Usuario actualizado `
             });
     }
@@ -64,12 +65,11 @@ class UserController {
      */
     public deleteUserById= async (req:Request, res:Response) => {
         const {id:userId} = req.params;
-            
-            console.log(`Parametros de la req: `,req.params);
-            console.log(`userId: ${userId}`);
-            
+        logger.info(`${UserController.name}-deleteUserById`);
+        const user = await this.userService.deleteUserById(userId);
             res.status(200).json({
                 ok:true,
+                user,
                 message:`Usuario borrado`
             });
     }
