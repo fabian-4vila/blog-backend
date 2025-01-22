@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "## Descripción del Proyecto",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "dev": "ts-node-dev --respawn src/index.ts",
     "start": "node build/index.js",
@@ -11,6 +10,7 @@
     "start:test": "cross-env NODE_ENV=test ts-node ./src/index.ts",
     "start:prod": "cross-env NODE_ENV=production ts-node ./src/index.ts",
     "lint": "eslint src/**/*.ts",
+    "lint2": "eslint . --config ./eslint.config.ts",
     "format": "eslint src/**/*.ts --fix",
     "build": "tsc",
     "test": "echo \"Error:no test specified\" && exit 1"
@@ -37,10 +37,12 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "express-routemap": "^1.6.0",
+    "jiti": "^2.4.2",
     "lint-staged": "^15.3.0",
     "prettier": "^3.4.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.3"
   },
