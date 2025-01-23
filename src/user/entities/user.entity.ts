@@ -5,17 +5,23 @@ import { CustomerEntity } from '../../customer/entities/customer.entity';
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id!: string;
+
   @Column()
   name!: string;
+
   @Column()
   lastName!: string;
+
   @Column()
   @Unique(['email'])
   email!: string;
+
   @Column()
   createdAt!: Date;
+
   @Column()
   updateAt!: Date;
+
   @OneToOne(() => CustomerEntity, (customer) => customer.user)
   customer!: CustomerEntity;
 }
