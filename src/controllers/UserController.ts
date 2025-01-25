@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-import UserService from './user.service';
+
 import { logger } from '../utils/logger';
+import UserService from '../services/user.service';
 
 class UserController {
   private readonly userService: UserService = new UserService();
