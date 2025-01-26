@@ -2,7 +2,7 @@ import { Entity, Unique, Check, PrimaryGeneratedColumn, ManyToOne, Column } from
 import { User } from './User.entity';
 import { Comment } from './Comment.entity';
 
-@Entity('comment_ratings')
+@Entity({ name: 'comment_rating' })
 @Unique(['user', 'comment'])
 @Check('stars >= 1 AND stars <= 5')
 export class CommentRating {
