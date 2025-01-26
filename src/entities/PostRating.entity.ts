@@ -2,7 +2,7 @@ import { Check, Column, Entity, ManyToOne, PrimaryGeneratedColumn, Unique } from
 import { Post } from './Post.entity';
 import { User } from './User.entity';
 
-@Entity('post_ratings')
+@Entity({ name: 'post_rating' })
 @Unique(['user', 'post'])
 @Check('stars >= 1 AND stars <= 5')
 export class PostRating {
