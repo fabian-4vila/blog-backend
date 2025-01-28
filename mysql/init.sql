@@ -1,1 +1,0 @@
-CREATE DATABASE IF NOT EXISTS testimonials_db_dev;
