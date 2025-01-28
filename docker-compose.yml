@@ -1,16 +1,17 @@
-
 services:
-  testimonials_db_dev:
-    image: mysql:5.7
-    volumes:
-      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
-    command: --init-file /docker-entrypoint-initdb.d/init.sql
+  db_blog:
+    image: postgres:latest
+    container_name: db_blog_container
     ports:
-      - "3412:3306"
+      - "5433:5432"
     environment:
-      MYSQL_DATABASE: testimonials_db_dev
-      MYSQL_ROOT_USER: userrfv
-      MYSQL_USER: userrfv
-      MYSQL_ROOT_PASSWORD: SECRET
-      MYSQL_PASSWORD: SECRET
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: DB_Blog
+    volumes:
+      - ./postgreSql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
 
+volumes:
+  postgres_data:
