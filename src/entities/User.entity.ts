@@ -8,23 +8,23 @@ export class User {
   id!: number;
 
   @Column({ type: 'varchar', length: 100 })
-  name!: string; // Nombre del usuario
+  name!: string; // Nombre
 
   @Column({ type: 'varchar', length: 150, unique: true })
-  email!: string; // Correo electrónico único
+  email!: string; // Correo
 
   @Column({ type: 'varchar', length: 255 })
-  password!: string; // Contraseña del usuario
+  password!: string; // Contraseña
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  registeredAt!: Date; // Fecha de registro del usuario
+  registeredAt!: Date; // Fecha de registro
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   updatedAt!: Date; // Fecha de última actualización
 
   @OneToMany(() => Post, (post) => post.user)
-  posts!: Post[]; // Lista de posteos creados por el usuario
+  posts!: Post[]; // Lista de posteos creados
 
   @OneToMany(() => Comment, (comment) => comment.user)
-  comments!: Comment[]; // Lista de comentarios hechos por el usuario
+  comments!: Comment[]; // Lista de comentarios hechos
 }
