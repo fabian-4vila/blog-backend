@@ -2,11 +2,6 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import { join } from 'path';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { config } from 'dotenv';
-import { User } from '../entities/User.entity';
-import { Post } from '../entities/Post.entity';
-import { Comment } from '../entities/Comment.entity';
-import { PostRating } from '../entities/PostRating.entity';
-import { CommentRating } from '../entities/CommentRating.entity';
 
 config({ path: `.env.${process.env.NODE_ENV || 'development'}.local` });
 
@@ -22,7 +17,7 @@ const configDBConnection: DataSourceOptions = {
   synchronize: true,
   migrationsRun: false,
   logging: false,
-  entities: [User, Post, Comment, CommentRating, PostRating],
+  entities: [join(__dirname, '../**/*.entity{.ts,.js}')],
   migrations: [join(__dirname, '../**/*.migration{.ts,.js}')],
   subscribers: [join(__dirname, '../**/*.subscriber{.ts,.js}')],
   namingStrategy: new SnakeNamingStrategy(),
