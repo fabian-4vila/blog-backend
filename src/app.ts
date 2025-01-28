@@ -48,7 +48,6 @@ class App extends ConfigServer {
   //connectToDatabase
 
   private async connectToDatabase(): Promise<DataSource | void> {
-    // mySqlConnection();
     return this.initConnect
       .then(() => {
         logger.info(`========================================`);
