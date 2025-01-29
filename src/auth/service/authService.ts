@@ -17,8 +17,13 @@ export class AuthService {
   async login(email: string, password: string): Promise<string | null> {
     const user = await this.userRepository.findOne({ where: { email } });
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw new Error('Credenciales incorrectas');
+    if (!user) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      throw new Error('Contraseña incorrecta');
     }
 
     const userPayload: UserPayLoad = { id: user.id, role: user.role };

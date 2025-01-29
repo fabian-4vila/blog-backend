@@ -11,7 +11,6 @@ import { Routes } from './interfaces/route.interface';
 
 import { logger, stream } from './utils/logger';
 import corsConfig from './config/cors.config';
-//import { mySqlConnection } from './db/mysql.config';
 import { DataSource } from 'typeorm';
 
 class App extends ConfigServer {
