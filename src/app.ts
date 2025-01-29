@@ -32,7 +32,6 @@ class App extends ConfigServer {
     this.initializeSwagger();
     this.initializeErrorHandling();
   }
-
   //getServer
 
   public getServer() {
@@ -53,7 +52,6 @@ class App extends ConfigServer {
         logger.info(`========================================`);
         logger.info(`======== DB conexion exitosa!! =========`);
         logger.info(`========================================`);
-        logger.info(`JWT_SECRET:`, process.env.JWT_SECRET);
       })
       .catch((err) => {
         console.error(err.message);
