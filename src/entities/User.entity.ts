@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Post } from './Post.entity';
 import { Comment } from './Comment.entity';
+import { RoleType } from '../types/Role.type';
 
 @Entity({ name: 'user' })
 export class User {
@@ -15,6 +16,9 @@ export class User {
 
   @Column({ type: 'varchar', length: 255 })
   password!: string; // Contraseña
+
+  @Column({ type: 'enum', enum: RoleType, default: RoleType.GENERAL })
+  role!: RoleType;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   registeredAt!: Date; // Fecha de registro
