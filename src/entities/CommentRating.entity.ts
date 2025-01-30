@@ -7,7 +7,7 @@ import { Comment } from './Comment.entity';
 @Check('stars >= 1 AND stars <= 5')
 export class CommentRating {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: string;
 
   @ManyToOne(() => Comment, (comment) => comment.ratings, { nullable: false, onDelete: 'CASCADE' })
   comment!: Comment; // Comentario calificado

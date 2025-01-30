@@ -6,7 +6,7 @@ import { Comment } from './Comment.entity';
 @Entity({ name: 'post' })
 export class Post {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: string;
 
   @ManyToOne(() => User, (user) => user.posts, { nullable: false, onDelete: 'CASCADE' })
   user!: User; // Usuario creador del posteo

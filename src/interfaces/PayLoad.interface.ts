@@ -1,6 +1,6 @@
 import { RoleType } from '../types/Role.type';
 
-export interface UserPayLoad {
-  id: number;
+export interface UserPayLoadToken {
+  sub: string;
   role: RoleType;
 }
