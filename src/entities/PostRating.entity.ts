@@ -7,7 +7,7 @@ import { User } from './User.entity';
 @Check('stars >= 1 AND stars <= 5')
 export class PostRating {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: string;
 
   @ManyToOne(() => Post, (post) => post.ratings, { nullable: false, onDelete: 'CASCADE' })
   post!: Post; // Posteo calificado
