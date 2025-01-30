@@ -6,7 +6,7 @@ import { RoleType } from '../types/Role.type';
 @Entity({ name: 'user' })
 export class User {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: string;
 
   @Column({ type: 'varchar', length: 100 })
   name!: string; // Nombre

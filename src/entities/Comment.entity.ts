@@ -6,7 +6,7 @@ import { CommentRating } from './CommentRating.entity';
 @Entity({ name: 'comment' })
 export class Comment {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: string;
 
   @ManyToOne(() => Post, (post) => post.comments, { nullable: false, onDelete: 'CASCADE' })
   post!: Post; // Posteo al que pertenece el comentario
