@@ -1,5 +1,5 @@
 import { User } from '../../entities/User.entity';
-import { UserPayLoadToken } from '../../interfaces/PayLoad.interface';
+import { UserPayLoadToken } from '../../interfaces/payLoad.interface';
 import UserService from '../../user/services/user.service';
 import { isValidPassword } from '../../utils/hash';
 import jwt from 'jsonwebtoken';

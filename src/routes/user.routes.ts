@@ -1,28 +1,34 @@
 import { Router } from 'express';
-import { Routes } from '../interfaces/route.interface';
 import UserController from '../user/controllers/UserController';
+import { authenticateJWT } from '../middlewares/auth.middleware';
+import { authorizeRoles } from '../middlewares/role.middleware';
+import { RoleType } from '../types/Role.type';
 
-class UserRoute implements Routes {
+class UserRoute {
   public path = '/user';
   public router = Router();
   public userController = new UserController();
+
   constructor() {
-    this.initUserRoute();
+    this.initRoutes();
   }
-  /**
-   * init
-   */
-  public initUserRoute() {
-    //getAllUser
-    this.router.get(`${this.path}s`, this.userController.getAllUsers);
-    //getUserById
-    this.router.get(`${this.path}/:id`, this.userController.getUserById);
-    //createUser
+
+  private initRoutes() {
+    this.router.get(`${this.path}s`, authenticateJWT, authorizeRoles(RoleType.ADMIN), this.userController.getAllUsers);
+    this.router.get(`${this.path}/:id`, authenticateJWT, this.userController.getUserById);
     this.router.post(`${this.path}`, this.userController.createUser);
-    //updateUserById
-    this.router.put(`${this.path}/:id`, this.userController.updateUserById);
-    //deleteUserById
-    this.router.delete(`${this.path}/:id`, this.userController.deleteUserById);
+    this.router.put(
+      `${this.path}/:id`,
+      authenticateJWT,
+      authorizeRoles(RoleType.ADMIN),
+      this.userController.updateUserById,
+    );
+    this.router.delete(
+      `${this.path}/:id`,
+      authenticateJWT,
+      authorizeRoles(RoleType.ADMIN),
+      this.userController.deleteUserById,
+    );
   }
 }
 
