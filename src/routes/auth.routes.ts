@@ -11,7 +11,8 @@ class AuthRoute {
   }
 
   private initRoutes() {
-    this.router.post(`${this.path}/login`, validateLogin, authController.login.bind); //bind(authController)
+    this.router.post(`${this.path}/login`, validateLogin, authController.login.bind(authController));
+    this.router.post(`${this.path}/register`, authController.register.bind(authController));
   }
 }
 
