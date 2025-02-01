@@ -1,8 +1,10 @@
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { User } from '../../entities/User.entity';
 import { UserPayLoadToken } from '../../interfaces/payLoad.interface';
 import UserService from '../../user/services/user.service';
 import { isValidPassword } from '../../utils/hash';
-import jwt from 'jsonwebtoken';
+import { RoleType } from '../../types/Role.type';
 
 export class AuthService {
   private userService: UserService;
@@ -13,6 +15,37 @@ export class AuthService {
     this.userService = new UserService();
     this.jwtInstance = jwt;
     this.JWT_SECRET = process.env.JWT_SECRET!;
+  }
+
+  public async register(
+    name: string,
+    email: string,
+    password: string,
+  ): Promise<{ message: string; user: Partial<User> }> {
+    // Verificar si el usuario ya existe
+    const existingUser = await this.userService.getUserByEmail(email);
+    if (existingUser) {
+      throw new Error('El usuario ya existe.');
+    }
+
+    // Hashear la contraseña antes de guardarla
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Crear usuario
+    const newUser = await this.userService.createUser({
+      name,
+      email,
+      password: hashedPassword,
+      role: RoleType.SUBSCRIBED,
+    });
+
+    // Ocultar la contraseña en la respuesta
+    const { password: _, ...userWithoutPassword } = newUser;
+
+    return {
+      message: 'Usuario registrado exitosamente.',
+      user: userWithoutPassword,
+    };
   }
 
   public async login(email: string, password: string): Promise<{ accessToken: string; user: Partial<User> | null }> {
