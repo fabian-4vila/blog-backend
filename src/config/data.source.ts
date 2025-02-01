@@ -1,7 +1,7 @@
+import { config } from 'dotenv';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { join } from 'path';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-import { config } from 'dotenv';
 
 config({ path: `.env.${process.env.NODE_ENV || 'development'}.local` });
 
