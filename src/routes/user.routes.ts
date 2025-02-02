@@ -21,7 +21,7 @@ class UserRoute {
       `${this.path}/:id`,
       authenticateJWT,
       authorizeRoles(RoleType.ADMIN),
-      this.userController.updateUserById,
+      this.userController.updateUserById, //revisar si esto necesita roll
     );
     this.router.delete(
       `${this.path}/:id`,
