@@ -1,42 +1,87 @@
 import { Request, Response } from 'express';
 import PostService from '../service/post.service';
 import { CreatePostDto } from '../../dtos/CreatePostDto';
+import { logger } from '../../utils/logger';
 
 class PostController {
   private readonly postService: PostService = new PostService();
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor() {}
-
+  /**
+   * getAllPosts
+   */
   public getAllPosts = async (_req: Request, res: Response) => {
     try {
+      logger.info(`${PostController.name}-getAllPost`);
       const posts = await this.postService.getAllPosts();
-      return res.json(posts);
+      res.json({
+        ok: true,
+        posts: posts,
+        message: `Post list obtained successfully`,
+      });
+      return;
     } catch (error) {
-      return res.status(500).json({ message: 'Error retrieving posts' });
+      logger.error(`${PostController.name}- Error en getAllUsers: ${error}`);
+      res.status(500).json({
+        ok: false,
+        message: 'Error retrieving posts',
+      });
+      return;
     }
   };
-
+  /**
+   * getPostById
+   */
   public getPostById = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
+      logger.info(`${PostController.name}-getPostById`);
       const post = await this.postService.getPostById(id);
       if (!post) {
-        return res.status(404).json({ message: 'Post not found' });
+        res.status(404).json({
+          ok: false,
+          message: 'Post not found',
+        });
+        return;
       }
-      return res.json(post);
+      res.json({
+        ok: true,
+        post,
+        message: `Post details obtained`,
+      });
+      return;
     } catch (error) {
-      return res.status(500).json({ message: 'Error retrieving post' });
+      logger.error(`${PostController.name}- Error en : ${error}-getPostById`);
+      res.status(500).json({
+        ok: false,
+        message: 'Error retrieving post',
+      });
+      return;
     }
   };
 
+  /**
+   * createUser
+   */
   public createPost = async (req: Request, res: Response) => {
     try {
-      const postBody: CreatePostDto = req.body;
+      const { body: postBody } = req;
+      logger.info(`${PostController.name}-CreatePost`);
       const newPost = await this.postService.createPost(postBody);
-      return res.status(201).json(newPost);
+      res.status(201).json({
+        ok: true,
+        post: newPost,
+        message: `Successfully created post`,
+      });
+      return;
     } catch (error) {
-      return res.status(500).json({ message: 'Error creating post' });
+      logger.info(`${PostController.name}-CreatePost`);
+      res.status(500).json({
+        ok: false,
+        message: 'Error creating post',
+      });
+      return;
     }
   };
 
@@ -46,11 +91,24 @@ class PostController {
       const updateBody: Partial<CreatePostDto> = req.body;
       const updatedPost = await this.postService.updatePostById(id, updateBody);
       if (!updatedPost) {
-        return res.status(404).json({ message: 'Post not found' });
+        res.status(404).json({
+          ok: false,
+          message: 'Post not found',
+        });
+        return;
       }
-      return res.json(updatedPost);
+      res.json({
+        ok: true,
+        post: updatedPost,
+        message: `Successfully updated Post`,
+      });
+      return;
     } catch (error) {
-      return res.status(500).json({ message: 'Error updating post' });
+      res.status(500).json({
+        ok: false,
+        message: 'Error updating post',
+      });
+      return;
     }
   };
 
@@ -59,11 +117,24 @@ class PostController {
       const { id } = req.params;
       const deletedPost = await this.postService.deletePostById(id);
       if (!deletedPost) {
-        return res.status(404).json({ message: 'Post not found' });
+        res.status(404).json({
+          ok: false,
+          message: 'Post not found',
+        });
+        return;
       }
-      return res.json({ message: 'Post deleted successfully', deletedPost });
+      res.json({
+        ok: true,
+        post: deletedPost,
+        message: 'Post deleted successfully',
+      });
+      return;
     } catch (error) {
-      return res.status(500).json({ message: 'Error deleting post' });
+      res.status(500).json({
+        ok: false,
+        message: 'Error deleting post',
+      });
+      return;
     }
   };
 }

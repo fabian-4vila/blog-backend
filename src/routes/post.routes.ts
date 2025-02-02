@@ -7,7 +7,7 @@ import { RoleType } from '../types/Role.type';
 class PostRoute {
   public path = '/posts';
   public router = Router();
-  private postController: PostController = new PostController();
+  public postController: PostController = new PostController();
 
   constructor() {
     this.initRoutes();
@@ -15,10 +15,10 @@ class PostRoute {
 
   private initRoutes() {
     // Solo ADMIN puede crear posts
-    this.router.post(this.path, authenticateJWT, authorizeRoles(RoleType.ADMIN), this.postController.createPost);
+    this.router.post(`${this.path}`, authenticateJWT, authorizeRoles(RoleType.ADMIN), this.postController.createPost);
 
     // Todos pueden ver los posts
-    this.router.get(this.path, this.postController.getAllPosts);
+    this.router.get(`${this.path}`, this.postController.getAllPosts);
     this.router.get(`${this.path}/:id`, this.postController.getPostById);
 
     // Solo el ADMIN puede modificar o eliminar posts
