@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import PostController from '../post/controller/PostController';
 import { authenticateJWT } from '../middlewares/auth.middleware';
 import { authorizeRoles } from '../middlewares/role.middleware';
 import { RoleType } from '../types/Role.type';
@@ -6,7 +7,7 @@ import { RoleType } from '../types/Role.type';
 class PostRoute {
   public path = '/posts';
   public router = Router();
-  public postController = new PostController();
+  private postController: PostController = new PostController();
 
   constructor() {
     this.initRoutes();
@@ -14,10 +15,10 @@ class PostRoute {
 
   private initRoutes() {
     // Solo ADMIN puede crear posts
-    this.router.post(`${this.path}`, authenticateJWT, authorizeRoles(RoleType.ADMIN), this.postController.createPost);
+    this.router.post(this.path, authenticateJWT, authorizeRoles(RoleType.ADMIN), this.postController.createPost);
 
     // Todos pueden ver los posts
-    this.router.get(`${this.path}`, this.postController.getAllPosts);
+    this.router.get(this.path, this.postController.getAllPosts);
     this.router.get(`${this.path}/:id`, this.postController.getPostById);
 
     // Solo el ADMIN puede modificar o eliminar posts
@@ -25,13 +26,13 @@ class PostRoute {
       `${this.path}/:id`,
       authenticateJWT,
       authorizeRoles(RoleType.ADMIN),
-      this.postController.updatePost,
+      this.postController.updatePostById,
     );
     this.router.delete(
       `${this.path}/:id`,
       authenticateJWT,
       authorizeRoles(RoleType.ADMIN),
-      this.postController.deletePost,
+      this.postController.deletePostById,
     );
   }
 }

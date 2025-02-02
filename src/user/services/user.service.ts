@@ -63,8 +63,10 @@ class UserService {
   /**
    * UpdateUserById
    */
-  public async UpdateUserById(id: string, UpdatUserBody: Partial<CreateUserDto>) {
+  public async updateUserById(id: string, UpdatUserBody: Partial<CreateUserDto>) {
     logger.info(`${UserService.name} - updateUserById with id: ${id}`);
+    const user = await this.getUserById(id);
+    if (!user) return null;
     await this.userRepository.update(id, UpdatUserBody);
     return this.getUserById(id);
   }
