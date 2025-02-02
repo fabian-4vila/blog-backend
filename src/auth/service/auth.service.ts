@@ -1,103 +1,84 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import { Repository } from 'typeorm';
 import { User } from '../../entities/User.entity';
-import { UserPayLoadToken } from '../../interfaces/payLoad.interface';
-import UserService from '../../user/services/user.service';
-import { isValidPassword } from '../../utils/hash';
-import { RoleType } from '../../types/Role.type';
+import { AppDataSource } from '../../config/data.source';
+import { logger } from '../../utils/logger';
+import { CreateUserDto } from '../../dtos/CreateUserDto';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
-export class AuthService {
-  private userService: UserService;
-  private jwtInstance: typeof jwt;
-  private JWT_SECRET: string;
+class AuthService {
+  private userRepository: Repository<User>;
+  private readonly JWT_SECRET = process.env.JWT_SECRET!;
+  private readonly JWT_EXPIRATION = '1h';
+  private readonly REFRESH_SECRET = process.env.JWT_REFRESH_SECRET!;
+  private readonly REFRESH_EXPIRATION = '7d';
 
   constructor() {
-    this.userService = new UserService();
-    this.jwtInstance = jwt;
-    this.JWT_SECRET = process.env.JWT_SECRET!;
+    this.userRepository = AppDataSource.getRepository(User);
   }
 
-  public async register(
-    name: string,
+  /**
+   * Login user
+   */
+  public async login(
     email: string,
     password: string,
-  ): Promise<{ message: string; user: Partial<User> }> {
-    // Verificar si el usuario ya existe
-    const existingUser = await this.userService.getUserByEmail(email);
-    if (existingUser) {
-      throw new Error('El usuario ya existe.');
+  ): Promise<{ accessToken: string; refreshToken: string; user: Partial<User> } | null> {
+    logger.info(`${AuthService.name}-login para el email: ${email}`);
+
+    const user = await this.userRepository.findOne({ where: { email } });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return null;
     }
 
-    // Hashear la contraseña antes de guardarla
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Crear usuario
-    const newUser = await this.userService.createUser({
-      name,
-      email,
-      password: hashedPassword,
-      role: RoleType.SUBSCRIBED,
-    });
-
-    // Ocultar la contraseña en la respuesta
-    const { password: _, ...userWithoutPassword } = newUser;
+    const accessToken = this.generateToken(user.id, user.email);
+    const refreshToken = this.generateRefreshToken(user.id);
 
     return {
-      message: 'Usuario registrado exitosamente.',
-      user: userWithoutPassword,
+      accessToken,
+      refreshToken,
+      user: { id: user.id, email: user.email },
     };
   }
 
-  public async login(email: string, password: string): Promise<{ accessToken: string; user: Partial<User> | null }> {
-    const user = await this.validateUser(email, password);
+  /**
+   * Register user
+   */
+  public async register(userBody: CreateUserDto): Promise<User> {
+    logger.info(`${AuthService.name}-register`);
 
-    if (!user) {
-      throw new Error('Credenciales incorrectas');
-    }
-
-    return this.generateJwt(user);
+    const hashedPassword = await bcrypt.hash(userBody.password, 10);
+    const newUser = this.userRepository.create({ ...userBody, password: hashedPassword });
+    return this.userRepository.save(newUser);
   }
 
   /**
-   * Valida usuario por email y contraseña
+   * Refresh token
    */
-  public async validateUser(email: string, password: string): Promise<User | null> {
-    const userByEmail = await this.userService.getUserByEmail(email);
+  public async refreshToken(token: string): Promise<string | null> {
+    logger.info(`${AuthService.name}-refreshToken`);
 
-    if (userByEmail && (await isValidPassword(password, userByEmail.password))) {
-      return userByEmail;
+    try {
+      const decoded = jwt.verify(token, this.REFRESH_SECRET) as { id: string; email: string };
+      return this.generateToken(decoded.id, decoded.email);
+    } catch (error) {
+      return null;
     }
-    return null;
   }
 
   /**
-   * Firma el JWT con el payload
+   * Generate JWT Token
    */
-  private signature(payload: UserPayLoadToken): string {
-    return this.jwtInstance.sign(payload, this.JWT_SECRET, { expiresIn: '1h' });
+  private generateToken(userId: string, email: string): string {
+    return jwt.sign({ id: userId, email }, this.JWT_SECRET, { expiresIn: this.JWT_EXPIRATION });
   }
 
   /**
-   * Genera un JWT para un usuario
+   * Generate Refresh Token
    */
-  public async generateJwt(user: User): Promise<{ accessToken: string; user: Partial<User> | null }> {
-    const userCheck = await this.userService.getUsersByRoleAndId(user.role, user.id);
-
-    if (!userCheck || Array.isArray(userCheck)) {
-      return { accessToken: '', user: null }; // Si devuelve un array o null, el usuario no es válido
-    }
-
-    const payload: UserPayLoadToken = {
-      sub: userCheck.id,
-      role: userCheck.role,
-    };
-
-    // Ocultar contraseña antes de devolver el usuario
-    const { password, ...userWithoutPassword } = userCheck;
-
-    return {
-      accessToken: this.signature(payload),
-      user: userWithoutPassword,
-    };
+  private generateRefreshToken(userId: string): string {
+    return jwt.sign({ id: userId }, this.REFRESH_SECRET, { expiresIn: this.REFRESH_EXPIRATION });
   }
 }
+
+export default AuthService;
