@@ -8,7 +8,7 @@ export class CreateUserDto {
   @IsEmail({}, { message: 'The email is not valid' })
   email!: string;
 
-  @MinLength(6, { message: 'Password must be at least 6 characters' })
+  @MinLength(8, { message: 'Password must be at least 8 characters' })
   password!: string;
 
   @IsOptional()
