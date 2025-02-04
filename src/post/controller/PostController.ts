@@ -67,8 +67,10 @@ class PostController {
   public createPost = async (req: Request, res: Response) => {
     try {
       const { body: postBody } = req;
-      logger.info(`${PostController.name}-CreatePost`);
+      logger.info(`${PostController.name} - CreatePost - Body received: ${JSON.stringify(postBody)}`);
+
       const newPost = await this.postService.createPost(postBody);
+
       res.status(201).json({
         ok: true,
         post: newPost,
@@ -76,10 +78,12 @@ class PostController {
       });
       return;
     } catch (error) {
-      logger.info(`${PostController.name}-CreatePost`);
+      logger.error(`${PostController.name} - Error in CreatePost: ${error}`);
+
       res.status(500).json({
         ok: false,
         message: 'Error creating post',
+        error: error instanceof Error ? error.message : 'Unknown error',
       });
       return;
     }
