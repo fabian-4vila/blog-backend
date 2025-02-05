@@ -45,7 +45,7 @@ class PostController {
         });
         return;
       }
-      res.json({
+      res.status(200).json({
         ok: true,
         post,
         message: `Post details obtained`,
@@ -101,7 +101,7 @@ class PostController {
         });
         return;
       }
-      res.json({
+      res.status(200).json({
         ok: true,
         post: updatedPost,
         message: `Successfully updated Post`,
@@ -127,7 +127,7 @@ class PostController {
         });
         return;
       }
-      res.json({
+      res.status(200).json({
         ok: true,
         post: deletedPost,
         message: 'Post deleted successfully',

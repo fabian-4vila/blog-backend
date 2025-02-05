@@ -20,7 +20,7 @@ class PostRatingService {
   }
 
   /**
-   * Obtener una calificación de post por ID
+   * Obtener una calificación de postRating por ID
    */
   public async getPostRatingById(id: string): Promise<PostRating | null> {
     logger.info(`${PostRatingService.name}-getPostRatingById with id: ${id}`);
@@ -28,7 +28,7 @@ class PostRatingService {
   }
 
   /**
-   * Crear una nueva calificación de post
+   * Crear una nueva calificación de postRating
    */
   public async createPostRating(data: CreatePostRatingDto): Promise<PostRating> {
     logger.info(`${PostRatingService.name}-createPostRating`);
@@ -37,7 +37,7 @@ class PostRatingService {
   }
 
   /**
-   * Actualizar una calificación de post por ID
+   * Actualizar una calificación de postRating por ID
    */
   public async updatePostRatingById(id: string, updateData: Partial<CreatePostRatingDto>) {
     logger.info(`${PostRatingService.name}-updatePostRatingById with id: ${id}`);
@@ -48,7 +48,7 @@ class PostRatingService {
   }
 
   /**
-   * Eliminar una calificación de post por ID
+   * Eliminar una calificación de postRating por ID
    */
   public async deletePostRatingById(id: string) {
     logger.info(`${PostRatingService.name}-deletePostRatingById with id: ${id}`);
