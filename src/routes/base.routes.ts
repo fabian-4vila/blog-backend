@@ -12,7 +12,7 @@ class BaseRoute implements Routes {
     this.router.get(`${this.path}`, (_req: Request, res: Response) => {
       res.status(200).json({
         ok: true,
-        message: `soy una api y estoy viva`,
+        message: `Runnig`,
       });
     });
   }
