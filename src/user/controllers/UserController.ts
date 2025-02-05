@@ -15,7 +15,7 @@ class UserController {
     try {
       logger.info(`${UserController.name}-getAllUser`);
       const users = await this.userService.getAllUser();
-      res.json({
+      res.status(200).json({
         ok: true,
         users: users,
         message: `User list obtained successfully`,
@@ -68,7 +68,7 @@ class UserController {
       const { body: userBody } = req;
       logger.info(`${UserController.name}-CreateUser`);
       const newuser = await this.userService.createUser(userBody);
-      res.status(200).json({
+      res.status(201).json({
         ok: true,
         user: newuser,
         message: `Successfully created user`,
@@ -123,7 +123,10 @@ class UserController {
       logger.info(`${UserController.name}-deleteUserById: ${userId}`);
       const userDeleted = await this.userService.deleteUserById(userId);
       if (!userDeleted) {
-        res.status(404).json({ ok: false, message: 'User not found' });
+        res.status(404).json({
+          ok: false,
+          message: 'User not found',
+        });
         return;
       }
       res.status(200).json({

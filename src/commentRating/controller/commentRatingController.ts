@@ -14,62 +14,134 @@ class CommentRatingController {
    * Obtener todas las calificaciones de comentarios
    */
   public getAllCommentRatings = async (_req: Request, res: Response) => {
-    logger.info(`${CommentRatingController.name}-getAllCommentRatings`);
-    const ratings = await this.commentRatingService.getAllCommentRatings();
-    res.json(ratings);
+    try {
+      logger.info(`${CommentRatingController.name}-getAllCommentRatings`);
+      const ratings = await this.commentRatingService.getAllCommentRatings();
+      res.status(200).json({
+        ok: true,
+        ratings,
+        message: `commentRatings list obtained successfully`,
+      });
+    } catch (error) {
+      logger.error(`${CommentRatingController.name}- Error en getAllCommentRatings: ${error}`);
+      res.status(500).json({
+        ok: false,
+        message: 'Error getting commentRating',
+      });
+      return;
+    }
   };
 
   /**
    * Obtener una calificación de comentario por ID
    */
   public getCommentRatingById = async (req: Request, res: Response) => {
-    logger.info(`${CommentRatingController.name}-getCommentRatingById with id: ${req.params.id}`);
-    const rating = await this.commentRatingService.getCommentRatingById(req.params.id);
-    if (!rating) {
-      res.status(404).json({
+    try {
+      logger.info(`${CommentRatingController.name}-getCommentRatingById with id: ${req.params.id}`);
+      const rating = await this.commentRatingService.getCommentRatingById(req.params.id);
+      if (!rating) {
+        res.status(404).json({
+          ok: false,
+          message: 'CommentRating not found',
+        });
+        return;
+      }
+      res.status(200).json({
+        ok: true,
+        rating,
+        message: `CommentRting details obtained`,
+      });
+    } catch (error) {
+      logger.error(`${CommentRatingController.name}- Error en getCommentRatingById: ${error}`);
+      res.status(500).json({
         ok: false,
-        message: 'Comment rating not found',
+        message: 'Error getting commentRating',
       });
       return;
     }
-    res.json(rating);
   };
 
   /**
    * Crear una nueva calificación de comentario
    */
   public createCommentRating = async (req: Request, res: Response) => {
-    logger.info(`${CommentRatingController.name}-createCommentRating`);
-    const ratingData: CreateCommentRatingDto = req.body;
-    const newRating = await this.commentRatingService.createCommentRating(ratingData);
-    res.status(201).json(newRating);
+    try {
+      logger.info(`${CommentRatingController.name}-createCommentRating`);
+      const ratingData: CreateCommentRatingDto = req.body;
+      const newRating = await this.commentRatingService.createCommentRating(ratingData);
+      res.status(201).json({
+        ok: true,
+        CommentRating: newRating,
+        message: `Successfuly create commentRating`,
+      });
+    } catch (error) {
+      logger.error(`${CommentRatingController.name}- Error en CreateCommentRating: ${error}`);
+      res.status(500).json({
+        ok: false,
+        message: 'Error creating commentRating',
+      });
+      return;
+    }
   };
 
   /**
    * Actualizar una calificación de comentario por ID
    */
   public updateCommentRatingById = async (req: Request, res: Response) => {
-    logger.info(`${CommentRatingController.name}-updateCommentRatingById with id: ${req.params.id}`);
-    const updatedRating = await this.commentRatingService.updateCommentRatingById(req.params.id, req.body);
-    if (!updatedRating) {
-      res.status(404).json({ message: 'Comment rating not found' });
+    try {
+      logger.info(`${CommentRatingController.name}-updateCommentRatingById with id: ${req.params.id}`);
+      const updatedRating = await this.commentRatingService.updateCommentRatingById(req.params.id, req.body);
+      if (!updatedRating) {
+        res.status(404).json({
+          ok: false,
+          message: 'Comment rating not found',
+        });
+        return;
+      }
+      res.status(200).json({
+        ok: true,
+        commentRating: updatedRating,
+        message: `Successfuly updated commentRating`,
+      });
+    } catch (error) {
+      logger.error(`${CommentRatingController.name}- Error en CreateCommentRating: ${error}`);
+      res.status(500).json({
+        ok: false,
+        message: 'Error updating commentRating',
+      });
       return;
     }
-    res.json(updatedRating);
   };
 
   /**
    * Eliminar una calificación de comentario por ID
    */
   public deleteCommentRatingById = async (req: Request, res: Response) => {
-    logger.info(`${CommentRatingController.name}-deleteCommentRatingById with id: ${req.params.id}`);
-    const deletedRating = await this.commentRatingService.deleteCommentRatingById(req.params.id);
-    if (!deletedRating) {
-      return res.status(404).json({ message: 'Comment rating not found' });
+    try {
+      const { id: commentRatingId } = req.params;
+      logger.info(`${CommentRatingController.name}-deleteCommentRatingById with id: ${req.params.id}`);
+      const deletedRating = await this.commentRatingService.deleteCommentRatingById(commentRatingId);
+      if (!deletedRating) {
+        res.status(404).json({
+          ok: false,
+          message: 'Commentrating not found',
+        });
+        return;
+      }
+      res.status(200).json({
+        ok: true,
+        commentRating: deletedRating,
+        message: 'Commentrating deleted successfully',
+      });
+    } catch (error) {
+      logger.error(`${CommentRatingController.name}- Error en CreateCommentRating: ${error}`);
+      res.status(500).json({
+        ok: false,
+        message: 'Error deleting commentRating',
+      });
+      return;
     }
-    res.json({ message: 'Comment rating deleted successfully' });
-    return;
   };
 }
 
-export default new CommentRatingController();
+export default CommentRatingController;
