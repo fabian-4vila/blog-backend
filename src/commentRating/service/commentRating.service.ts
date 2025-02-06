@@ -55,14 +55,20 @@ class CommentRatingService {
     logger.info(`${CommentRatingService.name}-updateCommentRatingById with id: ${id}`);
     const commentRating = await this.getCommentRatingById(id);
     if (!commentRating) return null;
-    if (updateData) {
+    if (updateData.commentId) {
       const comment = await this.commentRatingRepository.manager.findOne(Comment, {
         where: { id: updateData.commentId },
       });
       if (!comment) throw new Error('comment not found');
+      commentRating.comment = comment;
     }
-    await this.commentRatingRepository.update(id, updateData);
-    return this.getCommentRatingById(id);
+    if (updateData.userId) {
+      const user = await this.commentRatingRepository.manager.findOne(User, { where: { id: updateData.userId } });
+      if (!user) throw new Error('user not found');
+      commentRating.user = user;
+    }
+    Object.assign(commentRating, updateData);
+    return this.commentRatingRepository.save(commentRating);
   }
 
   /**
