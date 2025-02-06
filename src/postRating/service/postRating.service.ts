@@ -74,7 +74,7 @@ class PostRatingService {
   }
 
   /**
-   * Delete postRating
+   * Delete postRating By Id
    */
   public async deletePostRatingById(id: string) {
     logger.info(`${PostRatingService.name}-deletePostRatingById with id: ${id}`);

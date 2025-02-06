@@ -16,7 +16,7 @@ class UserService {
    */
   public async getAllUser(): Promise<User[]> {
     logger.info(`${UserService.name}-getAllUser`);
-    return this.userRepository.find();
+    return this.userRepository.find({ relations: ['post'] });
   }
   /**
    * getUserById
