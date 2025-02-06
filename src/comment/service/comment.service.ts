@@ -14,7 +14,7 @@ class CommentService {
   }
 
   /**
-   * Obtener todas los Comment
+   * Get All Comment
    */
   public async getAllComments(): Promise<Comment[]> {
     logger.info(`${CommentService.name}-getAllComments`);
@@ -22,7 +22,7 @@ class CommentService {
   }
 
   /**
-   * Obtener un Comment por ID
+   * Get Comment By Id
    */
   public async getCommentById(id: string): Promise<Comment | null> {
     logger.info(`${CommentService.name}-getCommentById with id: ${id}`);
@@ -30,7 +30,7 @@ class CommentService {
   }
 
   /**
-   * Crear un Comment
+   * Create Comment
    */
   public async createComment(data: CreateCommentDto): Promise<Comment> {
     logger.info(`${CommentService.name} - createComment`);
@@ -53,36 +53,28 @@ class CommentService {
   }
 
   /**
-   * Actualizar Comment por ID
+   * Update Comment by Id
    */
   public async updateCommentById(id: string, updateData: Partial<CreateCommentDto>) {
     logger.info(`${CommentService.name}-updateCommentById with id: ${id}`);
-
     const comment = await this.getCommentById(id);
     if (!comment) return null;
-
-    // Si updateData tiene postId, buscamos el post
     if (updateData.postId) {
       const post = await this.CommentRepository.manager.findOne(Post, { where: { id: updateData.postId } });
       if (!post) throw new Error('El post no existe');
       comment.post = post;
     }
-
-    // Si updateData tiene userId, buscamos el usuario
     if (updateData.userId) {
       const user = await this.CommentRepository.manager.findOne(User, { where: { id: updateData.userId } });
       if (!user) throw new Error('El usuario no existe');
       comment.user = user;
     }
-
-    // Actualizar solo los campos enviados
     Object.assign(comment, updateData);
-
     return this.CommentRepository.save(comment);
   }
 
   /**
-   * Eliminar Comment por ID
+   * Delete Comment By Id
    */
   public async deleteCommentById(id: string) {
     logger.info(`${CommentService.name}-deleteCommentById with id: ${id}`);

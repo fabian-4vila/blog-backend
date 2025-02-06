@@ -1,6 +1,14 @@
-import { IsNotEmpty, IsInt, Min, Max, IsBoolean } from 'class-validator';
+import { IsNotEmpty, IsInt, Min, Max, IsBoolean, IsString } from 'class-validator';
 
 export class CreatePostRatingDto {
+  @IsNotEmpty()
+  @IsString()
+  postId!: string; // ID del post que se califica
+
+  @IsNotEmpty()
+  @IsString()
+  userId!: string; // ID del usuario que califica
+
   @IsNotEmpty()
   @IsInt()
   @Min(1)

@@ -1,6 +1,13 @@
-import { IsNotEmpty, IsInt, Min, Max, IsBoolean } from 'class-validator';
+import { IsNotEmpty, IsInt, Min, Max, IsBoolean, IsString } from 'class-validator';
 
 export class CreateCommentRatingDto {
+  @IsNotEmpty()
+  @IsString()
+  commentId!: string; // ID del comment que se califica
+
+  @IsNotEmpty()
+  @IsString()
+  userId!: string; // ID del usuario que califica
   @IsNotEmpty()
   @IsInt()
   @Min(1)
