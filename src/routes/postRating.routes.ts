@@ -12,10 +12,10 @@ class PostRatingRoute {
 
   private initRoutes() {
     this.router.get(`${this.path}s`, this.PostRatingController.getAllPostRatings);
-    this.router.get(`${this.path}:/id`, this.PostRatingController.getPostRatingById);
+    this.router.get(`${this.path}/:id`, this.PostRatingController.getPostRatingById);
     this.router.post(`${this.path}`, this.PostRatingController.createPostRating);
-    this.router.put(`${this.path}:/id`, this.PostRatingController.updatePostRatingById);
-    this.router.delete(`${this.path}:/id`, this.PostRatingController.deletePostRatingById);
+    this.router.put(`${this.path}/:id`, this.PostRatingController.updatePostRatingById);
+    this.router.delete(`${this.path}/:id`, this.PostRatingController.deletePostRatingById);
   }
 }
 
