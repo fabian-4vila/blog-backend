@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { logger } from '../../utils/logger';
-import CommentService from '../service/commentService';
+import CommentService from '../service/comment.service';
 
 class CommentController {
   private readonly CommentService: CommentService = new CommentService();

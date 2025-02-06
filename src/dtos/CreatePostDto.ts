@@ -1,3 +1,4 @@
+// src/dto/CreatePostDto.ts
 import { IsNotEmpty, IsString, IsOptional, IsArray, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -19,6 +20,10 @@ export class CreatePostDto {
   @IsNotEmpty()
   @IsString()
   content!: string; // Contenido del posteo
+
+  @IsNotEmpty()
+  @IsString()
+  userId!: string; // ID del usuario que crea el post
 
   @IsOptional()
   @IsArray()

@@ -3,6 +3,7 @@ import { Post } from '../../entities/Post.entity';
 import { AppDataSource } from '../../config/data.source';
 import { logger } from '../../utils/logger';
 import { CreatePostDto } from '../../dtos/CreatePostDto';
+import { User } from '../../entities/User.entity';
 
 class PostService {
   private postRepository: Repository<Post>;
@@ -12,7 +13,7 @@ class PostService {
 
   public async getAllPosts(): Promise<Post[]> {
     logger.info(`${PostService.name}-getAllPosts`);
-    return this.postRepository.find({ relations: ['user', 'comment', 'post_rating', 'comment_rating'] });
+    return this.postRepository.find();
   }
 
   public async getPostById(id: string): Promise<Post | null> {
@@ -22,7 +23,14 @@ class PostService {
 
   public async createPost(postBody: CreatePostDto): Promise<Post> {
     logger.info(`${PostService.name}-createPost`);
-    const newPost = this.postRepository.create(postBody);
+    const user = await this.postRepository.manager.findOne(User, { where: { id: postBody.userId } });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const newPost = this.postRepository.create({
+      ...postBody,
+      user,
+    });
     return this.postRepository.save(newPost);
   }
 
@@ -30,8 +38,13 @@ class PostService {
     logger.info(`${PostService.name}-updatePostById with id: ${id}`);
     const post = await this.getPostById(id);
     if (!post) return null;
-    await this.postRepository.update(id, updatePostBody);
-    return this.getPostById(id);
+    if (updatePostBody.userId) {
+      const user = await this.postRepository.manager.findOne(User, { where: { id: updatePostBody.userId } });
+      if (!user) throw new Error('El usuario no existe');
+      post.user = user;
+    }
+    Object.assign(post, updatePostBody);
+    return this.postRepository.save(post);
   }
 
   public async deletePostById(id: string) {
