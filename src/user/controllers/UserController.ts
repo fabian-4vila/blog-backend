@@ -20,6 +20,7 @@ class UserController {
         users: users,
         message: `User list obtained successfully`,
       });
+      return;
     } catch (error) {
       logger.error(`${UserController.name}- Error en getAllUsers: ${error}`);
       res.status(500).json({
