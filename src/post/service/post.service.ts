@@ -13,7 +13,7 @@ class PostService {
 
   public async getAllPosts(): Promise<Post[]> {
     logger.info(`${PostService.name}-getAllPosts`);
-    return this.postRepository.find();
+    return this.postRepository.find({ relations: ['user'] });
   }
 
   public async getPostById(id: string): Promise<Post | null> {
