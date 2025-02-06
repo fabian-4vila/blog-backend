@@ -8,6 +8,7 @@ export class CreateCommentRatingDto {
   @IsNotEmpty()
   @IsString()
   userId!: string; // ID del usuario que califica
+
   @IsNotEmpty()
   @IsInt()
   @Min(1)
