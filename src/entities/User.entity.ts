@@ -27,7 +27,7 @@ export class User {
   updatedAt!: Date; // Fecha de última actualización
 
   @OneToMany(() => Post, (post) => post.user)
-  posts!: Post[]; // Lista de posteos creados
+  post!: Post[]; // Lista de posteos creados
 
   @OneToMany(() => Comment, (comment) => comment.user)
   comments!: Comment[]; // Lista de comentarios hechos

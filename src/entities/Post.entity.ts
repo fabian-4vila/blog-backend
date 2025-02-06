@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './User.entity';
 import { PostRating } from './PostRating.entity';
 import { Comment } from './Comment.entity';
@@ -8,7 +8,8 @@ export class Post {
   @PrimaryGeneratedColumn()
   id!: string;
 
-  @ManyToOne(() => User, (user) => user.posts, { nullable: false, onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.post, { nullable: false, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_id' })
   user!: User; // Usuario creador del posteo
 
   @Column({ type: 'varchar', length: 200 })

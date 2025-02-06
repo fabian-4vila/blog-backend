@@ -62,15 +62,20 @@ class PostController {
   };
 
   /**
-   * createUser
+   * createPost
    */
   public createPost = async (req: Request, res: Response) => {
     try {
       const { body: postBody } = req;
       logger.info(`${PostController.name} - CreatePost - Body received: ${JSON.stringify(postBody)}`);
-
+      if (!postBody.user_id) {
+        res.status(400).json({
+          ok: false,
+          message: 'userId is required',
+        });
+        return;
+      }
       const newPost = await this.postService.createPost(postBody);
-
       res.status(201).json({
         ok: true,
         post: newPost,
@@ -79,11 +84,9 @@ class PostController {
       return;
     } catch (error) {
       logger.error(`${PostController.name} - Error in CreatePost: ${error}`);
-
       res.status(500).json({
         ok: false,
         message: 'Error creating post',
-        error: error instanceof Error ? error.message : 'Unknown error',
       });
       return;
     }
