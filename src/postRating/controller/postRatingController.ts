@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { CreatePostRatingDto } from '../../dtos/CreatePostRatingDto';
-import PostRatingService from '../service/postRatingService';
+import PostRatingService from '../service/postRating.service';
 import { logger } from '../../utils/logger';
 
 class PostRatingController {

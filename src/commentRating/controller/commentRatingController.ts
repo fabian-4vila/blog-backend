@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { CreateCommentRatingDto } from '../../dtos/CreateCommentRatingDto';
-import CommentRatingService from '../service/commentRatingService';
+import CommentRatingService from '../service/commentRating.service';
 import { logger } from '../../utils/logger';
 
 class CommentRatingController {

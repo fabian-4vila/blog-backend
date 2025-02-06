@@ -2,7 +2,7 @@ import { Router } from 'express';
 import commentRatingController from '../commentRating/controller/commentRatingController';
 
 class CommentRatingRoute {
-  public path = '/ratingP';
+  public path = '/ratingC';
   public router = Router();
   public CommentRatingController = new commentRatingController();
 
