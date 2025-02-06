@@ -2,7 +2,7 @@ import { Router } from 'express';
 import postRatingController from '../postRating/controller/postRatingController';
 
 class PostRatingRoute {
-  public path = '/ratingC';
+  public path = '/ratingP';
   public router = Router();
   public PostRatingController = new postRatingController();
 
