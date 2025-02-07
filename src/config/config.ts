@@ -2,7 +2,11 @@ import { config } from 'dotenv';
 import { DataSource } from 'typeorm';
 import { AppDataSource } from './data.source';
 
-config({ path: `.env.${process.env.NODE_ENV || 'development'}.local` });
+config();
+
+const env = process.env.NODE_ENV || 'development';
+
+config({ path: `.env.${env}.local` });
 
 export const {
   NODE_ENV,
@@ -17,6 +21,9 @@ export const {
   DB_PASSWORD,
   DB_USER,
   JWT_SECRET,
+  CLOUDINARY_CLOUD_NAME,
+  CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET,
 } = process.env;
 
 export abstract class ConfigServer {
