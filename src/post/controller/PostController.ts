@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import PostService from '../service/post.service';
 import { CreatePostDto } from '../../dtos/CreatePostDto';
 import { logger } from '../../utils/logger';
+import UploadService from '../service/upload.service';
 
 class PostController {
   private readonly postService: PostService = new PostService();
@@ -141,6 +142,20 @@ class PostController {
         ok: false,
         message: 'Error deleting post',
       });
+      return;
+    }
+  };
+  public uploadPostImage = async (req: Request, res: Response): Promise<void> => {
+    try {
+      if (!req.file) {
+        res.status(400).json({ message: 'No file uploaded' });
+        return;
+      }
+      const imageUrl = await UploadService.uploadFile(req.file);
+      res.json({ message: 'Image uploaded', url: imageUrl });
+      return;
+    } catch (error) {
+      res.status(500).json({ message: 'Error uploading file' });
       return;
     }
   };
