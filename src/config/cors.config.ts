@@ -2,7 +2,7 @@ import { ORIGIN } from './config';
 
 export const corsConfig = {
   allowedHeaders: '*',
-  methods: 'GET, HEAD, PUD, PATCH, POST, DELETE',
+  methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
   preflightContinue: false,
   origin: ORIGIN,
 };
