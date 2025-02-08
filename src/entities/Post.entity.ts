@@ -30,6 +30,6 @@ export class Post {
   @OneToMany(() => PostRating, (rating) => rating.post)
   ratings!: PostRating[]; // Calificaciones del posteo
 
-  @Column({ type: 'jsonb', nullable: true })
+  @Column({ type: 'jsonb', nullable: false, default: () => "'[]'::jsonb" })
   files!: { type: string; url: string }[]; // Archivos asociados al posteo (imágenes, PDF, etc.)
 }

@@ -9,7 +9,7 @@ class CommentController {
   constructor() {}
 
   /**
-   * getAllComments
+   * Get All Comments
    */
   public getAllComments = async (_req: Request, res: Response) => {
     try {
@@ -31,7 +31,7 @@ class CommentController {
   };
 
   /**
-   * getCommentById
+   * Get Comment By Id
    */
   public getCommentById = async (req: Request, res: Response) => {
     try {
@@ -61,7 +61,7 @@ class CommentController {
   };
 
   /**
-   * createComment
+   * Create Comment
    */
   public createComment = async (req: Request, res: Response) => {
     try {
@@ -84,7 +84,7 @@ class CommentController {
   };
 
   /**
-   * updateCommentById
+   * Update Comment By Id
    */
   public updateCommentById = async (req: Request, res: Response) => {
     try {
@@ -115,7 +115,7 @@ class CommentController {
   };
 
   /**
-   * deleteCommentById
+   * Delete Comment
    */
   public deleteCommentById = async (req: Request, res: Response) => {
     try {
