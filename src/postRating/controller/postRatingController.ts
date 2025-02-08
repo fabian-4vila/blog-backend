@@ -11,7 +11,7 @@ class PostRatingController {
   }
 
   /**
-   * Obtener todas las calificaciones de posts
+   * Get All PostRating
    */
   public getAllPostRatings = async (_req: Request, res: Response) => {
     try {
@@ -33,7 +33,7 @@ class PostRatingController {
   };
 
   /**
-   * Obtener una calificación de post por ID
+   * Get PostRating By Id
    */
   public getPostRatingById = async (req: Request, res: Response) => {
     try {
@@ -62,7 +62,7 @@ class PostRatingController {
   };
 
   /**
-   * Crear una nueva calificación de post
+   * Create PostRating
    */
   public createPostRating = async (req: Request, res: Response) => {
     try {
@@ -85,7 +85,7 @@ class PostRatingController {
   };
 
   /**
-   * Actualizar una calificación de post por ID
+   * Update PostRating By Id
    */
   public updatePostRatingById = async (req: Request, res: Response) => {
     try {
@@ -114,7 +114,7 @@ class PostRatingController {
   };
 
   /**
-   * Eliminar una calificación de post por ID
+   * Delete PostRating
    */
   public deletePostRatingById = async (req: Request, res: Response) => {
     try {
