@@ -10,7 +10,7 @@ class PostController {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor() {}
   /**
-   * getAllPosts
+   * Get All Posts
    */
   public getAllPosts = async (_req: Request, res: Response) => {
     try {
@@ -32,7 +32,7 @@ class PostController {
     }
   };
   /**
-   * getPostById
+   * Get Post By Id
    */
   public getPostById = async (req: Request, res: Response) => {
     try {
@@ -63,7 +63,7 @@ class PostController {
   };
 
   /**
-   * createPost
+   * Create Post
    */
   public createPost = async (req: Request, res: Response) => {
     try {
@@ -76,27 +76,52 @@ class PostController {
         });
         return;
       }
-      const newPost = await this.postService.createPost(postBody);
+      const files = req.files as Express.Multer.File[];
+      logger.info(`Files received: ${files.length} files`);
+      if (!files || files.length === 0) {
+        res.status(400).json({ ok: false, message: 'No files uploaded' });
+        return;
+      }
+      const uploadedFiles = await Promise.all(
+        files.map(async (file) => {
+          const uploaded = await UploadService.uploadFile(file);
+          logger.info(`Uploaded file: ${uploaded.url}`);
+          return { type: file.mimetype, url: uploaded.url };
+        }),
+      );
+      const postData: CreatePostDto = {
+        userId: postBody.user_id,
+        title: postBody.title,
+        content: postBody.content,
+        files: uploadedFiles,
+      };
+      const newPost = await this.postService.createPost(postData);
+      logger.info(`Post created with ID: ${newPost.id}`);
       res.status(201).json({
         ok: true,
         post: newPost,
         message: `Successfully created post`,
       });
-      return;
     } catch (error) {
       logger.error(`${PostController.name} - Error in CreatePost: ${error}`);
       res.status(500).json({
         ok: false,
         message: 'Error creating post',
       });
-      return;
     }
   };
-
+  /**
+   * Update Post By Id
+   */
   public updatePostById = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
       const updateBody: Partial<CreatePostDto> = req.body;
+      const files = req.files as Express.Multer.File[];
+      if (files) {
+        const uploadedFiles = await Promise.all(files.map((file) => UploadService.uploadFile(file)));
+        updateBody.files = uploadedFiles;
+      }
       const updatedPost = await this.postService.updatePostById(id, updateBody);
       if (!updatedPost) {
         res.status(404).json({
@@ -113,13 +138,16 @@ class PostController {
       return;
     } catch (error) {
       res.status(500).json({
+        error: Error,
         ok: false,
         message: 'Error updating post',
       });
       return;
     }
   };
-
+  /**
+   * Delete Post
+   */
   public deletePostById = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
@@ -142,20 +170,6 @@ class PostController {
         ok: false,
         message: 'Error deleting post',
       });
-      return;
-    }
-  };
-  public uploadPostImage = async (req: Request, res: Response): Promise<void> => {
-    try {
-      if (!req.file) {
-        res.status(400).json({ message: 'No file uploaded' });
-        return;
-      }
-      const imageUrl = await UploadService.uploadFile(req.file);
-      res.json({ message: 'Image uploaded', url: imageUrl });
-      return;
-    } catch (error) {
-      res.status(500).json({ message: 'Error uploading file' });
       return;
     }
   };

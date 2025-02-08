@@ -4,49 +4,96 @@ import { AppDataSource } from '../../config/data.source';
 import { logger } from '../../utils/logger';
 import { CreatePostDto } from '../../dtos/CreatePostDto';
 import { User } from '../../entities/User.entity';
+import uploadService from './upload.service';
 
 class PostService {
   private postRepository: Repository<Post>;
   constructor() {
     this.postRepository = AppDataSource.getRepository(Post);
   }
-
+  /**
+   * Get All Posts
+   */
   public async getAllPosts(): Promise<Post[]> {
     logger.info(`${PostService.name}-getAllPosts`);
-    return this.postRepository.find({ relations: ['user'] });
+    return this.postRepository.find();
   }
-
+  /**
+   * Get Post By Id
+   */
   public async getPostById(id: string): Promise<Post | null> {
     logger.info(`${PostService.name}-getPostById with id: ${id}`);
     return this.postRepository.findOne({ where: { id } });
   }
-
-  public async createPost(postBody: CreatePostDto): Promise<Post> {
-    logger.info(`${PostService.name}-createPost`);
+  /**
+   * Create Post
+   */
+  public async createPost(postBody: CreatePostDto, files?: Express.Multer.File[]): Promise<Post> {
+    logger.info(`${PostService.name} - createPost`);
     const user = await this.postRepository.manager.findOne(User, { where: { id: postBody.userId } });
-    if (!user) {
-      throw new Error('User not found');
+    if (!user) throw new Error('User not found');
+    let uploadedFiles: { type: string; url: string }[] = postBody.files || []; // Asegurar que files tenga valor
+    if (files && files.length > 0) {
+      try {
+        const uploadedFromMulter = await Promise.all(
+          files.map(async (file) => {
+            const uploaded = await uploadService.uploadFile(file);
+            return { type: file.mimetype, url: uploaded.url };
+          }),
+        );
+        uploadedFiles = [...uploadedFiles, ...uploadedFromMulter]; // Fusionar los archivos de la petición con los de Multer
+      } catch (error) {
+        logger.error(`${PostService.name} - Error al subir archivos: ${error}`);
+        throw new Error('Error al procesar archivos');
+      }
     }
     const newPost = this.postRepository.create({
-      ...postBody,
-      user,
+      title: postBody.title,
+      content: postBody.content,
+      user: user,
+      files: uploadedFiles.length > 0 ? uploadedFiles : [],
     });
-    return this.postRepository.save(newPost);
+    try {
+      const savedPost = await this.postRepository.save(newPost);
+      logger.info(`${PostService.name} - Post creado con ID: ${savedPost.id}`);
+      return savedPost;
+    } catch (error) {
+      logger.error(`${PostService.name} - Error al guardar el post: ${error}`);
+      throw new Error('Error al guardar el post en la base de datos');
+    }
   }
-
-  public async updatePostById(id: string, updatePostBody: Partial<CreatePostDto>) {
+  /**
+   * Update Post By Id
+   */
+  public async updatePostById(id: string, updatePostBody: Partial<CreatePostDto>, files?: Express.Multer.File[]) {
     logger.info(`${PostService.name}-updatePostById with id: ${id}`);
     const post = await this.getPostById(id);
     if (!post) return null;
+
     if (updatePostBody.userId) {
       const user = await this.postRepository.manager.findOne(User, { where: { id: updatePostBody.userId } });
       if (!user) throw new Error('El usuario no existe');
       post.user = user;
     }
+
+    if (files && files.length > 0) {
+      const uploadedFiles = files
+        ? await Promise.all(
+            files.map(async (file) => {
+              const uploaded = await uploadService.uploadFile(file);
+              return { type: file.mimetype, url: uploaded.url };
+            }),
+          )
+        : [];
+      post.files = post.files ? [...post.files, ...uploadedFiles] : uploadedFiles;
+    }
+
     Object.assign(post, updatePostBody);
     return this.postRepository.save(post);
   }
-
+  /**
+   * Delete Post
+   */
   public async deletePostById(id: string) {
     logger.info(`${PostService.name}-deletePostById with id: ${id}`);
     const postToDelete = await this.getPostById(id);
