@@ -12,44 +12,39 @@ class UserService {
   }
 
   /**
-   * getAllUser
+   * get All User
    */
   public async getAllUser(): Promise<User[]> {
     logger.info(`${UserService.name}-getAllUser`);
     return this.userRepository.find({ relations: ['post'] });
   }
   /**
-   * getUserById
+   * get User By Id
    */
   public async getUserById(id: string): Promise<User | null> {
     logger.info(`${UserService.name}-getUserById with id: ${id}`);
     return this.userRepository.findOne({ where: { id } });
   }
   /**
-   * getUserByEmail
+   * get User By Email
    */
   public async getUserByEmail(email: string): Promise<User | null> {
     logger.info(`${UserService.name} - getUserByEmail with email: ${email}`);
     return this.userRepository.findOne({ where: { email } });
   }
   /**
-   * getUserByRoleAndId
+   * get User By Role And Id
    */
   public async getUsersByRoleAndId(role?: RoleType, id?: string): Promise<User[] | User | null> {
     logger.info(`${UserService.name} - getUsersByRoleAndId with role: ${role}, id: ${id}`);
-
+    // no usar tantos else
     if (role && id) {
-      // Buscar usuario específico con ID y rol
       return this.userRepository.findOne({ where: { id, role } });
     } else if (role) {
-      // Buscar todos los usuarios con un rol específico
       return this.userRepository.find({ where: { role } });
     } else if (id) {
-      // Buscar solo por ID
       return this.getUserById(id);
     }
-
-    // Si no se pasan parámetros, devolver lista vacía
     return [];
   }
   /**

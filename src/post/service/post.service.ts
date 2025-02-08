@@ -43,8 +43,8 @@ class PostService {
         );
         uploadedFiles = [...uploadedFiles, ...uploadedFromMulter]; // Fusionar los archivos de la petición con los de Multer
       } catch (error) {
-        logger.error(`${PostService.name} - Error al subir archivos: ${error}`);
-        throw new Error('Error al procesar archivos');
+        logger.error(`${PostService.name} - Error uploading files: ${error}`);
+        throw new Error('Error processing files');
       }
     }
     const newPost = this.postRepository.create({
@@ -58,8 +58,8 @@ class PostService {
       logger.info(`${PostService.name} - Post creado con ID: ${savedPost.id}`);
       return savedPost;
     } catch (error) {
-      logger.error(`${PostService.name} - Error al guardar el post: ${error}`);
-      throw new Error('Error al guardar el post en la base de datos');
+      logger.error(`${PostService.name} - Error saving post: ${error}`);
+      throw new Error('Error saving post to database');
     }
   }
   /**
@@ -72,7 +72,7 @@ class PostService {
 
     if (updatePostBody.userId) {
       const user = await this.postRepository.manager.findOne(User, { where: { id: updatePostBody.userId } });
-      if (!user) throw new Error('El usuario no existe');
+      if (!user) throw new Error('user not found');
       post.user = user;
     }
 

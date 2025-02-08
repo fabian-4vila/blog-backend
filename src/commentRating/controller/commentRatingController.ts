@@ -11,7 +11,7 @@ class CommentRatingController {
   }
 
   /**
-   * Obtener todas las calificaciones de comentarios
+   * Get All CommentRatings
    */
   public getAllCommentRatings = async (_req: Request, res: Response) => {
     try {
@@ -33,7 +33,7 @@ class CommentRatingController {
   };
 
   /**
-   * Obtener una calificación de comentario por ID
+   * Get CommentRating by Id
    */
   public getCommentRatingById = async (req: Request, res: Response) => {
     try {
@@ -62,7 +62,7 @@ class CommentRatingController {
   };
 
   /**
-   * Crear una nueva calificación de comentario
+   * Create CommentRating
    */
   public createCommentRating = async (req: Request, res: Response) => {
     try {
@@ -85,7 +85,7 @@ class CommentRatingController {
   };
 
   /**
-   * Actualizar una calificación de comentario por ID
+   * Update CommentRating By Id
    */
   public updateCommentRatingById = async (req: Request, res: Response) => {
     try {
@@ -114,7 +114,7 @@ class CommentRatingController {
   };
 
   /**
-   * Eliminar una calificación de comentario por ID
+   * Delete CommentRating By Id
    */
   public deleteCommentRatingById = async (req: Request, res: Response) => {
     try {
