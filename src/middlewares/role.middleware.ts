@@ -11,12 +11,12 @@ export function authorizeRoles(...allowedRoles: RoleType[]) {
     const user = req.user as UserPayLoadToken;
 
     if (!user) {
-      res.status(401).json({ message: 'No autorizado' });
+      res.status(401).json({ message: 'Unauthorized' });
       return;
     }
 
     if (!allowedRoles.includes(user.role)) {
-      res.status(403).json({ message: 'No tienes permisos para acceder a esta ruta' });
+      res.status(403).json({ message: 'You have no permissions to access this route' });
       return;
     }
 

@@ -9,7 +9,7 @@ const storage = new CloudinaryStorage({
 
     const ext = file.mimetype.split('/')[1]; // Extrae la extensión del archivo
     if (!allowedFormats.includes(ext)) {
-      throw new Error('Tipo de archivo no permitido');
+      throw new Error('Type of file not allowed');
     }
 
     return {
