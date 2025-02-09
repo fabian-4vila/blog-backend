@@ -10,7 +10,7 @@ export function authenticateJWT(req: Request, res: Response, next: NextFunction)
   const token = req.headers.authorization?.split(' ')[1];
 
   if (!token) {
-    res.status(401).json({ message: 'Acceso denegado. Token no proporcionado.' });
+    res.status(401).json({ message: 'Access denied. Token not proportionate.' });
     return;
   }
 
@@ -19,6 +19,6 @@ export function authenticateJWT(req: Request, res: Response, next: NextFunction)
     req.user = decoded;
     next();
   } catch (error) {
-    res.status(403).json({ message: 'Token inválido o expirado.' });
+    res.status(403).json({ message: 'Invalid or expired token.' });
   }
 }

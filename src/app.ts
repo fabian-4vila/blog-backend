@@ -49,7 +49,7 @@ class App extends ConfigServer {
     return this.initConnect
       .then(() => {
         logger.info(`========================================`);
-        logger.info(`======== DB conexion exitosa!! =========`);
+        logger.info(`======== DB Successfull connection!! =========`);
         logger.info(`========================================`);
       })
       .catch((err) => {
