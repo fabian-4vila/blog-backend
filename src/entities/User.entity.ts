@@ -1,7 +1,9 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Post } from './Post.entity';
 import { Comment } from './Comment.entity';
 import { RoleType } from '../types/Role.type';
+import { Exclude } from 'class-transformer';
+import { hashPassword } from '../utils/hash';
 
 @Entity({ name: 'user' })
 export class User {
@@ -9,13 +11,19 @@ export class User {
   id!: string;
 
   @Column({ type: 'varchar', length: 100 })
-  name!: string; // Nombre
+  name!: string;
 
   @Column({ type: 'varchar', length: 150, unique: true })
-  email!: string; // Correo
+  email!: string;
 
+  @Exclude()
   @Column({ type: 'varchar', length: 255 })
-  password!: string; // Contraseña
+  password!: string;
+
+  @BeforeInsert()
+  async encryptPassword() {
+    this.password = await hashPassword(this.password);
+  }
 
   @Column({ type: 'enum', enum: RoleType, default: RoleType.GENERAL })
   role!: RoleType;
