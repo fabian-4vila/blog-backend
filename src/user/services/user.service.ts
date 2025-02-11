@@ -4,7 +4,7 @@ import { AppDataSource } from '../../config/data.source';
 import { logger } from '../../utils/logger';
 import { CreateUserDto } from '../../dtos/CreateUserDto';
 import { RoleType } from '../../types/Role.type';
-
+import bcrypt from 'bcryptjs';
 class UserService {
   private userRepository: Repository<User>;
   constructor() {
@@ -52,7 +52,12 @@ class UserService {
    */
   public async createUser(userBody: CreateUserDto): Promise<User> {
     logger.info(`${UserService.name} - createUser`);
-    const newUser = this.userRepository.create(userBody);
+    const hashedPassword = await bcrypt.hash(userBody.password, 10);
+    const newUser = this.userRepository.create({
+      ...userBody,
+      password: hashedPassword,
+      role: RoleType.ADMIN,
+    });
     return this.userRepository.save(newUser);
   }
   /**
@@ -62,7 +67,11 @@ class UserService {
     logger.info(`${UserService.name} - updateUserById with id: ${id}`);
     const user = await this.getUserById(id);
     if (!user) return null;
-    await this.userRepository.update(id, UpdatUserBody);
+    const updatedData = { ...UpdatUserBody };
+    if (updatedData.password) {
+      updatedData.password = await bcrypt.hash(updatedData.password, 10);
+    }
+    await this.userRepository.update(id, updatedData);
     return this.getUserById(id);
   }
   /**
@@ -74,6 +83,10 @@ class UserService {
     if (!userToDeleted) return null;
     await this.userRepository.delete(id);
     return userToDeleted;
+  }
+
+  public getRepository(): Repository<User> {
+    return this.userRepository;
   }
 }
 
