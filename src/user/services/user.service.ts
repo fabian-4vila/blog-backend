@@ -4,7 +4,7 @@ import { AppDataSource } from '../../config/data.source';
 import { logger } from '../../utils/logger';
 import { CreateUserDto } from '../../dtos/CreateUserDto';
 import { RoleType } from '../../types/Role.type';
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 
 class UserService {
   private userRepository: Repository<User>;
@@ -53,14 +53,13 @@ class UserService {
    */
   public async createUser(userBody: CreateUserDto): Promise<User> {
     logger.info(`${UserService.name} - createUser`);
-    const hashedPassword = await bcrypt.hash(userBody.password, 10);
     const newUser = this.userRepository.create({
       ...userBody,
-      password: hashedPassword,
       role: RoleType.ADMIN,
     });
     return this.userRepository.save(newUser);
   }
+
   /**
    * UpdateUserById
    */

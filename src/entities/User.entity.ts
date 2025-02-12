@@ -14,16 +14,17 @@ export class User {
   @Column({ type: 'varchar', length: 100 })
   name!: string;
 
+  @Exclude()
   @Column({ type: 'varchar', length: 150, unique: true })
   email!: string;
 
-  @Exclude()
   @Column({ type: 'varchar', length: 255 })
   password!: string;
 
   @Column({ type: 'enum', enum: RoleType, default: RoleType.SUBSCRIBED })
   role!: RoleType;
 
+  @Exclude()
   @Column({ type: 'jsonb', default: () => "'[]'::jsonb" })
   permissions!: string[];
 

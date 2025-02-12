@@ -6,6 +6,7 @@ import CommentRoute from './routes/comment.routes';
 import PostRatingRoute from './routes/postRating.routes';
 import CommentRatingRoute from './routes/commentRating.routes';
 import RegisterRoute from './routes/register.routes';
+import AuthRoute from './routes/auth.routes';
 const app = new App([
   new BaseRoute(),
   new UserRoute(),
@@ -14,6 +15,7 @@ const app = new App([
   new PostRatingRoute(),
   new CommentRatingRoute(),
   new RegisterRoute(),
+  new AuthRoute(),
 ]);
 
 app.listen();
