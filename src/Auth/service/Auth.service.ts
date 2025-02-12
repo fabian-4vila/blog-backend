@@ -1,49 +1,3 @@
-// import jwt from 'jsonwebtoken';
-// import bcrypt from 'bcrypt';
-// import { User } from '../../entities/User.entity';
-// import { RolePermissions } from '../../types/RolePermissions';
-// import { AppDataSource } from '../../config/data.source';
-
-// const JWT_SECRET = process.env.JWT_SECRET;
-// const EXPIRES_IN = '1h';
-
-// if (!JWT_SECRET) {
-//   throw new Error('FATAL ERROR: JWT_SECRET no está definido en las variables de entorno.');
-// }
-
-// export const generateToken = (user: User) => {
-//   const payload = {
-//     sub: user.id,
-//     email: user.email,
-//     role: user.role,
-//     permissions: RolePermissions[user.role] || [],
-//   };
-
-//   return jwt.sign(payload, JWT_SECRET, { expiresIn: EXPIRES_IN });
-// };
-
-// export const verifyPassword = async (password: string, hash: string) => {
-//   console.log('Contraseña ingresada:', password);
-//   console.log('Contraseña almacenada (hash):', hash);
-//   return await bcrypt.compare(password, hash);
-// };
-
-// export const authenticateUser = async (email: string, password: string) => {
-//   const userRepository = AppDataSource.getRepository(User);
-//   const user = await userRepository.findOne({ where: { email } });
-
-//   if (!user) {
-//     throw new Error('Usuario no encontrado');
-//   }
-//   console.log('✅ Usuario encontrado:', user);
-//   console.log('🔑 Contraseña almacenada en BD:', user.password);
-//   const isPasswordValid = await verifyPassword(password, user.password);
-//   if (!isPasswordValid) {
-//     throw new Error('Contraseña incorrecta');
-//   }
-
-//   return generateToken(user);
-// };
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { User } from '../../entities/User.entity';
@@ -77,7 +31,7 @@ export const verifyPassword = async (password: string, hash: string) => {
     console.log('🔍 ¿Las contraseñas coinciden?', isMatch);
     return isMatch;
   } catch (error) {
-    console.error('⚠️ Error comparando contraseñas:', error);
+    console.error(' Error comparando contraseñas:', error);
     return false;
   }
 };

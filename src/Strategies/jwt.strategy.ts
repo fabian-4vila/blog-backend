@@ -15,31 +15,43 @@ const options = {
   secretOrKey: JWT_SECRET,
 };
 
-passport.use(
-  new JwtStrategy(options, async (payload, done) => {
+const initializeStrategy = async () => {
+  if (!AppDataSource.isInitialized) {
     try {
-      // Asegurar que AppDataSource esté inicializado
-      if (!AppDataSource.isInitialized) {
-        await AppDataSource.initialize();
-      }
-
-      const userRepository = AppDataSource.getRepository(User);
-      const user = await userRepository.findOne({ where: { id: payload.sub } });
-
-      if (!user) return done(null, false);
-
-      // Retornar solo los datos necesarios como un AuthenticatedUser
-      const authenticatedUser: AuthenticatedUser = {
-        id: user.id,
-        role: user.role,
-        permissions: user.permissions || [],
-      };
-
-      return done(null, authenticatedUser);
+      await AppDataSource.initialize();
+      console.log('📦 Conexión a la base de datos inicializada para JWT.');
     } catch (error) {
-      return done(error, false);
+      console.error('❌ Error al inicializar la base de datos:', error);
+      process.exit(1); // Detener la aplicación si la BD no se inicializa
     }
-  }),
-);
+  }
 
-export default passport;
+  passport.use(
+    new JwtStrategy(options, async (payload, done) => {
+      try {
+        const userRepository = AppDataSource.getRepository(User);
+        const user = await userRepository.findOne({
+          where: { id: payload.sub },
+          select: ['id', 'role', 'permissions'], // Selecciona solo los datos necesarios
+        });
+
+        if (!user) return done(null, false);
+
+        // Asegurar que `permissions` es un array válido
+        const permissions = Array.isArray(user.permissions) ? user.permissions : [];
+
+        const authenticatedUser: AuthenticatedUser = {
+          id: user.id,
+          role: user.role,
+          permissions,
+        };
+
+        return done(null, authenticatedUser);
+      } catch (error) {
+        return done(error, false);
+      }
+    }),
+  );
+};
+
+export { initializeStrategy };
