@@ -18,7 +18,7 @@ class PostRatingService {
    */
   public async getAllPostRatings(): Promise<PostRating[]> {
     logger.info(`${PostRatingService.name}-getAllPostRatings`);
-    return this.postRatingRepository.find({ relations: ['post', 'user'] });
+    return this.postRatingRepository.find();
   }
 
   /**

@@ -18,7 +18,7 @@ class CommentService {
    */
   public async getAllComments(): Promise<Comment[]> {
     logger.info(`${CommentService.name}-getAllComments`);
-    return this.CommentRepository.find({ relations: ['user', 'post'] });
+    return this.CommentRepository.find();
   }
 
   /**

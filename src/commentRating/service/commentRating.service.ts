@@ -18,7 +18,7 @@ class CommentRatingService {
    */
   public async getAllCommentRatings(): Promise<CommentRating[]> {
     logger.info(`${CommentRatingService.name}-getAllCommentRatings`);
-    return this.commentRatingRepository.find({ relations: ['user', 'comment'] });
+    return this.commentRatingRepository.find();
   }
 
   /**
