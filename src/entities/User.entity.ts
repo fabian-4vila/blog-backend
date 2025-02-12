@@ -2,12 +2,13 @@ import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 
 import { Post } from './Post.entity';
 import { Comment } from './Comment.entity';
 import { RoleType } from '../types/Role.type';
+import { RolePermissions } from '../types/RolePermissions';
 import { Exclude } from 'class-transformer';
 import { hashPassword } from '../utils/hash';
 
 @Entity({ name: 'user' })
 export class User {
-  @PrimaryGeneratedColumn('uuid') // Usar UUID en lugar de un número autoincremental
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column({ type: 'varchar', length: 100 })
@@ -16,20 +17,15 @@ export class User {
   @Column({ type: 'varchar', length: 150, unique: true })
   email!: string;
 
-  @Exclude() // Excluye la contraseña al serializar la entidad
+  @Exclude()
   @Column({ type: 'varchar', length: 255 })
   password!: string;
-
-  @BeforeInsert()
-  async encryptPassword() {
-    this.password = await hashPassword(this.password);
-  }
 
   @Column({ type: 'enum', enum: RoleType, default: RoleType.SUBSCRIBED })
   role!: RoleType;
 
   @Column({ type: 'jsonb', default: () => "'[]'::jsonb" })
-  permissions!: string[]; // Lista de permisos específicos del usuario
+  permissions!: string[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   registeredAt!: Date;
@@ -42,4 +38,14 @@ export class User {
 
   @OneToMany(() => Comment, (comment) => comment.user)
   comments!: Comment[];
+
+  @BeforeInsert()
+  async beforeInsertActions() {
+    this.password = await hashPassword(this.password);
+    this.setDefaultPermissions();
+  }
+
+  private setDefaultPermissions() {
+    this.permissions = RolePermissions[this.role] || [];
+  }
 }

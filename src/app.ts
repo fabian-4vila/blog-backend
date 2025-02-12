@@ -13,7 +13,6 @@ import { logger, stream } from './utils/logger';
 import corsConfig from './config/cors.config';
 import { DataSource } from 'typeorm';
 import passport from 'passport';
-import jwtStrategy from './Strategies/jwt.strategy';
 
 class App extends ConfigServer {
   public app: express.Application;
@@ -69,7 +68,6 @@ class App extends ConfigServer {
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
     this.app.use(passport.initialize());
-    jwtStrategy(passport);
   }
 
   //initializeRoutes

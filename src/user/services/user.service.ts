@@ -5,6 +5,7 @@ import { logger } from '../../utils/logger';
 import { CreateUserDto } from '../../dtos/CreateUserDto';
 import { RoleType } from '../../types/Role.type';
 import bcrypt from 'bcryptjs';
+
 class UserService {
   private userRepository: Repository<User>;
   constructor() {
