@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { logger } from '../../utils/logger';
 import UserService from '../services/user.service';
+import { instanceToPlain } from 'class-transformer';
 
 class UserController {
   private readonly userService: UserService = new UserService();
@@ -17,7 +18,7 @@ class UserController {
       const users = await this.userService.getAllUser();
       res.status(200).json({
         ok: true,
-        users: users,
+        users: instanceToPlain(users),
         message: `User list obtained successfully`,
       });
       return;
@@ -48,7 +49,7 @@ class UserController {
       }
       res.status(200).json({
         ok: true,
-        user,
+        user: instanceToPlain(user),
         message: `User details obtained`,
       });
     } catch (error) {
@@ -102,7 +103,7 @@ class UserController {
       }
       res.status(200).json({
         ok: true,
-        user: updateUser,
+        user: instanceToPlain(updateUser),
         message: `Successfully updated user`,
       });
     } catch (error) {
@@ -132,7 +133,7 @@ class UserController {
       }
       res.status(200).json({
         ok: true,
-        user: userDeleted,
+        user: instanceToPlain(userDeleted),
         message: `User deleted successfully`,
       });
     } catch (error) {
