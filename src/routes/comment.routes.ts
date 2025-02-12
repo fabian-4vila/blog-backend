@@ -1,21 +1,41 @@
 import { Router } from 'express';
 import CommentController from '../comment/controller/commentController';
+import CommentService from '../comment/service/comment.service';
+import { authenticateJWT, authorizeOwner, authorizeRoles } from '../middlewares/auth.middleware';
+import { RoleType } from '../types/Role.type';
 
 class CommentRoute {
   public path = '/comment';
   public router = Router();
-  public CommentController = new CommentController();
+  public commentController = new CommentController();
+  private commentService = new CommentService(); // ✅ Instancia del servicio
 
   constructor() {
     this.initRoutes();
   }
 
   private initRoutes() {
-    this.router.get(`${this.path}s`, this.CommentController.getAllComments);
-    this.router.get(`${this.path}/:id`, this.CommentController.getCommentById);
-    this.router.post(`${this.path}`, this.CommentController.createComment);
-    this.router.put(`${this.path}/:id`, this.CommentController.updateCommentById);
-    this.router.delete(`${this.path}/:id`, this.CommentController.deleteCommentById);
+    this.router.get(`${this.path}s`, this.commentController.getAllComments);
+    this.router.get(`${this.path}/:id`, this.commentController.getCommentById);
+
+    this.router.post(`${this.path}`, authenticateJWT, this.commentController.createComment);
+
+    this.router.put(
+      `${this.path}/:id`,
+      authenticateJWT,
+      authorizeOwner(async (id: string) => {
+        const comment = await this.commentService.getCommentById(id);
+        return comment ? { ownerId: comment.user.id } : null;
+      }),
+      this.commentController.updateCommentById,
+    );
+
+    this.router.delete(
+      `${this.path}/:id`,
+      authenticateJWT,
+      authorizeRoles([RoleType.ADMIN]),
+      this.commentController.deleteCommentById,
+    );
   }
 }
 
