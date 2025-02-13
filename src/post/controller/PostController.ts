@@ -146,7 +146,7 @@ class PostController {
     }
   };
   /**
-   * Delete Post
+   * Delete Post By Id
    */
   public deletePostById = async (req: Request, res: Response) => {
     try {

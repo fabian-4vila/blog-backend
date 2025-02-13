@@ -8,7 +8,10 @@ class AuthController {
       const token = await authenticateUser(email, password);
       return res.json({ token });
     } catch (error) {
-      return res.status(401).json({ message: (error as Error).message });
+      return res.status(401).json({
+        ok: false,
+        message: 'Invalid credentials',
+      });
     }
   }
 }

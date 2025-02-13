@@ -18,9 +18,11 @@ export class User {
   @Column({ type: 'varchar', length: 150, unique: true })
   email!: string;
 
+  @Exclude()
   @Column({ type: 'varchar', length: 255 })
   password!: string;
 
+  @Exclude()
   @Column({ type: 'enum', enum: RoleType, default: RoleType.SUBSCRIBED })
   role!: RoleType;
 
@@ -28,9 +30,11 @@ export class User {
   @Column({ type: 'jsonb', default: () => "'[]'::jsonb" })
   permissions!: string[];
 
+  @Exclude()
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   registeredAt!: Date;
 
+  @Exclude()
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   updatedAt!: Date;
 

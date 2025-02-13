@@ -5,29 +5,29 @@ import { Type } from 'class-transformer';
 class FileDto {
   @IsNotEmpty()
   @IsString()
-  type!: string; // Tipo de archivo (ej. imagen, PDF, etc.)
+  type!: string;
 
   @IsNotEmpty()
   @IsString()
-  url!: string; // URL del archivo
+  url!: string;
 }
 
 export class CreatePostDto {
   @IsNotEmpty()
   @IsString()
-  title!: string; // Título del posteo
+  title!: string;
 
   @IsNotEmpty()
   @IsString()
-  content!: string; // Contenido del posteo
+  content!: string;
 
   @IsNotEmpty()
   @IsString()
-  userId!: string; // ID del usuario que crea el post
+  userId!: string;
 
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => FileDto)
-  files?: FileDto[]; // Archivos asociados al posteo (opcional)
+  files?: FileDto[];
 }

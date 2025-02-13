@@ -10,26 +10,26 @@ export class Post {
 
   @ManyToOne(() => User, (user) => user.post, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
-  user!: User; // Usuario creador del posteo
+  user!: User;
 
   @Column({ type: 'varchar', length: 200 })
-  title!: string; // Título del posteo
+  title!: string;
 
   @Column({ type: 'text' })
-  content!: string; // Contenido del posteo
+  content!: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt!: Date; // Fecha de creación del posteo
+  createdAt!: Date;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  updatedAt!: Date; // Fecha de última actualización
+  updatedAt!: Date;
 
   @OneToMany(() => Comment, (comment) => comment.post)
-  comments!: Comment[]; // Comentarios asociados al posteo
+  comments!: Comment[];
 
   @OneToMany(() => PostRating, (rating) => rating.post)
-  ratings!: PostRating[]; // Calificaciones del posteo
+  ratings!: PostRating[];
 
   @Column({ type: 'jsonb', nullable: false, default: () => "'[]'::jsonb" })
-  files!: { type: string; url: string }[]; // Archivos asociados al posteo (imágenes, PDF, etc.)
+  files!: { type: string; url: string }[];
 }

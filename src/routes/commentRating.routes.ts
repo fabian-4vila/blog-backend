@@ -8,7 +8,7 @@ class CommentRatingRoute {
   public path = '/ratingC';
   public router = Router();
   public commentRatingController = new CommentRatingController();
-  private commentRatingService = new CommentRatingService(); // ✅ Instancia del servicio
+  private commentRatingService = new CommentRatingService();
 
   constructor() {
     this.initRoutes();
@@ -17,31 +17,24 @@ class CommentRatingRoute {
   private initRoutes() {
     this.router.get(`${this.path}s`, this.commentRatingController.getAllCommentRatings);
     this.router.get(`${this.path}/:id`, this.commentRatingController.getCommentRatingById);
-
-    this.router.post(
-      `${this.path}`,
-      authenticateJWT, // 🔒 Solo autenticados pueden calificar comentarios
-      this.commentRatingController.createCommentRating,
-    );
-
+    this.router.post(`${this.path}`, authenticateJWT, this.commentRatingController.createCommentRating);
     this.router.put(
       `${this.path}/:id`,
       authenticateJWT,
       authorizeOwner(async (id: string) => {
         const rating = await this.commentRatingService.getCommentRatingById(id);
-        return rating ? { ownerId: rating.user.id } : null; // 🔒 Solo el dueño puede modificar
+        return rating ? { ownerId: rating.user.id } : null;
       }),
       this.commentRatingController.updateCommentRatingById,
     );
-
     this.router.delete(
       `${this.path}/:id`,
       authenticateJWT,
       authorizeOwner(async (id: string) => {
         const rating = await this.commentRatingService.getCommentRatingById(id);
-        return rating ? { ownerId: rating.user.id } : null; // 🔒 Solo el dueño o Admin pueden eliminar
+        return rating ? { ownerId: rating.user.id } : null;
       }),
-      authorizeRoles([RoleType.ADMIN]), // 🔒 Permite también a los Admins
+      authorizeRoles([RoleType.ADMIN]),
       this.commentRatingController.deleteCommentRatingById,
     );
   }
