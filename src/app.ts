@@ -27,12 +27,20 @@ class App extends ConfigServer {
     this.env = NODE_ENV || 'development';
     this.port = Number(PORT) || 5000;
 
-    this.connectToDatabase();
+    this.connectToDatabase()
+      .then(() => {
+        initializeStrategy();
+      })
+      .catch((err) => {
+        console.error('error to connexion in data base', err);
+        process.exit(1);
+      });
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
     this.initializeSwagger();
     this.initializeErrorHandling();
   }
+
   //getServer
 
   public getServer() {
@@ -60,6 +68,8 @@ class App extends ConfigServer {
       });
   }
 
+  //initializeMiddlewares
+
   private initializeMiddlewares() {
     this.app.use(morgan(LOG_FORMAT ?? '../logs', { stream }));
     this.app.use(cors(corsConfig));
@@ -68,7 +78,7 @@ class App extends ConfigServer {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
-    initializeStrategy(); // Asegura que la estrategia se inicializa antes de usar Passport
+    initializeStrategy();
     this.app.use(passport.initialize());
   }
 

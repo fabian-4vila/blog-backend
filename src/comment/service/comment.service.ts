@@ -37,18 +37,17 @@ class CommentService {
     const entityManager = this.CommentRepository.manager;
     const post = await entityManager.findOne(Post, { where: { id: data.postId } });
     if (!post) {
-      throw new Error('El post no existe');
+      throw new Error('The post does not exist');
     }
     const user = await entityManager.findOne(User, { where: { id: data.userId } });
     if (!user) {
-      throw new Error('El usuario no existe');
+      throw new Error('The user does not exist');
     }
     const newComment = this.CommentRepository.create({
-      post: post, // Relaciones con Post y User
+      post: post,
       user: user,
       text: data.text,
     });
-
     return this.CommentRepository.save(newComment);
   }
 
@@ -61,12 +60,12 @@ class CommentService {
     if (!comment) return null;
     if (updateData.postId) {
       const post = await this.CommentRepository.manager.findOne(Post, { where: { id: updateData.postId } });
-      if (!post) throw new Error('El post no existe');
+      if (!post) throw new Error('The post does not exist');
       comment.post = post;
     }
     if (updateData.userId) {
       const user = await this.CommentRepository.manager.findOne(User, { where: { id: updateData.userId } });
-      if (!user) throw new Error('El usuario no existe');
+      if (!user) throw new Error('The user does not exist');
       comment.user = user;
     }
     Object.assign(comment, updateData);

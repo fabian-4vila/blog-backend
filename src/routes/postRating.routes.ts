@@ -8,7 +8,7 @@ class PostRatingRoute {
   public path = '/ratingP';
   public router = Router();
   public postRatingController = new PostRatingController();
-  private postRatingService = new PostRatingService(); // ✅ Instancia del servicio
+  private postRatingService = new PostRatingService();
 
   constructor() {
     this.initRoutes();
@@ -17,31 +17,24 @@ class PostRatingRoute {
   private initRoutes() {
     this.router.get(`${this.path}s`, this.postRatingController.getAllPostRatings);
     this.router.get(`${this.path}/:id`, this.postRatingController.getPostRatingById);
-
-    this.router.post(
-      `${this.path}`,
-      authenticateJWT, // 🔒 Solo autenticados pueden calificar
-      this.postRatingController.createPostRating,
-    );
-
+    this.router.post(`${this.path}`, authenticateJWT, this.postRatingController.createPostRating);
     this.router.put(
       `${this.path}/:id`,
       authenticateJWT,
       authorizeOwner(async (id: string) => {
         const rating = await this.postRatingService.getPostRatingById(id);
-        return rating ? { ownerId: rating.user.id } : null; // 🔒 Solo el dueño puede modificar
+        return rating ? { ownerId: rating.user.id } : null;
       }),
       this.postRatingController.updatePostRatingById,
     );
-
     this.router.delete(
       `${this.path}/:id`,
       authenticateJWT,
       authorizeOwner(async (id: string) => {
         const rating = await this.postRatingService.getPostRatingById(id);
-        return rating ? { ownerId: rating.user.id } : null; // 🔒 Solo el dueño o Admin pueden eliminar
+        return rating ? { ownerId: rating.user.id } : null;
       }),
-      authorizeRoles([RoleType.ADMIN]), // 🔒 Permite también a los Admins
+      authorizeRoles([RoleType.ADMIN]),
       this.postRatingController.deletePostRatingById,
     );
   }

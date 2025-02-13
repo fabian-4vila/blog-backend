@@ -3,19 +3,19 @@ import { IsNotEmpty, IsInt, Min, Max, IsBoolean, IsString } from 'class-validato
 export class CreatePostRatingDto {
   @IsNotEmpty()
   @IsString()
-  postId!: string; // ID del post que se califica
+  postId!: string;
 
   @IsNotEmpty()
   @IsString()
-  userId!: string; // ID del usuario que califica
+  userId!: string;
 
   @IsNotEmpty()
   @IsInt()
   @Min(1)
   @Max(5)
-  stars?: number; // Calificación entre 1 y 5
+  stars?: number;
 
   @IsNotEmpty()
   @IsBoolean()
-  likeDislike?: boolean; // Indica si es "me gusta" o "no me gusta"
+  likeDislike?: boolean;
 }

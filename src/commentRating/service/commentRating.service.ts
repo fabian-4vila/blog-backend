@@ -72,7 +72,7 @@ class CommentRatingService {
   }
 
   /**
-   * Delete CommentRating
+   * Delete CommentRating By Id
    */
   public async deleteCommentRatingById(id: string) {
     logger.info(`${CommentRatingService.name}-deleteCommentRatingById with id: ${id}`);

@@ -3,13 +3,13 @@ import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 export class CreateCommentDto {
   @IsNotEmpty()
   @IsUUID()
-  postId!: string; // ID del post al que pertenece el comentario
+  postId!: string;
 
   @IsNotEmpty()
   @IsUUID()
-  userId!: string; // ID del usuario que realiza el comentario
+  userId!: string;
 
   @IsNotEmpty()
   @IsString()
-  text!: string; // Contenido del comentario
+  text!: string;
 }
