@@ -7,7 +7,7 @@ class RegisterController {
   private readonly registerService: RegisterService;
 
   constructor() {
-    const userService = new UserService(); // ✅ Crea una instancia de UserService
+    const userService = new UserService();
     this.registerService = new RegisterService(userService);
   }
 
