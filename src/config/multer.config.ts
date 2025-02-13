@@ -7,7 +7,7 @@ const storage = new CloudinaryStorage({
   params: async (_req, file) => {
     const allowedFormats = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'mp4', 'mov', 'avi', 'mkv'];
 
-    const ext = file.mimetype.split('/')[1]; // Extrae la extensión del archivo
+    const ext = file.mimetype.split('/')[1];
     if (!allowedFormats.includes(ext)) {
       throw new Error('Type of file not allowed');
     }

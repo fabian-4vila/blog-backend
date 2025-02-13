@@ -32,7 +32,7 @@ class PostService {
     logger.info(`${PostService.name} - createPost`);
     const user = await this.postRepository.manager.findOne(User, { where: { id: postBody.userId } });
     if (!user) throw new Error('User not found');
-    let uploadedFiles: { type: string; url: string }[] = postBody.files || []; // Asegurar que files tenga valor
+    let uploadedFiles: { type: string; url: string }[] = postBody.files || [];
     if (files && files.length > 0) {
       try {
         const uploadedFromMulter = await Promise.all(
@@ -41,7 +41,7 @@ class PostService {
             return { type: file.mimetype, url: uploaded.url };
           }),
         );
-        uploadedFiles = [...uploadedFiles, ...uploadedFromMulter]; // Fusionar los archivos de la petición con los de Multer
+        uploadedFiles = [...uploadedFiles, ...uploadedFromMulter];
       } catch (error) {
         logger.error(`${PostService.name} - Error uploading files: ${error}`);
         throw new Error('Error processing files');
@@ -69,13 +69,11 @@ class PostService {
     logger.info(`${PostService.name}-updatePostById with id: ${id}`);
     const post = await this.getPostById(id);
     if (!post) return null;
-
     if (updatePostBody.userId) {
       const user = await this.postRepository.manager.findOne(User, { where: { id: updatePostBody.userId } });
       if (!user) throw new Error('user not found');
       post.user = user;
     }
-
     if (files && files.length > 0) {
       const uploadedFiles = files
         ? await Promise.all(
@@ -87,7 +85,6 @@ class PostService {
         : [];
       post.files = post.files ? [...post.files, ...uploadedFiles] : uploadedFiles;
     }
-
     Object.assign(post, updatePostBody);
     return this.postRepository.save(post);
   }
