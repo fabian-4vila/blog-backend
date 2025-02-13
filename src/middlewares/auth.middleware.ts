@@ -10,12 +10,12 @@ export const authorizeRoles = (roles: RoleType[]) => {
     const user = req.user as AuthenticatedUser | undefined;
 
     if (!user) {
-      res.status(401).json({ message: 'No autenticado' });
+      res.status(401).json({ message: 'Not authenticated' });
       return;
     }
 
     if (!roles.includes(user.role)) {
-      res.status(403).json({ message: 'Acceso denegado' });
+      res.status(403).json({ message: 'Access denied' });
       return;
     }
 
@@ -28,7 +28,7 @@ export const authorizePermissions = (permissions: string[]) => {
     const user = req.user as AuthenticatedUser | undefined;
 
     if (!user) {
-      res.status(401).json({ message: 'No autenticado' });
+      res.status(401).json({ message: 'Not authenticated' });
       return;
     }
 
@@ -36,7 +36,7 @@ export const authorizePermissions = (permissions: string[]) => {
     const hasPermission = permissions.every((perm) => userPermissions.includes(perm));
 
     if (!hasPermission) {
-      res.status(403).json({ message: 'No tienes permiso para esta acción' });
+      res.status(403).json({ message: 'you have no permission for this action' });
       return;
     }
 
@@ -44,26 +44,25 @@ export const authorizePermissions = (permissions: string[]) => {
   };
 };
 
-// **authorizeOwner ahora está fuera de authorizePermissions**
 export const authorizeOwner = (getResource: (id: string) => Promise<{ ownerId: string } | null>) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user as AuthenticatedUser | undefined;
     const { id } = req.params;
 
     if (!user) {
-      res.status(401).json({ message: 'No autenticado' });
+      res.status(401).json({ message: 'Not authenticated' });
       return;
     }
 
     const resource = await getResource(id);
 
     if (!resource) {
-      res.status(404).json({ message: 'Recurso no encontrado' });
+      res.status(404).json({ message: 'Resource not found' });
       return;
     }
 
     if (resource.ownerId !== user.id && user.role !== RoleType.ADMIN) {
-      res.status(403).json({ message: 'No tienes permiso para modificar este recurso' });
+      res.status(403).json({ message: 'Not have no permission to modify this resource' });
       return;
     }
 

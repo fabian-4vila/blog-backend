@@ -9,20 +9,20 @@ export class Comment {
   id!: string;
 
   @ManyToOne(() => Post, (post) => post.comments, { nullable: false, onDelete: 'CASCADE' })
-  post!: Post; // Posteo al que pertenece el comentario
+  post!: Post;
 
   @ManyToOne(() => User, (user) => user.comments, { nullable: false, onDelete: 'CASCADE' })
-  user!: User; // Usuario que realizó el comentario
+  user!: User;
 
   @Column({ type: 'text' })
-  text!: string; // Contenido del comentario
+  text!: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt!: Date; // Fecha de creación del comentario
+  createdAt!: Date;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  updatedAt!: Date; // Fecha de última actualización
+  updatedAt!: Date;
 
   @OneToMany(() => CommentRating, (rating) => rating.comment)
-  ratings!: CommentRating[]; // Calificaciones del comentario
+  ratings!: CommentRating[];
 }

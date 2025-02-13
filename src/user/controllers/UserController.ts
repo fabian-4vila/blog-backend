@@ -10,7 +10,7 @@ class UserController {
   constructor() {}
 
   /**
-   * get All Users
+   * Get All Users
    */
   public getAllUsers = async (_req: Request, res: Response) => {
     try {
@@ -33,7 +33,7 @@ class UserController {
   };
 
   /**
-   * get User By Id
+   * Get User By Id
    */
   public getUserById = async (req: Request, res: Response) => {
     try {
@@ -63,7 +63,7 @@ class UserController {
   };
 
   /**
-   * create User
+   * Create User
    */
   public createUser = async (req: Request, res: Response) => {
     try {
@@ -86,7 +86,7 @@ class UserController {
   };
 
   /**
-   * update User By Id
+   * Update User By Id
    */
   public updateUserById = async (req: Request, res: Response) => {
     try {
@@ -117,7 +117,7 @@ class UserController {
   };
 
   /**
-   * delete User By Id
+   * Delete User By Id
    */
   public deleteUserById = async (req: Request, res: Response) => {
     try {

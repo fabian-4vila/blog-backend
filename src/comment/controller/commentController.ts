@@ -115,7 +115,7 @@ class CommentController {
   };
 
   /**
-   * Delete Comment
+   * Delete Comment by Id
    */
   public deleteCommentById = async (req: Request, res: Response) => {
     try {

@@ -14,8 +14,8 @@ class PostRoute {
   }
 
   private initRoutes() {
-    this.router.get(`${this.path}s`, this.postController.getAllPosts); // Público
-    this.router.get(`${this.path}/:id`, this.postController.getPostById); // Público
+    this.router.get(`${this.path}s`, this.postController.getAllPosts);
+    this.router.get(`${this.path}/:id`, this.postController.getPostById);
     this.router.post(
       `${this.path}`,
       authenticateJWT,

@@ -13,43 +13,48 @@ class UserService {
   }
 
   /**
-   * get All User
+   * Get All User
    */
   public async getAllUser(): Promise<User[]> {
     logger.info(`${UserService.name}-getAllUser`);
     return this.userRepository.find();
   }
+
   /**
-   * get User By Id
+   * Get User By Id
    */
   public async getUserById(id: string): Promise<User | null> {
     logger.info(`${UserService.name}-getUserById with id: ${id}`);
     return this.userRepository.findOne({ where: { id } });
   }
+
   /**
-   * get User By Email
+   * Get User By Email
    */
   public async getUserByEmail(email: string): Promise<User | null> {
     logger.info(`${UserService.name} - getUserByEmail with email: ${email}`);
     return this.userRepository.findOne({ where: { email } });
   }
+
   /**
-   * get User By Role And Id
+   * Get User By Role And Id
    */
   public async getUsersByRoleAndId(role?: RoleType, id?: string): Promise<User[] | User | null> {
     logger.info(`${UserService.name} - getUsersByRoleAndId with role: ${role}, id: ${id}`);
-    // no usar tantos else
     if (role && id) {
       return this.userRepository.findOne({ where: { id, role } });
-    } else if (role) {
+    }
+    if (role) {
       return this.userRepository.find({ where: { role } });
-    } else if (id) {
+    }
+    if (id) {
       return this.getUserById(id);
     }
     return [];
   }
+
   /**
-   * createUser
+   * Create User
    */
   public async createUser(userBody: CreateUserDto): Promise<User> {
     logger.info(`${UserService.name} - createUser`);
@@ -61,7 +66,7 @@ class UserService {
   }
 
   /**
-   * UpdateUserById
+   * Update User By Id
    */
   public async updateUserById(id: string, UpdatUserBody: Partial<CreateUserDto>) {
     logger.info(`${UserService.name} - updateUserById with id: ${id}`);
@@ -74,8 +79,9 @@ class UserService {
     await this.userRepository.update(id, updatedData);
     return this.getUserById(id);
   }
+
   /**
-   * deleteUserById
+   * Delete User By Id
    */
   public async deleteUserById(id: string) {
     logger.info(`${UserService.name}-DeleteUserById with id: ${id}`);

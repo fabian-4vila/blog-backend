@@ -114,7 +114,7 @@ class PostRatingController {
   };
 
   /**
-   * Delete PostRating
+   * Delete PostRating By Id
    */
   public deletePostRatingById = async (req: Request, res: Response) => {
     try {

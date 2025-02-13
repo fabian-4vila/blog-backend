@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import AuthController from '../Auth/controller/AuthController'; // Asegura que la ruta sea correcta
+import AuthController from '../Auth/controller/AuthController';
 
 class AuthRoute {
   public path = '/auth';
@@ -15,7 +15,7 @@ class AuthRoute {
       try {
         await this.authController.login(req, res);
       } catch (error) {
-        res.status(500).json({ message: 'Error en el servidor', error: (error as Error).message });
+        res.status(500).json({ message: 'Server Error', error: (error as Error).message });
       }
     });
   }

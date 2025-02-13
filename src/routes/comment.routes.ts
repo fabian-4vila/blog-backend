@@ -8,7 +8,7 @@ class CommentRoute {
   public path = '/comment';
   public router = Router();
   public commentController = new CommentController();
-  private commentService = new CommentService(); // ✅ Instancia del servicio
+  private commentService = new CommentService();
 
   constructor() {
     this.initRoutes();
@@ -17,9 +17,7 @@ class CommentRoute {
   private initRoutes() {
     this.router.get(`${this.path}s`, this.commentController.getAllComments);
     this.router.get(`${this.path}/:id`, this.commentController.getCommentById);
-
     this.router.post(`${this.path}`, authenticateJWT, this.commentController.createComment);
-
     this.router.put(
       `${this.path}/:id`,
       authenticateJWT,
@@ -29,7 +27,6 @@ class CommentRoute {
       }),
       this.commentController.updateCommentById,
     );
-
     this.router.delete(
       `${this.path}/:id`,
       authenticateJWT,

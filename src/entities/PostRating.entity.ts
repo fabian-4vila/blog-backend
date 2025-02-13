@@ -10,14 +10,14 @@ export class PostRating {
   id!: string;
 
   @ManyToOne(() => Post, (post) => post.ratings, { nullable: false, onDelete: 'CASCADE' })
-  post!: Post; // Posteo calificado
+  post!: Post;
 
   @ManyToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
-  user!: User; // Usuario que realizó la calificación
+  user!: User;
 
   @Column({ type: 'int' })
-  stars!: number; // Número de estrellas (1-5)
+  stars!: number;
 
   @Column({ type: 'boolean' })
-  likeDislike!: boolean; // Indica si es un "me gusta" o "no me gusta"
+  likeDislike!: boolean;
 }
