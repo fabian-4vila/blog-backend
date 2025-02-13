@@ -12,7 +12,7 @@ export async function validateLogin(req: Request, res: Response, next: NextFunct
     }));
     res.status(400).json({
       ok: false,
-      message: 'Error en los datos de inicio de sesión',
+      message: 'Login data error',
       errors: formattedErrors,
     });
     return;

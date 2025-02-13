@@ -7,7 +7,7 @@ import { AuthenticatedUser } from '../interfaces/AuthUser';
 const JWT_SECRET = process.env.JWT_SECRET;
 
 if (!JWT_SECRET) {
-  throw new Error('FATAL ERROR: JWT_SECRET is not defined in the environment variables.');
+  throw new Error('FATAL ERROR: Error in the server configuration.');
 }
 
 const options = {
