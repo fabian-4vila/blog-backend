@@ -1,10 +1,10 @@
 import { Repository } from 'typeorm';
-import { CommentRating } from '../../entities/CommentRating.entity';
-import { AppDataSource } from '../../config/data.source';
-import { logger } from '../../utils/logger';
-import { CreateCommentRatingDto } from '../../dtos/CreateCommentRatingDto';
-import { Comment } from '../../entities/Comment.entity';
-import { User } from '../../entities/User.entity';
+import { CommentRating } from '../../../entities/CommentRating.entity';
+import { AppDataSource } from '../../../config/data.source';
+import { logger } from '../../../utils/logger';
+import { CreateCommentRatingDto } from '../../../dtos/CreateCommentRatingDto';
+import { Comment } from '../../../entities/Comment.entity';
+import { User } from '../../../entities/User.entity';
 
 class CommentRatingService {
   private commentRatingRepository: Repository<CommentRating>;

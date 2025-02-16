@@ -1,9 +1,9 @@
 import { Repository } from 'typeorm';
-import { User } from '../../entities/User.entity';
-import { AppDataSource } from '../../config/data.source';
-import { logger } from '../../utils/logger';
-import { CreateUserDto } from '../../dtos/CreateUserDto';
-import { RoleType } from '../../types/Role.type';
+import { User } from '../../../entities/User.entity';
+import { AppDataSource } from '../../../config/data.source';
+import { logger } from '../../../utils/logger';
+import { CreateUserDto } from '../../../dtos/CreateUserDto';
+import { RoleType } from '../../../types/Role.type';
 import bcrypt from 'bcrypt';
 
 class UserService {

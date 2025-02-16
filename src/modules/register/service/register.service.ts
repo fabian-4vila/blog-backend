@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
-import { User } from '../../entities/User.entity';
+import { User } from '../../../entities/User.entity';
 import UserService from '../../user/services/user.service';
-import { RoleType } from '../../types/Role.type';
+import { RoleType } from '../../../types/Role.type';
 
 class RegisterService {
   private userRepository: Repository<User>;
