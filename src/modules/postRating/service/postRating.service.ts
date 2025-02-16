@@ -1,10 +1,10 @@
 import { Repository } from 'typeorm';
-import { PostRating } from '../../entities/PostRating.entity';
-import { AppDataSource } from '../../config/data.source';
-import { logger } from '../../utils/logger';
-import { CreatePostRatingDto } from '../../dtos/CreatePostRatingDto';
-import { Post } from '../../entities/Post.entity';
-import { User } from '../../entities/User.entity';
+import { PostRating } from '../../../entities/PostRating.entity';
+import { AppDataSource } from '../../../config/data.source';
+import { logger } from '../../../utils/logger';
+import { CreatePostRatingDto } from '../../../dtos/CreatePostRatingDto';
+import { Post } from '../../../entities/Post.entity';
+import { User } from '../../../entities/User.entity';
 
 class PostRatingService {
   private postRatingRepository: Repository<PostRating>;

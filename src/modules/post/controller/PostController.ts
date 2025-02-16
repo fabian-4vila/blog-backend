@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import PostService from '../service/post.service';
-import { CreatePostDto } from '../../dtos/CreatePostDto';
-import { logger } from '../../utils/logger';
+import { CreatePostDto } from '../../../dtos/CreatePostDto';
+import { logger } from '../../../utils/logger';
 import UploadService from '../service/upload.service';
 
 class PostController {

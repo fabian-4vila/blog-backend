@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import RegisterService from '../service/register.service';
-import { logger } from '../../utils/logger';
+import { logger } from '../../../utils/logger';
 import UserService from '../../user/services/user.service';
 
 class RegisterController {
