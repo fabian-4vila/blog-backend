@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import UserController from '../user/controllers/UserController';
+import UserController from '../modules/user/controllers/UserController';
 import { authenticateJWT, authorizeRoles } from '../middlewares/auth.middleware';
 import { RoleType } from '../types/Role.type';
 
