@@ -1,8 +1,10 @@
 import { Router } from 'express';
 import CommentController from '../modules/comment/controller/commentController';
 import CommentService from '../modules/comment/service/comment.service';
-import { authenticateJWT, authorizeOwner, authorizeRoles } from '../middlewares/auth.middleware';
 import { RoleType } from '../types/Role.type';
+import { authenticateJWT } from '../middlewares/auth.middleware';
+import { authorizeOwner } from '../middlewares/ownership.middleware';
+import { authorizeRoles } from '../middlewares/role.middleware';
 
 class CommentRoute {
   public path = '/comment';

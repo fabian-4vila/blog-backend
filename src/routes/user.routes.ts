@@ -1,8 +1,10 @@
 import { Router } from 'express';
 import UserController from '../modules/user/controllers/UserController';
-import { authenticateJWT, authorizeOwnerOrRoles, authorizeRoles } from '../middlewares/auth.middleware';
 import { RoleType } from '../types/Role.type';
 import UserService from '../modules/user/services/user.service';
+import { authenticateJWT } from '../middlewares/auth.middleware';
+import { authorizeRoles } from '../middlewares/role.middleware';
+import { authorizeOwnerOrRoles } from '../middlewares/ownership.middleware';
 
 class UserRoute {
   public path = '/user';
