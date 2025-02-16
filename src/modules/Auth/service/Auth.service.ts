@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { User } from '../../entities/User.entity';
-import { RolePermissions } from '../../types/RolePermissions';
-import { AppDataSource } from '../../config/data.source';
+import { User } from '../../../entities/User.entity';
+import { RolePermissions } from '../../../types/RolePermissions';
+import { AppDataSource } from '../../../config/data.source';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const EXPIRES_IN = '1h';

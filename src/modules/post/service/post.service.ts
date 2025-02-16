@@ -1,9 +1,9 @@
 import { Repository } from 'typeorm';
-import { Post } from '../../entities/Post.entity';
-import { AppDataSource } from '../../config/data.source';
-import { logger } from '../../utils/logger';
-import { CreatePostDto } from '../../dtos/CreatePostDto';
-import { User } from '../../entities/User.entity';
+import { Post } from '../../../entities/Post.entity';
+import { AppDataSource } from '../../../config/data.source';
+import { logger } from '../../../utils/logger';
+import { CreatePostDto } from '../../../dtos/CreatePostDto';
+import { User } from '../../../entities/User.entity';
 import uploadService from './upload.service';
 
 class PostService {

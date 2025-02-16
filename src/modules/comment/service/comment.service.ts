@@ -1,10 +1,10 @@
 import { Repository } from 'typeorm';
-import { Comment } from '../../entities/Comment.entity';
-import { AppDataSource } from '../../config/data.source';
-import { logger } from '../../utils/logger';
-import { CreateCommentDto } from '../../dtos/CreateCommentDto';
-import { Post } from '../../entities/Post.entity';
-import { User } from '../../entities/User.entity';
+import { Comment } from '../../../entities/Comment.entity';
+import { AppDataSource } from '../../../config/data.source';
+import { logger } from '../../../utils/logger';
+import { CreateCommentDto } from '../../../dtos/CreateCommentDto';
+import { Post } from '../../../entities/Post.entity';
+import { User } from '../../../entities/User.entity';
 
 class CommentService {
   private CommentRepository: Repository<Comment>;

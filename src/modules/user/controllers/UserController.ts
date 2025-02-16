@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { logger } from '../../utils/logger';
+import { logger } from '../../../utils/logger';
 import UserService from '../services/user.service';
 import { instanceToPlain } from 'class-transformer';
 
