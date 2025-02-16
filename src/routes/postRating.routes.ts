@@ -1,8 +1,10 @@
 import { Router } from 'express';
 import PostRatingController from '../modules/postRating/controller/postRatingController';
 import PostRatingService from '../modules/postRating/service/postRating.service';
-import { authenticateJWT, authorizeOwner, authorizeRoles } from '../middlewares/auth.middleware';
 import { RoleType } from '../types/Role.type';
+import { authenticateJWT } from '../middlewares/auth.middleware';
+import { authorizeOwner } from '../middlewares/ownership.middleware';
+import { authorizeRoles } from '../middlewares/role.middleware';
 
 class PostRatingRoute {
   public path = '/ratingP';

@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import PostController from '../modules/post/controller/PostController';
 import upload from '../config/multer.config';
-import { authenticateJWT, authorizeRoles } from '../middlewares/auth.middleware';
 import { RoleType } from '../types/Role.type';
+import { authenticateJWT } from '../middlewares/auth.middleware';
+import { authorizeRoles } from '../middlewares/role.middleware';
 
 class PostRoute {
   public path = '/post';
