@@ -1,8 +1,10 @@
 import { Router } from 'express';
 import CommentRatingController from '../modules/commentRating/controller/commentRatingController';
 import CommentRatingService from '../modules/commentRating/service/commentRating.service';
-import { authenticateJWT, authorizeOwner, authorizeRoles } from '../middlewares/auth.middleware';
 import { RoleType } from '../types/Role.type';
+import { authenticateJWT } from '../middlewares/auth.middleware';
+import { authorizeOwner } from '../middlewares/ownership.middleware';
+import { authorizeRoles } from '../middlewares/role.middleware';
 
 class CommentRatingRoute {
   public path = '/ratingC';
