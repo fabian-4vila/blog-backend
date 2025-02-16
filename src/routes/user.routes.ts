@@ -1,12 +1,14 @@
 import { Router } from 'express';
 import UserController from '../modules/user/controllers/UserController';
-import { authenticateJWT, authorizeRoles } from '../middlewares/auth.middleware';
+import { authenticateJWT, authorizeOwnerOrRoles, authorizeRoles } from '../middlewares/auth.middleware';
 import { RoleType } from '../types/Role.type';
+import UserService from '../modules/user/services/user.service';
 
 class UserRoute {
   public path = '/user';
   public router = Router();
   public userController = new UserController();
+  public userService = new UserService();
 
   constructor() {
     this.initRoutes();
@@ -24,7 +26,10 @@ class UserRoute {
     this.router.put(
       `${this.path}/:id`,
       authenticateJWT,
-      authorizeRoles([RoleType.ADMIN]),
+      authorizeOwnerOrRoles([RoleType.ADMIN], async (id: string) => {
+        const user = await this.userService.getUserById(id);
+        return user ? { ownerId: user.id } : null;
+      }),
       this.userController.updateUserById,
     );
     this.router.delete(

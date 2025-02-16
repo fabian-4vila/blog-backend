@@ -14,7 +14,7 @@ class UserController {
    */
   public getAllUsers = async (_req: Request, res: Response) => {
     try {
-      logger.info(`${UserController.name}-getAllUser`);
+      logger.info(`${UserController.name} - getAllUser`);
       const users = await this.userService.getAllUser();
       res.status(200).json({
         ok: true,
@@ -38,7 +38,7 @@ class UserController {
   public getUserById = async (req: Request, res: Response) => {
     try {
       const { id: userId } = req.params;
-      logger.info(`${UserController.name}-getUserById: ${userId}`);
+      logger.info(`${UserController.name} - getUserById: ${userId}`);
       const user = await this.userService.getUserById(userId);
       if (!user) {
         res.status(404).json({
@@ -68,7 +68,7 @@ class UserController {
   public createUser = async (req: Request, res: Response) => {
     try {
       const { body: userBody } = req;
-      logger.info(`${UserController.name}-CreateUser`);
+      logger.info(`${UserController.name} - CreateUser`);
       const newuser = await this.userService.createUser(userBody);
       res.status(201).json({
         ok: true,
@@ -92,7 +92,7 @@ class UserController {
     try {
       const { id: userId } = req.params;
       const { body: userBody } = req;
-      logger.info(`${UserController.name}-updateUserById: ${userId}`);
+      logger.info(`${UserController.name} - updateUserById: ${userId}`);
       const updateUser = await this.userService.updateUserById(userId, userBody);
       if (!updateUser) {
         res.status(404).json({
@@ -113,6 +113,36 @@ class UserController {
         message: 'Error updating user',
       });
       return;
+    }
+  };
+
+  /**
+   * Update Password By Id
+   */
+  public updatePassword = async (req: Request, res: Response) => {
+    try {
+      const { id: userId } = req.params;
+      const passwordDto = req.body;
+      logger.info(`${UserController.name} - updatePassword: ${userId}`);
+      const updatedUser = await this.userService.updatePassword(userId, passwordDto);
+      if (!updatedUser) {
+        res.status(404).json({
+          ok: false,
+          message: 'User not found',
+        });
+        return;
+      }
+      res.status(201).json({
+        ok: true,
+        user: instanceToPlain(updatedUser),
+        message: 'Password Updated successfully',
+      });
+    } catch (error) {
+      logger.error(`${UserController.name}- Error updating password: ${error} `);
+      res.status(500).json({
+        ok: false,
+        message: 'Error updating password',
+      });
     }
   };
 
