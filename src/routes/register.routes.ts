@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import RegisterController from '../register/controller/RegisterController';
+import RegisterController from '../modules/register/controller/RegisterController';
 
 class RegisterRoute {
   public path = '/register';

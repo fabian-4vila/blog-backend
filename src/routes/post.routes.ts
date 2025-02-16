@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import PostController from '../post/controller/PostController';
+import PostController from '../modules/post/controller/PostController';
 import upload from '../config/multer.config';
 import { authenticateJWT, authorizeRoles } from '../middlewares/auth.middleware';
 import { RoleType } from '../types/Role.type';

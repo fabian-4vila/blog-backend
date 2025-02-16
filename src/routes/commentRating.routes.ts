@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import CommentRatingController from '../commentRating/controller/commentRatingController';
-import CommentRatingService from '../commentRating/service/commentRating.service';
+import CommentRatingController from '../modules/commentRating/controller/commentRatingController';
+import CommentRatingService from '../modules/commentRating/service/commentRating.service';
 import { authenticateJWT, authorizeOwner, authorizeRoles } from '../middlewares/auth.middleware';
 import { RoleType } from '../types/Role.type';
 

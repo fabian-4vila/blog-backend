@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import AuthController from '../Auth/controller/AuthController';
+import AuthController from '../modules/Auth/controller/AuthController';
 
 class AuthRoute {
   public path = '/auth';
