@@ -24,6 +24,7 @@ export const {
   CLOUDINARY_CLOUD_NAME,
   CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET,
+  BREVO_API_KEY,
 } = process.env;
 
 export abstract class ConfigServer {
