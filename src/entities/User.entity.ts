@@ -31,6 +31,10 @@ export class User {
   permissions!: string[];
 
   @Exclude()
+  @Column({ type: 'boolean', default: false }) // Nuevo campo para verificar la cuenta
+  verified!: boolean;
+
+  @Exclude()
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   registeredAt!: Date;
 
