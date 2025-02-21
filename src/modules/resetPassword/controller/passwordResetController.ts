@@ -13,7 +13,6 @@ class PasswordResetController {
     try {
       const { email } = req.body;
       logger.info(`${PasswordResetController.name} - requestPasswordReset: ${email}`);
-
       const token = await this.passwordResetService.generateResetToken(email);
       if (!token) {
         res.status(404).json({
@@ -22,9 +21,7 @@ class PasswordResetController {
         });
         return;
       }
-
       await sendPasswordResetEmail(email, token);
-
       res.status(200).json({
         ok: true,
         message: 'Correo de restablecimiento de contraseña enviado',
@@ -43,9 +40,9 @@ class PasswordResetController {
    */
   public resetPassword = async (req: Request, res: Response) => {
     try {
-      const { token, newPassword } = req.body;
+      const { token } = req.params;
+      const { newPassword } = req.body;
       logger.info(`${PasswordResetController.name} - resetPassword`);
-
       const result = await this.passwordResetService.resetPassword(token, newPassword);
       if (!result) {
         res.status(400).json({
@@ -54,7 +51,6 @@ class PasswordResetController {
         });
         return;
       }
-
       res.status(200).json({
         ok: true,
         message: 'Contraseña restablecida correctamente',
