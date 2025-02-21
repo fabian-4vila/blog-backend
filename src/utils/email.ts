@@ -11,7 +11,7 @@ apiKey.apiKey = process.env.BREVO_API_KEY as string;
 const emailApi = new Sib.TransactionalEmailsApi();
 
 export const sendVerificationEmail = async (email: string, token: string) => {
-  const verificationLink = `${process.env.BASE_URL}/auth/verify/${token}`;
+  const verificationLink = `${process.env.BASE_URL as string}/verification/verify/${token}`;
 
   const emailData = {
     sender: { email: 'magno4vila@gmail.com', name: 'Blog Programacion' },
