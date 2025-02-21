@@ -117,36 +117,6 @@ class UserController {
   };
 
   /**
-   * Update Password By Id
-   */
-  public updatePassword = async (req: Request, res: Response) => {
-    try {
-      const { id: userId } = req.params;
-      const passwordDto = req.body;
-      logger.info(`${UserController.name} - updatePassword: ${userId}`);
-      const updatedUser = await this.userService.updatePassword(userId, passwordDto);
-      if (!updatedUser) {
-        res.status(404).json({
-          ok: false,
-          message: 'User not found',
-        });
-        return;
-      }
-      res.status(201).json({
-        ok: true,
-        user: instanceToPlain(updatedUser),
-        message: 'Password Updated successfully',
-      });
-    } catch (error) {
-      logger.error(`${UserController.name}- Error updating password: ${error} `);
-      res.status(500).json({
-        ok: false,
-        message: 'Error updating password',
-      });
-    }
-  };
-
-  /**
    * Delete User By Id
    */
   public deleteUserById = async (req: Request, res: Response) => {
