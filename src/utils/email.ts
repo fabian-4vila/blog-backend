@@ -31,3 +31,24 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     console.error('Error enviando correo de verificación:', error);
   }
 };
+export const sendPasswordResetEmail = async (email: string, token: string) => {
+  const resetLink = `${process.env.BASE_URL as string}/password-reset/${token}`;
+
+  const emailData = {
+    sender: { email: 'magno4vila@gmail.com', name: 'Blog Programacion' },
+    to: [{ email }],
+    subject: 'Restablecimiento de Contraseña',
+    htmlContent: `
+      <h2>Restablecimiento de Contraseña</h2>
+      <p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p>
+      <a href="${resetLink}">${resetLink}</a>
+    `,
+  };
+
+  try {
+    await emailApi.sendTransacEmail(emailData);
+    console.log(`Correo de restablecimiento enviado a ${email}`);
+  } catch (error) {
+    console.error('Error enviando correo de restablecimiento:', error);
+  }
+};
