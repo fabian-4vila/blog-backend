@@ -5,7 +5,6 @@ import { logger } from '../../../utils/logger';
 import { CreateUserDto } from '../../../dtos/CreateUserDto';
 import { RoleType } from '../../../types/Role.type';
 import bcrypt from 'bcrypt';
-import { UpdatePasswordDto } from '../../../dtos/UpdatePasswordDto';
 
 class UserService {
   private userRepository: Repository<User>;
@@ -78,21 +77,6 @@ class UserService {
       updatedData.password = await bcrypt.hash(updatedData.password, 10);
     }
     await this.userRepository.update(id, updatedData);
-    return this.getUserById(id);
-  }
-
-  /**
-   * Update Password By Id
-   */
-  public async updatePassword(id: string, passwordDto: UpdatePasswordDto) {
-    logger.info(`${UserService.name}- updatePassword for user id: ${id}`);
-    const user = await this.getUserById(id);
-    if (!user) {
-      null;
-      return;
-    }
-    const hashedPassword = await bcrypt.hash(passwordDto.Password, 10);
-    await this.userRepository.update(id, { password: hashedPassword });
     return this.getUserById(id);
   }
 
