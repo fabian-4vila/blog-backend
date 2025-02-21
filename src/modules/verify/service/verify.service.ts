@@ -3,7 +3,7 @@ import { User } from '../../../entities/User.entity';
 import { AppDataSource } from '../../../config/data.source';
 import { logger } from '../../../utils/logger';
 import jwt from 'jsonwebtoken';
-import { sendVerificationEmail } from '../../../utils/email'; // Asumiendo que tienes un helper para enviar correos
+import { sendVerificationEmail } from '../../../utils/email';
 
 class VerificationService {
   private userRepository: Repository<User>;
