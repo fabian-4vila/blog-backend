@@ -1,27 +1,28 @@
-// @ts-ignore
-import Sib from 'sib-api-v3-sdk';
+// emailService.ts
+import { emailApi } from '../config/brevoClient';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const client = Sib.ApiClient.instance;
-const apiKey = client.authentications['api-key'];
-apiKey.apiKey = process.env.BREVO_API_KEY as string;
+const SENDER_EMAIL = process.env.SENDER_EMAIL as string;
+const SENDER_NAME = process.env.SENDER_NAME as string;
+const BASE_URL = process.env.BASE_URL as string;
 
-const emailApi = new Sib.TransactionalEmailsApi();
-
+/**
+ * Enviar correo de verificación
+ */
 export const sendVerificationEmail = async (email: string, token: string) => {
-  const verificationLink = `${process.env.BASE_URL as string}/verification/verify/${token}`;
+  const verificationLink = `${BASE_URL}/verification/verify/${token}`;
 
   const emailData = {
-    sender: { email: 'magno4vila@gmail.com', name: 'Blog Programacion' },
+    sender: { email: SENDER_EMAIL, name: SENDER_NAME },
     to: [{ email }],
     subject: 'Verifica tu cuenta',
     htmlContent: `
-      <h2>Verificación de Cuenta</h2>
-      <p>Haz clic en el siguiente enlace para verificar tu cuenta:</p>
-      <a href="${verificationLink}">${verificationLink}</a>
-    `,
+            <h2>Verificación de Cuenta</h2>
+            <p>Haz clic en el siguiente enlace para verificar tu cuenta:</p>
+            <a href="${verificationLink}">${verificationLink}</a>
+        `,
   };
 
   try {
@@ -31,18 +32,22 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     console.error('Error enviando correo de verificación:', error);
   }
 };
+
+/**
+ * Enviar correo de restablecimiento de contraseña
+ */
 export const sendPasswordResetEmail = async (email: string, token: string) => {
-  const resetLink = `${process.env.BASE_URL as string}/password-reset/${token}`;
+  const resetLink = `${BASE_URL}/password-reset/reset/${token}`;
 
   const emailData = {
-    sender: { email: 'magno4vila@gmail.com', name: 'Blog Programacion' },
+    sender: { email: SENDER_EMAIL, name: SENDER_NAME },
     to: [{ email }],
     subject: 'Restablecimiento de Contraseña',
     htmlContent: `
-      <h2>Restablecimiento de Contraseña</h2>
-      <p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p>
-      <a href="${resetLink}">${resetLink}</a>
-    `,
+            <h2>Restablecimiento de Contraseña</h2>
+            <p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p>
+            <a href="${resetLink}">${resetLink}</a>
+        `,
   };
 
   try {
