@@ -12,7 +12,7 @@ class ResetPasswordRoute {
   private initRoutes() {
     this.router.post(`${this.path}/request`, this.passwordReset.requestPasswordReset);
 
-    this.router.post(`${this.path}/reset`, this.passwordReset.resetPassword);
+    this.router.post(`${this.path}/reset/:token`, this.passwordReset.resetPassword);
   }
 }
 export default ResetPasswordRoute;

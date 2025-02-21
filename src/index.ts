@@ -8,6 +8,7 @@ import CommentRatingRoute from './routes/commentRating.routes';
 import RegisterRoute from './routes/register.routes';
 import AuthRoute from './routes/auth.routes';
 import VerificationRoute from './routes/verify.routes';
+import ResetPasswordRoute from './routes/passwordReset.routes';
 
 const app = new App([
   new BaseRoute(),
@@ -19,6 +20,7 @@ const app = new App([
   new RegisterRoute(),
   new AuthRoute(),
   new VerificationRoute(),
+  new ResetPasswordRoute(),
 ]);
 
 app.listen();
