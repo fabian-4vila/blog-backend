@@ -1,13 +1,15 @@
 import { Request, Response } from 'express';
 import { logger } from '../../../utils/logger';
 import UserService from '../services/user.service';
-import { instanceToPlain } from 'class-transformer';
+//import { instanceToPlain } from 'class-transformer';
+import { HttpResponse } from '../../../shared/response/http.response';
+import { DeleteResult, UpdateResult } from 'typeorm';
 
 class UserController {
-  private readonly userService: UserService = new UserService();
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  constructor() {}
+  constructor(
+    private readonly userService: UserService = new UserService(),
+    private readonly httpResponse: HttpResponse = new HttpResponse(),
+  ) {}
 
   /**
    * Get All Users
@@ -16,19 +18,10 @@ class UserController {
     try {
       logger.info(`${UserController.name} - getAllUser`);
       const users = await this.userService.getAllUser();
-      res.status(200).json({
-        ok: true,
-        users: instanceToPlain(users),
-        message: `User list obtained successfully`,
-      });
-      return;
+      return this.httpResponse.Ok(res, users);
     } catch (error) {
       logger.error(`${UserController.name}- Error en getAllUsers: ${error}`);
-      res.status(500).json({
-        ok: false,
-        message: 'Error getting users',
-      });
-      return;
+      return this.httpResponse.Error(res, 'error server side');
     }
   };
 
@@ -41,24 +34,12 @@ class UserController {
       logger.info(`${UserController.name} - getUserById: ${userId}`);
       const user = await this.userService.getUserById(userId);
       if (!user) {
-        res.status(404).json({
-          ok: false,
-          message: 'User not found',
-        });
-        return;
+        return this.httpResponse.NotFound(res, 'user does not exist');
       }
-      res.status(200).json({
-        ok: true,
-        user: instanceToPlain(user),
-        message: `User details obtained`,
-      });
+      return this.httpResponse.Ok(res, user);
     } catch (error) {
       logger.error(`${UserController.name}- Error en getUserById: ${error}`);
-      res.status(500).json({
-        ok: false,
-        message: 'Error getting user',
-      });
-      return;
+      return this.httpResponse.Error(res, 'error server side');
     }
   };
 
@@ -70,21 +51,13 @@ class UserController {
       const { body: userBody } = req;
       logger.info(`${UserController.name} - CreateUser`);
       const newuser = await this.userService.createUser(userBody);
-      res.status(201).json({
-        ok: true,
-        user: newuser,
-        message: `Successfully created user`,
-      });
+      return this.httpResponse.Create(res, newuser);
     } catch (error) {
       logger.error(`${UserController.name}- Error en createUser: ${error}`);
-      res.status(500).json({
-        ok: false,
-        message: 'Error creating user',
-      });
-      return;
+      return this.httpResponse.Error(res, 'error server side');
     }
   };
-
+  // hacer el patch en el service ya existe.
   /**
    * Update User By Id
    */
@@ -93,26 +66,14 @@ class UserController {
       const { id: userId } = req.params;
       const { body: userBody } = req;
       logger.info(`${UserController.name} - updateUserById: ${userId}`);
-      const updateUser = await this.userService.updateUserById(userId, userBody);
-      if (!updateUser) {
-        res.status(404).json({
-          ok: false,
-          message: 'User not found',
-        });
-        return;
+      const updateUser: UpdateResult = await this.userService.updateUserById(userId, userBody);
+      if (!updateUser.affected) {
+        return this.httpResponse.NotFound(res, 'user does not exist');
       }
-      res.status(200).json({
-        ok: true,
-        user: instanceToPlain(updateUser),
-        message: `Successfully updated user`,
-      });
+      return this.httpResponse.Ok(res, updateUser);
     } catch (error) {
       logger.info(`${UserController.name}- Error en updateUserById: ${error}`);
-      res.status(500).json({
-        ok: false,
-        message: 'Error updating user',
-      });
-      return;
+      return this.httpResponse.Error(res, 'error server side');
     }
   };
 
@@ -123,26 +84,14 @@ class UserController {
     try {
       const { id: userId } = req.params;
       logger.info(`${UserController.name}-deleteUserById: ${userId}`);
-      const userDeleted = await this.userService.deleteUserById(userId);
-      if (!userDeleted) {
-        res.status(404).json({
-          ok: false,
-          message: 'User not found',
-        });
-        return;
+      const userDeleted: DeleteResult = await this.userService.deleteUserById(userId);
+      if (!userDeleted.affected) {
+        return this.httpResponse.Error(res, 'error server side');
       }
-      res.status(200).json({
-        ok: true,
-        user: instanceToPlain(userDeleted),
-        message: `User deleted successfully`,
-      });
+      return this.httpResponse.Ok(res, userDeleted);
     } catch (error) {
       logger.error(`${UserController.name}- Error en deleteUserById: ${error}`);
-      res.status(500).json({
-        ok: false,
-        message: 'Error deleting user',
-      });
-      return;
+      return this.httpResponse.Error(res, 'error server side');
     }
   };
 }
