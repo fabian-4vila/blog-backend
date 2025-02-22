@@ -1,10 +1,11 @@
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { User } from '../../../entities/User.entity';
 import { AppDataSource } from '../../../config/data.source';
 import { logger } from '../../../utils/logger';
 import { CreateUserDto } from '../../../dtos/CreateUserDto';
 import { RoleType } from '../../../types/Role.type';
 import bcrypt from 'bcrypt';
+import { UpdateUserDto } from '../../../dtos/UpdateUserDto';
 
 class UserService {
   private userRepository: Repository<User>;
@@ -64,33 +65,47 @@ class UserService {
     });
     return this.userRepository.save(newUser);
   }
-
   /**
-   * Update User By Id
+   * partial Update User By Id
    */
-  public async updateUserById(id: string, UpdatUserBody: Partial<CreateUserDto>) {
-    logger.info(`${UserService.name} - updateUserById with id: ${id}`);
+  public async partialUpdateUserById(id: string, partialUpdateUserBody: Partial<UpdateUserDto>) {
     const user = await this.getUserById(id);
-    if (!user) return null;
-    const updatedData = { ...UpdatUserBody };
+    if (!user) throw new Error(`User with ID ${id} not found`);
+
+    const updatedData = { ...partialUpdateUserBody };
     if (updatedData.password) {
       updatedData.password = await bcrypt.hash(updatedData.password, 10);
     }
+
     await this.userRepository.update(id, updatedData);
     return this.getUserById(id);
   }
 
   /**
-   * Delete User By Id
+   * Update User By Id
    */
-  public async deleteUserById(id: string) {
-    logger.info(`${UserService.name}-DeleteUserById with id: ${id}`);
-    const userToDeleted = await this.getUserById(id);
-    if (!userToDeleted) return null;
-    await this.userRepository.delete(id);
-    return userToDeleted;
+  public async updateUserById(id: string, UpdatUserBody: UpdateUserDto): Promise<UpdateResult> {
+    logger.info(`${UserService.name} - updateUserById with id: ${id}`);
+    const user = await this.getUserById(id);
+    if (!user) throw new Error(`User with ID ${id} not found`);
+    const updatedData = { ...UpdatUserBody };
+    if (updatedData.password) {
+      updatedData.password = await bcrypt.hash(updatedData.password, 10);
+    }
+    return this.userRepository.update(id, updatedData);
   }
 
+  /**
+   * Delete User By Id
+   */
+  public async deleteUserById(id: string): Promise<DeleteResult> {
+    logger.info(`${UserService.name}-DeleteUserById with id: ${id}`);
+    const userToDeleted = await this.getUserById(id);
+    if (!userToDeleted) throw new Error('user does not exist');
+    await this.userRepository.delete(id);
+    return this.userRepository.delete(id);
+  }
+  // revisar el delete agregue promesa pero no se si esta bien lo que retorna
   public getRepository(): Repository<User> {
     return this.userRepository;
   }
