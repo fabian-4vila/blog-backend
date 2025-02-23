@@ -1,5 +1,4 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, MinLength } from 'class-validator';
-import { RoleType } from '../types/Role.type';
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 export class UpdateUserDto {
   @IsNotEmpty({ message: 'The name is required' })
@@ -10,8 +9,4 @@ export class UpdateUserDto {
 
   @MinLength(8, { message: 'Password must be at least 8 characters' })
   password!: string;
-
-  @IsOptional()
-  @IsEnum(RoleType, { message: 'The role is invalid' })
-  role?: RoleType;
 }
