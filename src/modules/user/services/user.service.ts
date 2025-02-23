@@ -18,7 +18,7 @@ class UserService {
    */
   public async getAllUser(): Promise<User[]> {
     logger.info(`${UserService.name}-getAllUser`);
-    return this.userRepository.find();
+    return await this.userRepository.find();
   }
 
   /**
@@ -26,32 +26,7 @@ class UserService {
    */
   public async getUserById(id: string): Promise<User | null> {
     logger.info(`${UserService.name}-getUserById with id: ${id}`);
-    return this.userRepository.findOne({ where: { id } });
-  }
-
-  /**
-   * Get User By Email
-   */
-  public async getUserByEmail(email: string): Promise<User | null> {
-    logger.info(`${UserService.name} - getUserByEmail with email: ${email}`);
-    return this.userRepository.findOne({ where: { email } });
-  }
-
-  /**
-   * Get User By Role And Id
-   */
-  public async getUsersByRoleAndId(role?: RoleType, id?: string): Promise<User[] | User | null> {
-    logger.info(`${UserService.name} - getUsersByRoleAndId with role: ${role}, id: ${id}`);
-    if (role && id) {
-      return this.userRepository.findOne({ where: { id, role } });
-    }
-    if (role) {
-      return this.userRepository.find({ where: { role } });
-    }
-    if (id) {
-      return this.getUserById(id);
-    }
-    return [];
+    return await this.userRepository.findOne({ where: { id } });
   }
 
   /**
@@ -63,22 +38,23 @@ class UserService {
       ...userBody,
       role: RoleType.ADMIN,
     });
-    return this.userRepository.save(newUser);
+    return await this.userRepository.save(newUser);
   }
+
   /**
    * partial Update User By Id
    */
-  public async partialUpdateUserById(id: string, partialUpdateUserBody: Partial<UpdateUserDto>) {
+  public async partialUpdateUserById(id: string, partialUpdateUserBody: Partial<UpdateUserDto>): Promise<UpdateResult> {
     const user = await this.getUserById(id);
     if (!user) throw new Error(`User with ID ${id} not found`);
-
+    if (Object.keys(partialUpdateUserBody).length === 0) {
+      throw new Error('No data provided for update');
+    }
     const updatedData = { ...partialUpdateUserBody };
     if (updatedData.password) {
       updatedData.password = await bcrypt.hash(updatedData.password, 10);
     }
-
-    await this.userRepository.update(id, updatedData);
-    return this.getUserById(id);
+    return await this.userRepository.update(id, updatedData);
   }
 
   /**
@@ -92,7 +68,7 @@ class UserService {
     if (updatedData.password) {
       updatedData.password = await bcrypt.hash(updatedData.password, 10);
     }
-    return this.userRepository.update(id, updatedData);
+    return await this.userRepository.update(id, updatedData);
   }
 
   /**
@@ -102,10 +78,9 @@ class UserService {
     logger.info(`${UserService.name}-DeleteUserById with id: ${id}`);
     const userToDeleted = await this.getUserById(id);
     if (!userToDeleted) throw new Error('user does not exist');
-    await this.userRepository.delete(id);
-    return this.userRepository.delete(id);
+    return await this.userRepository.delete(id);
   }
-  // revisar el delete agregue promesa pero no se si esta bien lo que retorna
+
   public getRepository(): Repository<User> {
     return this.userRepository;
   }
