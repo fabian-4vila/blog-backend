@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { logger } from '../../../utils/logger';
 import UserService from '../services/user.service';
 //import { instanceToPlain } from 'class-transformer';
-import { HttpResponse } from '../../../shared/response/http.response';
+import { HttpResponse } from '../../../shared/http.response';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
 class UserController {

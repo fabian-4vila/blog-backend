@@ -3,7 +3,7 @@ services:
     image: postgres:latest
     container_name: db_blog_container
     ports:
-      - "5433:5432"
+      - '5433:5432'
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
