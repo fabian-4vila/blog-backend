@@ -35,11 +35,11 @@ class UserService {
   /**
    * find User By Email
    */
-  public async getUserByEmail(email: string): Promise<User> {
+  public async getUserByEmail(email: string): Promise<User | null> {
     logger.info(`${UserService.name} - findUserByEmail with email: ${email}`);
     const user = await this.userRepository.findOne({ where: { email } });
     if (!user) {
-      throw new Error(`User with email ${email} not found`);
+      return null;
     }
     return user;
   }

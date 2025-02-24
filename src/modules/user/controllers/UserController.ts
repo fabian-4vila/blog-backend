@@ -24,7 +24,9 @@ class UserController {
       return;
     } catch (error) {
       logger.error(`${UserController.name}- Error en getAllUsers: ${error}`);
-      this.httpResponse.Error(res, 'Error server side');
+      this.httpResponse.Error(res, {
+        message: 'Error getting user',
+      });
       return;
     }
   };
@@ -38,7 +40,9 @@ class UserController {
       logger.info(`${UserController.name} - getUserById: ${userId}`);
       const user = await this.userService.getUserById(userId);
       if (!user) {
-        this.httpResponse.NotFound(res, 'User does not exist');
+        this.httpResponse.NotFound(res, {
+          message: 'User does not exist',
+        });
         return;
       }
       this.httpResponse.Ok(res, {
@@ -47,7 +51,9 @@ class UserController {
       return;
     } catch (error) {
       logger.error(`${UserController.name}- Error en getUserById: ${error}`);
-      this.httpResponse.Error(res, 'Error server side');
+      this.httpResponse.Error(res, {
+        message: 'Error getting user',
+      });
       return;
     }
   };
@@ -66,7 +72,9 @@ class UserController {
       return;
     } catch (error) {
       logger.error(`${UserController.name}- Error en createUser: ${error}`);
-      this.httpResponse.Error(res, 'Error server side');
+      this.httpResponse.Error(res, {
+        message: 'Error creating user',
+      });
       return;
     }
   };
@@ -82,14 +90,18 @@ class UserController {
       const partialUpdateUser: UpdateResult = await this.userService.partialUpdateUserById(userId, partialUserBody);
 
       if (!partialUpdateUser.affected) {
-        this.httpResponse.NotFound(res, 'User does not exist');
+        this.httpResponse.NotFound(res, {
+          message: 'User does not exist',
+        });
         return;
       }
       this.httpResponse.Ok(res, partialUpdateUser);
       return;
     } catch (error) {
       logger.error(`${UserController.name} - Error en partialUpdateUserById: ${error}`);
-      this.httpResponse.Error(res, 'Error server side');
+      this.httpResponse.Error(res, {
+        message: 'Error server side',
+      });
       return;
     }
   };
@@ -104,14 +116,18 @@ class UserController {
       logger.info(`${UserController.name} - updateUserById: ${userId}`);
       const updateUser: UpdateResult = await this.userService.updateUserById(userId, userBody);
       if (!updateUser.affected) {
-        this.httpResponse.NotFound(res, 'User does not exist');
+        this.httpResponse.NotFound(res, {
+          message: 'User does not exist',
+        });
         return;
       }
       this.httpResponse.Ok(res, updateUser);
       return;
     } catch (error) {
       logger.info(`${UserController.name}- Error en updateUserById: ${error}`);
-      this.httpResponse.Error(res, 'Error server side');
+      this.httpResponse.Error(res, {
+        message: 'Error Updating user',
+      });
       return;
     }
   };
@@ -125,14 +141,18 @@ class UserController {
       logger.info(`${UserController.name}-deleteUserById: ${userId}`);
       const userDeleted: DeleteResult = await this.userService.deleteUserById(userId);
       if (!userDeleted.affected) {
-        this.httpResponse.NotFound(res, 'User does not exist');
+        this.httpResponse.NotFound(res, {
+          message: 'User does not exist',
+        });
         return;
       }
       this.httpResponse.Ok(res, userDeleted);
       return;
     } catch (error) {
       logger.error(`${UserController.name}- Error en deleteUserById: ${error}`);
-      this.httpResponse.Error(res, 'Error server side');
+      this.httpResponse.Error(res, {
+        message: 'Error deleting user',
+      });
       return;
     }
   };
