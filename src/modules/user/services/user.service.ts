@@ -24,9 +24,13 @@ class UserService {
   /**
    * Get User By Id
    */
-  public async getUserById(id: string): Promise<User | null> {
+  public async getUserById(id: string): Promise<User> {
     logger.info(`${UserService.name}-getUserById with id: ${id}`);
-    return await this.userRepository.findOne({ where: { id } });
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return user;
   }
 
   /**
