@@ -2,10 +2,13 @@ import { Request, Response } from 'express';
 import { logger } from '../../../utils/logger';
 import PasswordResetService from '../service/passwordReset.service';
 import { sendPasswordResetEmail } from '../../../utils/email';
+import { HttpResponse } from '../../../shared/http.response';
 
 class PasswordResetController {
-  private readonly passwordResetService: PasswordResetService = new PasswordResetService();
-
+  constructor(
+    private readonly passwordResetService: PasswordResetService = new PasswordResetService(),
+    private readonly httpResponse: HttpResponse = new HttpResponse(),
+  ) {}
   /**
    * requestPasswordReset
    */
@@ -15,23 +18,14 @@ class PasswordResetController {
       logger.info(`${PasswordResetController.name} - requestPasswordReset: ${email}`);
       const token = await this.passwordResetService.generateResetToken(email);
       if (!token) {
-        res.status(404).json({
-          ok: false,
-          message: 'El usuario no fue encontrado',
-        });
+        this.httpResponse.Ok(res, 'If the email is registered, you will receive a password reset link.');
         return;
       }
       await sendPasswordResetEmail(email, token);
-      res.status(200).json({
-        ok: true,
-        message: 'Correo de restablecimiento de contraseña enviado',
-      });
+      this.httpResponse.Ok(res, 'A password reset email has been sent. Please check your inbox and spam folder.');
     } catch (error) {
       logger.error(`${PasswordResetController.name} - Error en requestPasswordReset: ${error}`);
-      res.status(500).json({
-        ok: false,
-        message: 'Error enviando el correo de restablecimiento',
-      });
+      this.httpResponse.Error(res, 'An error occurred while processing your request. Please try again later.');
     }
   };
 
@@ -45,22 +39,13 @@ class PasswordResetController {
       logger.info(`${PasswordResetController.name} - resetPassword`);
       const result = await this.passwordResetService.resetPassword(token, newPassword);
       if (!result) {
-        res.status(400).json({
-          ok: false,
-          message: 'Token inválido o expirado',
-        });
+        this.httpResponse.Error(res, 'An error occurred while resetting the password. Please try again later.');
         return;
       }
-      res.status(200).json({
-        ok: true,
-        message: 'Contraseña restablecida correctamente',
-      });
+      this.httpResponse.Ok(res, 'Your password has been reset successfully.');
     } catch (error) {
       logger.error(`${PasswordResetController.name} - Error en resetPassword: ${error}`);
-      res.status(500).json({
-        ok: false,
-        message: 'Error restableciendo la contraseña',
-      });
+      this.httpResponse.Error(res, 'An error occurred while resetting the password. Please try again later.');
     }
   };
 }

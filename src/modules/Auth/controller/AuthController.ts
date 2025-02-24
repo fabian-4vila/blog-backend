@@ -1,17 +1,22 @@
 import { Request, Response } from 'express';
 import { authenticateUser } from '../service/Auth.service';
+import { HttpResponse } from '../../../shared/http.response';
 
 class AuthController {
+  private httpResponse: HttpResponse;
+  constructor() {
+    this.httpResponse = new HttpResponse();
+  }
   public async login(req: Request, res: Response): Promise<Response> {
     try {
       const { email, password } = req.body;
       const token = await authenticateUser(email, password);
-      return res.json({ token });
+      if (!token) {
+        return this.httpResponse.Unauthorized(res, 'Invalid credentials');
+      }
+      return this.httpResponse.Ok(res, { token });
     } catch (error) {
-      return res.status(401).json({
-        ok: false,
-        message: 'Invalid credentials',
-      });
+      return this.httpResponse.Error(res, 'Error server side');
     }
   }
 }

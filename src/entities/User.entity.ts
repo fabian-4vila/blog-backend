@@ -14,7 +14,6 @@ export class User {
   @Column({ type: 'varchar', length: 100 })
   name!: string;
 
-  @Exclude()
   @Column({ type: 'varchar', length: 150, unique: true })
   email!: string;
 
@@ -31,7 +30,7 @@ export class User {
   permissions!: string[];
 
   @Exclude()
-  @Column({ type: 'boolean', default: false }) // Nuevo campo para verificar la cuenta
+  @Column({ type: 'boolean', default: false })
   verified!: boolean;
 
   @Exclude()
