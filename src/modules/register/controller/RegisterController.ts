@@ -21,7 +21,8 @@ class RegisterController {
       return;
     } catch (error) {
       logger.error(`${RegisterController.name}- Error in registerUser: ${error}`);
-      return this.httpResponse.Error(res, 'Error registering user');
+      this.httpResponse.Error(res, 'Error registering user');
+      return;
     }
   };
 }
