@@ -6,10 +6,17 @@ import { RoleType } from '../../../types/Role.type';
 class RegisterService {
   private userRepository: Repository<User>;
 
-  constructor(userService: UserService) {
+  constructor(private readonly userService: UserService) {
     this.userRepository = userService.getRepository();
   }
-  public async registerUser(userData: Partial<User>) {
+  public async registerUser(userData: Partial<User>): Promise<User> {
+    if (!userData.email) {
+      throw new Error('Email is required to register a user');
+    }
+    const existingUser = await this.userService.getUserByEmail(userData.email);
+    if (existingUser) {
+      throw new Error(`User with email ${userData.email} already exists`);
+    }
     const newUser = this.userRepository.create({
       ...userData,
       role: RoleType.SUBSCRIBED,
