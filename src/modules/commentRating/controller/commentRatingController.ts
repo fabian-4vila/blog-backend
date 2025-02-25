@@ -2,13 +2,15 @@ import { Request, Response } from 'express';
 import { CreateCommentRatingDto } from '../../../dtos/CreateCommentRatingDto';
 import CommentRatingService from '../service/commentRating.service';
 import { logger } from '../../../utils/logger';
+import { HttpResponse } from '../../../shared/http.response';
+import { instanceToPlain } from 'class-transformer';
+import { DeleteResult, UpdateResult } from 'typeorm';
 
 class CommentRatingController {
-  private commentRatingService: CommentRatingService;
-
-  constructor() {
-    this.commentRatingService = new CommentRatingService();
-  }
+  constructor(
+    private readonly commentRatingService: CommentRatingService = new CommentRatingService(),
+    private readonly httpResponse: HttpResponse = new HttpResponse(),
+  ) {}
 
   /**
    * Get All CommentRatings
@@ -17,16 +19,14 @@ class CommentRatingController {
     try {
       logger.info(`${CommentRatingController.name}-getAllCommentRatings`);
       const ratings = await this.commentRatingService.getAllCommentRatings();
-      res.status(200).json({
-        ok: true,
-        ratings,
-        message: `commentRatings list obtained successfully`,
+      this.httpResponse.Ok(res, {
+        commentRatings: instanceToPlain(ratings),
       });
+      return;
     } catch (error) {
       logger.error(`${CommentRatingController.name}- Error en getAllCommentRatings: ${error}`);
-      res.status(500).json({
-        ok: false,
-        message: 'Error getting commentRating',
+      this.httpResponse.Error(res, {
+        message: 'Error getting comment rating',
       });
       return;
     }
@@ -40,22 +40,19 @@ class CommentRatingController {
       logger.info(`${CommentRatingController.name}-getCommentRatingById with id: ${req.params.id}`);
       const rating = await this.commentRatingService.getCommentRatingById(req.params.id);
       if (!rating) {
-        res.status(404).json({
-          ok: false,
+        this.httpResponse.NotFound(res, {
           message: 'CommentRating not found',
         });
         return;
       }
-      res.status(200).json({
-        ok: true,
-        rating,
-        message: `CommentRting details obtained`,
+      this.httpResponse.Ok(res, {
+        commentRating: instanceToPlain(rating),
       });
+      return;
     } catch (error) {
       logger.error(`${CommentRatingController.name}- Error en getCommentRatingById: ${error}`);
-      res.status(500).json({
-        ok: false,
-        message: 'Error getting commentRating',
+      this.httpResponse.Error(res, {
+        message: 'Error getting comment rating',
       });
       return;
     }
@@ -69,16 +66,13 @@ class CommentRatingController {
       logger.info(`${CommentRatingController.name}-createCommentRating`);
       const ratingData: CreateCommentRatingDto = req.body;
       const newRating = await this.commentRatingService.createCommentRating(ratingData);
-      res.status(201).json({
-        ok: true,
-        CommentRating: newRating,
-        message: `Successfuly create commentRating`,
+      this.httpResponse.Create(res, {
+        CommentRating: instanceToPlain(newRating),
       });
     } catch (error) {
       logger.error(`${CommentRatingController.name}- Error en CreateCommentRating: ${error}`);
-      res.status(500).json({
-        ok: false,
-        message: 'Error creating commentRating',
+      this.httpResponse.Error(res, {
+        message: 'Error creating comment rating',
       });
       return;
     }
@@ -90,23 +84,20 @@ class CommentRatingController {
   public updateCommentRatingById = async (req: Request, res: Response) => {
     try {
       logger.info(`${CommentRatingController.name}-updateCommentRatingById with id: ${req.params.id}`);
-      const updatedRating = await this.commentRatingService.updateCommentRatingById(req.params.id, req.body);
-      if (!updatedRating) {
-        res.status(404).json({
-          ok: false,
+      const updatedRating: UpdateResult = await this.commentRatingService.updateCommentRatingById(
+        req.params.id,
+        req.body,
+      );
+      if (!updatedRating.affected) {
+        this.httpResponse.Error(res, {
           message: 'Comment rating not found',
         });
         return;
       }
-      res.status(200).json({
-        ok: true,
-        commentRating: updatedRating,
-        message: `Successfuly updated commentRating`,
-      });
+      this.httpResponse.Ok(res, updatedRating);
     } catch (error) {
       logger.error(`${CommentRatingController.name}- Error en CreateCommentRating: ${error}`);
-      res.status(500).json({
-        ok: false,
+      this.httpResponse.Error(res, {
         message: 'Error updating commentRating',
       });
       return;
@@ -120,23 +111,17 @@ class CommentRatingController {
     try {
       const { id: commentRatingId } = req.params;
       logger.info(`${CommentRatingController.name}-deleteCommentRatingById with id: ${req.params.id}`);
-      const deletedRating = await this.commentRatingService.deleteCommentRatingById(commentRatingId);
-      if (!deletedRating) {
-        res.status(404).json({
-          ok: false,
+      const deletedRating: DeleteResult = await this.commentRatingService.deleteCommentRatingById(commentRatingId);
+      if (!deletedRating.affected) {
+        this.httpResponse.NotFound(res, {
           message: 'Commentrating not found',
         });
         return;
       }
-      res.status(200).json({
-        ok: true,
-        commentRating: deletedRating,
-        message: 'Commentrating deleted successfully',
-      });
+      this.httpResponse.Ok(res, deletedRating);
     } catch (error) {
       logger.error(`${CommentRatingController.name}- Error en CreateCommentRating: ${error}`);
-      res.status(500).json({
-        ok: false,
+      this.httpResponse.Error(res, {
         message: 'Error deleting commentRating',
       });
       return;

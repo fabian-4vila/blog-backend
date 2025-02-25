@@ -25,9 +25,11 @@ class PostRatingService {
   /**
    * Get PostRating By Id
    */
-  public async getPostRatingById(id: string): Promise<PostRating | null> {
+  public async getPostRatingById(id: string): Promise<PostRating> {
     logger.info(`${PostRatingService.name}-getPostRatingById with id: ${id}`);
-    return this.postRatingRepository.findOne({ where: { id } });
+    const postRating = await this.postRatingRepository.findOne({ where: { id } });
+    if (!postRating) throw new Error('Post rating not found');
+    return postRating;
   }
 
   /**
@@ -37,13 +39,9 @@ class PostRatingService {
     logger.info(`${PostRatingService.name}-createPostRating`);
     const entityManager = this.postRatingRepository.manager;
     const post = await entityManager.findOne(Post, { where: { id: data.postId } });
-    if (!post) {
-      throw new Error('Post not found');
-    }
+    if (!post) throw new Error('Post not found');
     const user = await entityManager.findOne(User, { where: { id: data.userId } });
-    if (!user) {
-      throw new Error('User not found');
-    }
+    if (!user) throw new Error('User not found');
     const newPostRating = this.postRatingRepository.create({
       post,
       user,
@@ -59,7 +57,7 @@ class PostRatingService {
   public async updatePostRatingById(id: string, updateData: UpdatePostRatingDto): Promise<UpdateResult> {
     logger.info(`${PostRatingService.name}-updatePostRatingById with id: ${id}`);
     const postRating = await this.getPostRatingById(id);
-    if (!postRating) throw new Error(`PostRating with ID ${id} not found`);
+    if (!postRating) throw new Error(`Post Rating with Id ${id} not found`);
     const { postId, userId, ...otherData } = updateData;
     const updatedData: Partial<PostRating> = { ...otherData };
     if (postId) {
@@ -81,7 +79,7 @@ class PostRatingService {
   public async deletePostRatingById(id: string): Promise<DeleteResult> {
     logger.info(`${PostRatingService.name}-deletePostRatingById with id: ${id}`);
     const postRatingToDelete = await this.getPostRatingById(id);
-    if (!postRatingToDelete) throw new Error('postRting does not exist');
+    if (!postRatingToDelete) throw new Error('post rating does not exist');
     return await this.postRatingRepository.delete(id);
   }
 }
