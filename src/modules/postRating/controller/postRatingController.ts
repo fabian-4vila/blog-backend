@@ -26,7 +26,7 @@ class PostRatingController {
     } catch (error) {
       logger.error(`${PostRatingController.name}- Error en getAllPostRating: ${error}`);
       this.httpResponse.Error(res, {
-        message: 'Error getting postRating',
+        message: 'Error getting post rating',
       });
       return;
     }
@@ -46,10 +46,11 @@ class PostRatingController {
       this.httpResponse.Ok(res, {
         postRating: instanceToPlain(rating),
       });
+      return;
     } catch (error) {
       logger.error(`${PostRatingController.name}- Error en getPostRatingById: ${error}`);
       this.httpResponse.Error(res, {
-        message: `Error getting postRating`,
+        message: `Error getting post rating`,
       });
       return;
     }
@@ -66,10 +67,11 @@ class PostRatingController {
       this.httpResponse.Create(res, {
         postRating: instanceToPlain(newRating),
       });
+      return;
     } catch (error) {
       logger.error(`${PostRatingController.name}- Error en createPostRating: ${error}`);
       this.httpResponse.Error(res, {
-        message: `Error creating postRating`,
+        message: `Error creating post rating`,
       });
       return;
     }
@@ -89,10 +91,11 @@ class PostRatingController {
         return;
       }
       this.httpResponse.Ok(res, updatedRating);
+      return;
     } catch (error) {
       logger.error(`${PostRatingController.name}- Error en UpdatePostRating: ${error}`);
       this.httpResponse.Error(res, {
-        message: `Error Updating postRating`,
+        message: `Error Updating post rating`,
       });
       return;
     }
@@ -116,7 +119,7 @@ class PostRatingController {
     } catch (error) {
       logger.error(`${PostRatingController.name}- Error en DeletePostRating: ${error}`);
       this.httpResponse.Error(res, {
-        message: `Error deleting postRating`,
+        message: `Error deleting post rating`,
       });
       return;
     }

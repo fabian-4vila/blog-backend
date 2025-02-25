@@ -28,7 +28,7 @@ class PostController {
     } catch (error) {
       logger.error(`${PostController.name}- Error en getAllUsers: ${error}`);
       this.httpResponse.Error(res, {
-        message: 'Error retrieving posts',
+        message: 'Error getting posts',
       });
       return;
     }
@@ -55,7 +55,7 @@ class PostController {
     } catch (error) {
       logger.error(`${PostController.name}- Error en : ${error}-getPostById`);
       this.httpResponse.Error(res, {
-        message: 'Error retrieving post',
+        message: 'Error getting post',
       });
       return;
     }
