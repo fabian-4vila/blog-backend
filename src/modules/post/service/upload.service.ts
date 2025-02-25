@@ -1,11 +1,14 @@
 import cloudinary from '../../../config/cloudinary.config';
-/**
- * Upload File
- */
+
 class UploadService {
   public async uploadFile(file: Express.Multer.File): Promise<{ type: string; url: string }> {
+    const resourceType = file.mimetype.startsWith('image')
+      ? 'image'
+      : file.mimetype.startsWith('video')
+        ? 'video'
+        : 'raw';
     const result = await cloudinary.uploader.upload(file.path, {
-      resource_type: 'auto',
+      resource_type: resourceType,
     });
     return {
       type: file.mimetype,

@@ -4,6 +4,7 @@ import upload from '../config/multer.config';
 import { RoleType } from '../types/Role.type';
 import { authenticateJWT } from '../middlewares/auth.middleware';
 import { authorizeRoles } from '../middlewares/role.middleware';
+import { handleMulterError } from '../middlewares/error.middleware';
 
 class PostRoute {
   public path = '/post';
@@ -21,9 +22,11 @@ class PostRoute {
       `${this.path}`,
       authenticateJWT,
       authorizeRoles([RoleType.ADMIN]),
-      upload.array('files'),
+      upload.array('files', 5),
+      handleMulterError,
       this.postController.createPost,
     );
+
     this.router.put(
       `${this.path}/:id`,
       authenticateJWT,
