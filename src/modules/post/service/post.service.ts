@@ -1,102 +1,101 @@
-import { Repository } from 'typeorm';
+import { Repository, DeleteResult } from 'typeorm';
 import { Post } from '../../../entities/Post.entity';
 import { AppDataSource } from '../../../config/data.source';
-import { logger } from '../../../utils/logger';
 import { CreatePostDto } from '../../../dtos/CreatePostDto';
 import { User } from '../../../entities/User.entity';
 import uploadService from './upload.service';
+import { UpdatePostDto } from '../../../dtos/UpdatePostDto';
+import { logger } from '../../../utils/logger';
 
 class PostService {
   private postRepository: Repository<Post>;
+
   constructor() {
     this.postRepository = AppDataSource.getRepository(Post);
   }
+
   /**
    * Get All Posts
    */
   public async getAllPosts(): Promise<Post[]> {
-    logger.info(`${PostService.name}-getAllPosts`);
-    return this.postRepository.find();
+    return await this.postRepository.find();
   }
+
   /**
    * Get Post By Id
    */
-  public async getPostById(id: string): Promise<Post | null> {
-    logger.info(`${PostService.name}-getPostById with id: ${id}`);
-    return this.postRepository.findOne({ where: { id } });
+  public async getPostById(id: string): Promise<Post> {
+    logger.info(`${PostService.name}-getUserById with id: ${id}`);
+    const post = await this.postRepository.findOne({ where: { id } });
+    if (!post) {
+      throw new Error('Post not found');
+    }
+    return post;
   }
+
   /**
    * Create Post
    */
   public async createPost(postBody: CreatePostDto, files?: Express.Multer.File[]): Promise<Post> {
-    logger.info(`${PostService.name} - createPost`);
     const user = await this.postRepository.manager.findOne(User, { where: { id: postBody.userId } });
-    if (!user) throw new Error('User not found');
-    let uploadedFiles: { type: string; url: string }[] = postBody.files || [];
+    if (!user) {
+      throw new Error('User not found');
+    }
+    let uploadedFiles: { type: string; url: string }[] = postBody.files ?? [];
     if (files && files.length > 0) {
-      try {
-        const uploadedFromMulter = await Promise.all(
-          files.map(async (file) => {
-            const uploaded = await uploadService.uploadFile(file);
-            return { type: file.mimetype, url: uploaded.url };
-          }),
-        );
-        uploadedFiles = [...uploadedFiles, ...uploadedFromMulter];
-      } catch (error) {
-        logger.error(`${PostService.name} - Error uploading files: ${error}`);
-        throw new Error('Error processing files');
-      }
+      const uploadedFromMulter = await Promise.all(
+        files.map(async (file) => {
+          const uploaded = await uploadService.uploadFile(file);
+          if (!uploaded?.url) {
+            throw new Error(`File upload failed for ${file.originalname}`);
+          }
+          return { type: file.mimetype, url: uploaded.url };
+        }),
+      );
+      uploadedFiles = [...uploadedFiles, ...uploadedFromMulter];
     }
     const newPost = this.postRepository.create({
       title: postBody.title,
       content: postBody.content,
-      user: user,
-      files: uploadedFiles.length > 0 ? uploadedFiles : [],
+      user,
+      files: uploadedFiles,
     });
-    try {
-      const savedPost = await this.postRepository.save(newPost);
-      logger.info(`${PostService.name} - Post creado con ID: ${savedPost.id}`);
-      return savedPost;
-    } catch (error) {
-      logger.error(`${PostService.name} - Error saving post: ${error}`);
-      throw new Error('Error saving post to database');
-    }
+    return await this.postRepository.save(newPost);
   }
+
   /**
    * Update Post By Id
    */
-  public async updatePostById(id: string, updatePostBody: Partial<CreatePostDto>, files?: Express.Multer.File[]) {
-    logger.info(`${PostService.name}-updatePostById with id: ${id}`);
-    const post = await this.getPostById(id);
-    if (!post) return null;
-    if (updatePostBody.userId) {
-      const user = await this.postRepository.manager.findOne(User, { where: { id: updatePostBody.userId } });
-      if (!user) throw new Error('user not found');
+  public async updatePostById(id: string, updatePostDto: UpdatePostDto, files?: Express.Multer.File[]): Promise<Post> {
+    const post = await this.postRepository.findOne({ where: { id } });
+
+    if (!post) {
+      throw new Error(`Post con ID ${id} no encontrado.`);
+    }
+    post.title = updatePostDto.title ?? post.title;
+    post.content = updatePostDto.content ?? post.content;
+    if (updatePostDto.userId) {
+      const user = await this.postRepository.manager.findOne(User, { where: { id: updatePostDto.userId } });
+      if (!user) {
+        throw new Error(`Usuario con ID ${updatePostDto.userId} no encontrado.`);
+      }
       post.user = user;
     }
-    if (files && files.length > 0) {
-      const uploadedFiles = files
-        ? await Promise.all(
-            files.map(async (file) => {
-              const uploaded = await uploadService.uploadFile(file);
-              return { type: file.mimetype, url: uploaded.url };
-            }),
-          )
-        : [];
-      post.files = post.files ? [...post.files, ...uploadedFiles] : uploadedFiles;
+    post.files = [];
+    if (files?.length) {
+      const uploadedFiles = await Promise.all(files.map((file) => uploadService.uploadFile(file)));
+      post.files = uploadedFiles;
     }
-    Object.assign(post, updatePostBody);
     return this.postRepository.save(post);
   }
+
   /**
-   * Delete Post
+   * Delete Post By Id
    */
-  public async deletePostById(id: string) {
-    logger.info(`${PostService.name}-deletePostById with id: ${id}`);
-    const postToDelete = await this.getPostById(id);
-    if (!postToDelete) return null;
-    await this.postRepository.delete(id);
-    return postToDelete;
+  public async deletePostById(id: string): Promise<DeleteResult> {
+    const post = await this.getPostById(id);
+    if (!post) throw new Error('Post not found');
+    return await this.postRepository.delete(id);
   }
 }
 

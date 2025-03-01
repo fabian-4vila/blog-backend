@@ -2,26 +2,46 @@ import multer from 'multer';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import cloudinary from './cloudinary.config';
 
+const allowedMimeTypes = [
+  'application/pdf',
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'video/mp4',
+  'video/quicktime',
+  'video/x-msvideo',
+  'video/x-matroska',
+];
+
+const fileFilter = (_req: Express.Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+  if (allowedMimeTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error(`Formato de archivo no permitido: ${file.mimetype}`));
+  }
+};
 const storage = new CloudinaryStorage({
   cloudinary,
   params: async (_req, file) => {
-    const allowedFormats = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'mp4', 'mov', 'avi', 'mkv'];
-
-    const ext = file.mimetype.split('/')[1];
-    if (!allowedFormats.includes(ext)) {
-      throw new Error('Type of file not allowed');
+    try {
+      const ext = file.mimetype.split('/')[1];
+      const resourceType = ['mp4', 'mov', 'avi', 'mkv'].includes(ext) ? 'video' : ext === 'pdf' ? 'raw' : 'image';
+      const publicId = `${Date.now()}-${file.originalname}`;
+      return {
+        folder: 'uploads',
+        format: ext,
+        resource_type: resourceType,
+        public_id: publicId,
+      };
+    } catch (error) {
+      throw error;
     }
-
-    return {
-      folder: 'uploads',
-      format: ext,
-      resource_type:
-        ext === 'pdf' || ext === 'mp4' || ext === 'mov' || ext === 'avi' || ext === 'mkv' ? 'video' : 'image',
-      public_id: `${Date.now()}-${file.originalname}`,
-    };
   },
 });
-
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  limits: { files: 5 },
+  fileFilter,
+});
 
 export default upload;
