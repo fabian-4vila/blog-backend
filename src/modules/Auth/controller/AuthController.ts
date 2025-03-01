@@ -3,10 +3,7 @@ import { authenticateUser } from '../service/Auth.service';
 import { HttpResponse } from '../../../shared/http.response';
 
 class AuthController {
-  private httpResponse: HttpResponse;
-  constructor() {
-    this.httpResponse = new HttpResponse();
-  }
+  constructor(private readonly httpResponse: HttpResponse = new HttpResponse()) {}
   public async login(req: Request, res: Response): Promise<Response> {
     try {
       const { email, password } = req.body;
