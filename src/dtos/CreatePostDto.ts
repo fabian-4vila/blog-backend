@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString, IsOptional, IsArray, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
-class FileDto {
+export class FileDto {
   @IsNotEmpty()
   @IsString()
   type!: string;
