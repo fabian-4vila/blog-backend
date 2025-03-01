@@ -103,7 +103,7 @@ class PostController {
       const updatePostDto: UpdatePostDto = req.body;
       const files = req.files as Express.Multer.File[] | undefined;
       const updatedPost = await this.postService.updatePostById(id, updatePostDto, files);
-      res.json(updatedPost);
+      this.httpResponse.Ok(res, updatedPost);
     } catch (error) {
       logger.error(`${PostController.name}- Error en UpdatePostById: ${error}`);
       this.httpResponse.Error(res, { message: 'Error updating post' });
