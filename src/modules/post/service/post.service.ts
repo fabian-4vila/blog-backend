@@ -18,6 +18,7 @@ class PostService {
    * Get All Posts
    */
   public async getAllPosts(): Promise<Post[]> {
+    logger.info(`${PostService.name}-getAllPosts`);
     return await this.postRepository.find();
   }
 
@@ -27,9 +28,7 @@ class PostService {
   public async getPostById(id: string): Promise<Post> {
     logger.info(`${PostService.name}-getUserById with id: ${id}`);
     const post = await this.postRepository.findOne({ where: { id } });
-    if (!post) {
-      throw new Error('Post not found');
-    }
+    if (!post) throw new Error('Post not found');
     return post;
   }
 

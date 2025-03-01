@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { logger } from '../../../utils/logger';
 import CommentService from '../service/comment.service';
+import { UpdateCommentDto } from '../../../dtos/UpdateCommentDto';
 
 class CommentController {
   private readonly CommentService: CommentService = new CommentService();
@@ -89,9 +90,9 @@ class CommentController {
   public updateCommentById = async (req: Request, res: Response) => {
     try {
       const { id: commentId } = req.params;
-      const { body: commentBody } = req;
+      const updateCommentDto: UpdateCommentDto = req.body;
       logger.info(`${CommentController.name}-updateCommentById: ${commentId}`);
-      const updateComment = await this.CommentService.updateCommentById(commentId, commentBody);
+      const updateComment = await this.CommentService.updateCommentById(commentId, updateCommentDto);
       if (!updateComment) {
         res.status(404).json({
           ok: false,
