@@ -28,7 +28,11 @@ class CommentRatingService {
   public async getCommentRatingById(id: string): Promise<CommentRating> {
     logger.info(`${CommentRatingService.name}-getCommentRatingById with id: ${id}`);
     const commentRating = await this.commentRatingRepository.findOne({ where: { id } });
-    if (!commentRating) throw new Error('Comment rating not found');
+
+    if (!commentRating) {
+      throw new Error('Comment Rating not found');
+    }
+
     return commentRating;
   }
 

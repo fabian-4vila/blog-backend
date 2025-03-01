@@ -24,9 +24,11 @@ class CommentService {
   /**
    * Get Comment By Id
    */
-  public async getCommentById(id: string): Promise<Comment | null> {
+  public async getCommentById(id: string): Promise<Comment> {
     logger.info(`${CommentService.name}-getCommentById with id: ${id}`);
-    return this.CommentRepository.findOne({ where: { id } });
+    const comment = await this.CommentRepository.findOne({ where: { id } });
+    if (!comment) throw new Error('Comment not found');
+    return comment;
   }
 
   /**
@@ -35,11 +37,11 @@ class CommentService {
   public async createComment(data: CreateCommentDto): Promise<Comment> {
     logger.info(`${CommentService.name} - createComment`);
     const entityManager = this.CommentRepository.manager;
-    const post = await entityManager.findOne(Post, { where: { id: data.postId } });
+    const post = await entityManager.findOne(Post, { where: { id: data.postId }, select: ['id'] });
     if (!post) {
       throw new Error('The post does not exist');
     }
-    const user = await entityManager.findOne(User, { where: { id: data.userId } });
+    const user = await entityManager.findOne(User, { where: { id: data.userId }, select: ['id'] });
     if (!user) {
       throw new Error('The user does not exist');
     }
@@ -57,7 +59,9 @@ class CommentService {
   public async updateCommentById(id: string, updateData: Partial<CreateCommentDto>) {
     logger.info(`${CommentService.name}-updateCommentById with id: ${id}`);
     const comment = await this.getCommentById(id);
-    if (!comment) return null;
+    if (!comment) {
+      throw new Error(`Comme con ID ${id} no encontrado`);
+    }
     if (updateData.postId) {
       const post = await this.CommentRepository.manager.findOne(Post, { where: { id: updateData.postId } });
       if (!post) throw new Error('The post does not exist');
