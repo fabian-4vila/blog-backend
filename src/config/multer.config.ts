@@ -2,36 +2,47 @@ import multer, { FileFilterCallback } from 'multer';
 import { Request } from 'express';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import cloudinary from './cloudinary.config';
-import path from 'path';
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: async (_req: Request, file: Express.Multer.File) => {
-    const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'mov', 'avi', 'mkv', 'webm', 'pdf'];
-    const ext = path.extname(file.originalname).substring(1).toLowerCase();
-    if (!ext || !allowedExtensions.includes(ext)) {
-      throw new Error(`Tipo de archivo no permitido: .${ext}`);
-    }
 
-    return {
-      folder: 'uploads',
-      format: ext,
-      resource_type: ['mp4', 'mov', 'avi', 'mkv', 'webm'].includes(ext) ? 'video' : ext === 'pdf' ? 'raw' : 'image',
-      public_id: `${Date.now()}-${file.originalname}`,
-    };
-  },
-});
+const allowedMimeTypes = [
+  'application/pdf',
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'video/mp4',
+  'video/quicktime',
+  'video/x-msvideo',
+  'video/x-matroska',
+];
 
-const fileFilter = (_req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
-  const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'mov', 'avi', 'mkv', 'webm', 'pdf'];
-
-  const ext = path.extname(file.originalname).substring(1).toLowerCase();
-
-  if (allowedExtensions.includes(ext)) {
+const fileFilter = (_req: Express.Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+  if (allowedMimeTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error('Tipo de archivo no permitido. solo se permiten imagenes, videos y pdf'));
+    cb(new Error(`Formato de archivo no permitido: ${file.mimetype}`));
   }
 };
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: async (_req, file) => {
+    try {
+      const ext = file.mimetype.split('/')[1];
+      const resourceType = ['mp4', 'mov', 'avi', 'mkv'].includes(ext) ? 'video' : ext === 'pdf' ? 'raw' : 'image';
+      const publicId = `${Date.now()}-${file.originalname}`;
+      return {
+        folder: 'uploads',
+        format: ext,
+        resource_type: resourceType,
+        public_id: publicId,
+      };
+    } catch (error) {
+      throw error;
+    }
+  },
+});
+const upload = multer({
+  storage,
+  limits: { files: 5 },
+  fileFilter,
+});
 
-const upload = multer({ storage, fileFilter });
 export default upload;

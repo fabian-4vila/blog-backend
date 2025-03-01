@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import PostService from '../service/post.service';
 import { CreatePostDto } from '../../../dtos/CreatePostDto';
-import { logger } from '../../../utils/logger';
 import UploadService from '../service/upload.service';
-import { instanceToPlain, plainToInstance } from 'class-transformer';
-import { HttpResponse } from '../../../shared/http.response';
 import { DeleteResult } from 'typeorm';
-import { validate } from 'class-validator';
+import { HttpResponse } from '../../../shared/http.response';
+import { UpdatePostDto } from '../../../dtos/UpdatePostDto';
+import { logger } from '../../../utils/logger';
+import { instanceToPlain } from 'class-transformer';
 
 class PostController {
   constructor(
@@ -19,17 +19,15 @@ class PostController {
    */
   public getAllPosts = async (_req: Request, res: Response) => {
     try {
-      logger.info(`${PostController.name}-getAllPost`);
+      logger.info(`${PostController.name} - getAllPost`);
       const posts = await this.postService.getAllPosts();
       this.httpResponse.Ok(res, {
-        posts: instanceToPlain(posts),
+        post: instanceToPlain(posts),
       });
       return;
     } catch (error) {
-      logger.error(`${PostController.name}- Error en getAllUsers: ${error}`);
-      this.httpResponse.Error(res, {
-        message: 'Error getting posts',
-      });
+      logger.error(`${PostController.name}- Error en getAllPosts: ${error}`);
+      this.httpResponse.Error(res, 'Error retrieving posts');
       return;
     }
   };
@@ -39,24 +37,18 @@ class PostController {
    */
   public getPostById = async (req: Request, res: Response) => {
     try {
+      logger.info(`${PostController.name} - getPostById`);
       const { id } = req.params;
-      logger.info(`${PostController.name}-getPostById`);
       const post = await this.postService.getPostById(id);
       if (!post) {
-        this.httpResponse.NotFound(res, {
-          message: 'Post not found',
-        });
+        this.httpResponse.NotFound(res, { message: 'Post not found' });
         return;
       }
-      this.httpResponse.Ok(res, {
-        post: instanceToPlain(post),
-      });
+      this.httpResponse.Ok(res, { post, message: 'Post details obtained' });
       return;
     } catch (error) {
-      logger.error(`${PostController.name}- Error en : ${error}-getPostById`);
-      this.httpResponse.Error(res, {
-        message: 'Error getting post',
-      });
+      logger.error(`${PostController.name}- Error en getPostById: ${error}`);
+      this.httpResponse.Error(res, { message: 'Error retrieving post' });
       return;
     }
   };
@@ -66,97 +58,76 @@ class PostController {
    */
   public createPost = async (req: Request, res: Response) => {
     try {
-      logger.info(`${PostController.name} - CreatePost - Body received: ${JSON.stringify(req.body)}`);
-      const files = (req.files as Express.Multer.File[]) ?? [];
-      logger.info(`Files received: ${files.length} files`);
-      const uploadedFiles = await Promise.all(
-        files.map(async (file) => {
-          try {
-            const uploaded = await UploadService.uploadFile(file);
-            logger.info(`Uploaded file: ${uploaded.url}`);
-            return { type: file.mimetype, url: uploaded.url };
-          } catch (uploadError) {
-            logger.error(
-              `Error uploading file ${file.originalname}: ${JSON.stringify(uploadError, Object.getOwnPropertyNames(uploadError))}`,
-            );
-            throw new Error(`Error uploading file: ${file.originalname}`);
-          }
-        }),
-      );
-      const postData = plainToInstance(CreatePostDto, {
-        ...req.body,
-        userId: req.body.user_id,
-        files: uploadedFiles,
-      });
-      const errors = await validate(postData);
-      if (errors.length > 0) {
-        logger.warn(`Validation failed: ${JSON.stringify(errors)}`);
-        this.httpResponse.Error(res, {
-          message: 'Validation failed',
-          errors,
-        });
+      logger.info(`${PostController.name} - CreatePost`);
+      const { body: postBody } = req;
+      if (!postBody.user_id) {
+        this.httpResponse.Error(res, { message: 'userId is required' });
         return;
       }
+      const files = req.files as Express.Multer.File[] | undefined;
+      let uploadedFiles: { type: string; url: string }[] = [];
+      if (files?.length) {
+        uploadedFiles = await Promise.all(
+          files.map(async (file) => {
+            const uploaded = await UploadService.uploadFile(file);
+            if (!uploaded?.url) {
+              throw new Error(`File upload failed for ${file.originalname}`);
+            }
+            return { type: file.mimetype, url: uploaded.url };
+          }),
+        );
+      }
+      const postData: CreatePostDto = {
+        userId: postBody.user_id,
+        title: postBody.title,
+        content: postBody.content,
+        files: uploadedFiles.length > 0 ? uploadedFiles : undefined,
+      };
       const newPost = await this.postService.createPost(postData);
-      logger.info(`Post created with ID: ${newPost.id}`);
-      this.httpResponse.Create(res, {
-        post: instanceToPlain(newPost),
-      });
+      this.httpResponse.Create(res, { post: newPost, message: 'Successfully created post' });
+      return;
     } catch (error) {
-      logger.error(`${PostController.name} - Error in CreatePost: ${error}`);
-      this.httpResponse.Error(res, {
-        message: `Error creating post: ${error}`,
-      });
+      logger.error(`${PostController.name}- Error en CreatePost: ${error}`);
+      this.httpResponse.Error(res, { message: 'Error creating post' });
+      return;
     }
   };
 
   /**
    * Update Post By Id
    */
-  public updatePostById = async (req: Request, res: Response) => {
+  updatePostById = async (req: Request, res: Response) => {
     try {
+      logger.info(`${PostController.name} - UpdatePostById`);
       const { id } = req.params;
-      const updateBody: Partial<CreatePostDto> = req.body;
-      const files = req.files as Express.Multer.File[];
-      if (files) {
-        const uploadedFiles = await Promise.all(files.map((file) => UploadService.uploadFile(file)));
-        updateBody.files = uploadedFiles;
-      }
-      const updatedPost = await this.postService.updatePostById(id, updateBody);
-      if (!updatedPost) {
-        this.httpResponse.NotFound(res, {
-          message: 'Post not found',
-        });
-        return;
-      }
-      this.httpResponse.Ok(res, updatedPost);
-      return;
+      const updatePostDto: UpdatePostDto = req.body;
+      const files = req.files as Express.Multer.File[] | undefined;
+      const updatedPost = await this.postService.updatePostById(id, updatePostDto, files);
+      res.json(updatedPost);
     } catch (error) {
-      this.httpResponse.Error(res, {
-        message: 'Error updating post',
-      });
-      return;
+      logger.error(`${PostController.name}- Error en UpdatePostById: ${error}`);
+      this.httpResponse.Error(res, { message: 'Error updating post' });
+
     }
   };
+
   /**
    * Delete Post By Id
    */
   public deletePostById = async (req: Request, res: Response) => {
     try {
+      logger.info(`${PostController.name} - DeletePostById`);
       const { id } = req.params;
       const deletedPost: DeleteResult = await this.postService.deletePostById(id);
       if (!deletedPost.affected) {
-        this.httpResponse.Error(res, {
-          message: 'Post does not exist',
-        });
+        this.httpResponse.NotFound(res, { message: 'Post not found' });
         return;
       }
-      this.httpResponse.Ok(res, deletedPost);
+      this.httpResponse.Ok(res, { post: deletedPost, message: 'Post deleted successfully' });
       return;
     } catch (error) {
-      this.httpResponse.Error(res, {
-        message: 'Error deleting post',
-      });
+      logger.error(`${PostController.name}- Error en DeletePostById: ${error}`);
+      this.httpResponse.Error(res, { message: 'Error deleting post' });
       return;
     }
   };
