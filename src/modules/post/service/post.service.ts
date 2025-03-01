@@ -37,7 +37,7 @@ class PostService {
    * Create Post
    */
   public async createPost(postBody: CreatePostDto, files?: Express.Multer.File[]): Promise<Post> {
-    const user = await this.postRepository.manager.findOne(User, { where: { id: postBody.userId } });
+    const user = await this.postRepository.manager.findOne(User, { where: { id: postBody.userId }, select: ['id'] });
     if (!user) {
       throw new Error('User not found');
     }
