@@ -3,12 +3,15 @@ import { logger } from '../../../utils/logger';
 import CommentService from '../service/comment.service';
 import { UpdateCommentDto } from '../../../dtos/UpdateCommentDto';
 import { AuthenticatedUser } from '../../../interfaces/AuthUser';
+import { HttpResponse } from '../../../shared/http.response';
+import { instanceToPlain } from 'class-transformer';
+import { DeleteResult } from 'typeorm';
 
 class CommentController {
-  private readonly CommentService: CommentService = new CommentService();
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  constructor() {}
+  constructor(
+    private readonly commentService: CommentService = new CommentService(),
+    private readonly httpResponse: HttpResponse = new HttpResponse(),
+  ) {}
 
   /**
    * Get All Comments
@@ -16,18 +19,13 @@ class CommentController {
   public getAllComments = async (_req: Request, res: Response) => {
     try {
       logger.info(`${CommentController.name}-getAllComments`);
-      const comments = await this.CommentService.getAllComments();
-      res.status(200).json({
-        ok: true,
-        comment: comments,
-        message: `Comments list obtained successfully`,
+      const comments = await this.commentService.getAllComments();
+      this.httpResponse.Ok(res, {
+        user: instanceToPlain(comments),
       });
     } catch (error) {
       logger.error(`${CommentController.name}- Error en getAllComment: ${error}`);
-      res.status(500).json({
-        ok: false,
-        message: 'Error getting comment',
-      });
+      this.httpResponse.Error(res, 'Error getting comment');
       return;
     }
   };
@@ -39,25 +37,19 @@ class CommentController {
     try {
       const { id: CommentId } = req.params;
       logger.info(`${CommentController.name}-getCommentById: ${CommentId}`);
-      const comment = await this.CommentService.getCommentById(CommentId);
+      const comment = await this.commentService.getCommentById(CommentId);
       if (!comment) {
-        res.status(404).json({
-          ok: false,
-          message: 'Comment not found',
+        this.httpResponse.NotFound(res, {
+          comment: instanceToPlain(comment),
         });
         return;
       }
-      res.status(200).json({
-        ok: true,
-        comment,
-        message: `Comment details obtained`,
+      this.httpResponse.Ok(res, {
+        comment: instanceToPlain(comment),
       });
     } catch (error) {
       logger.error(`${CommentController.name}- Error en getCommentById: ${error}`);
-      res.status(500).json({
-        ok: false,
-        message: 'Error getting comment',
-      });
+      this.httpResponse.Error(res, 'Error getting comment');
       return;
     }
   };
@@ -68,24 +60,19 @@ class CommentController {
   public createComment = async (req: Request, res: Response) => {
     try {
       const { body: commentBody } = req;
-      const user = req.user as AuthenticatedUser; // Obtener usuario autenticado
+      const user = req.user as AuthenticatedUser;
       if (!user) {
-        res.status(401).json({ ok: false, message: 'User not authenticated' });
+        this.httpResponse.Unauthorized(res, 'User not authenticated');
         return;
       }
       logger.info(`${CommentController.name}-CreateComment`);
-      const newComment = await this.CommentService.createComment(commentBody, user);
-      res.status(201).json({
-        ok: true,
-        comment: newComment,
-        message: `Successfully created comment`,
+      const newComment = await this.commentService.createComment(commentBody, user);
+      this.httpResponse.Create(res, {
+        comment: instanceToPlain(newComment),
       });
     } catch (error) {
       logger.error(`${CommentController.name}- Error en createComment: ${error}`);
-      res.status(500).json({
-        ok: false,
-        message: 'Error creating comment',
-      });
+      this.httpResponse.Error(res, 'Error creating comment');
     }
   };
 
@@ -97,25 +84,17 @@ class CommentController {
       const { id: commentId } = req.params;
       const updateCommentDto: UpdateCommentDto = req.body;
       logger.info(`${CommentController.name}-updateCommentById: ${commentId}`);
-      const updateComment = await this.CommentService.updateCommentById(commentId, updateCommentDto);
-      if (!updateComment) {
-        res.status(404).json({
-          ok: false,
-          message: 'Comment not found',
-        });
+      const updateComment: DeleteResult = await this.commentService.updateCommentById(commentId, updateCommentDto);
+      if (!updateComment.affected) {
+        this.httpResponse.NotFound(res, 'Comment not found');
         return;
       }
-      res.status(200).json({
-        ok: true,
-        comment: updateComment,
-        message: `Successfully updated comment`,
+      this.httpResponse.Ok(res, {
+        comment: instanceToPlain(updateComment),
       });
     } catch (error) {
       logger.info(`${CommentController.name}- Error en updateCommentById: ${error}`);
-      res.status(500).json({
-        ok: false,
-        message: 'Error updating comment',
-      });
+      this.httpResponse.Error(res, 'Error updating comment');
       return;
     }
   };
@@ -127,25 +106,17 @@ class CommentController {
     try {
       const { id: commentId } = req.params;
       logger.info(`${CommentController.name}-deleteUserById: ${commentId}`);
-      const commentDeleted = await this.CommentService.deleteCommentById(commentId);
-      if (!commentDeleted) {
-        res.status(404).json({
-          ok: false,
-          message: 'Comment not found',
-        });
+      const commentDeleted: DeleteResult = await this.commentService.deleteCommentById(commentId);
+      if (!commentDeleted.affected) {
+        this.httpResponse.NotFound(res, 'Comment not found');
         return;
       }
-      res.status(200).json({
-        ok: true,
+      this.httpResponse.Ok(res, {
         comment: commentDeleted,
-        message: `Comment deleted successfully`,
       });
     } catch (error) {
       logger.error(`${CommentController.name}- Error en deleteCommentById: ${error}`);
-      res.status(500).json({
-        ok: false,
-        message: 'Error deleting comment',
-      });
+      this.httpResponse.Error(res, 'Error deleting comment');
       return;
     }
   };

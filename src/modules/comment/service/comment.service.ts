@@ -1,11 +1,11 @@
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { Comment } from '../../../entities/Comment.entity';
 import { AppDataSource } from '../../../config/data.source';
 import { logger } from '../../../utils/logger';
 import { CreateCommentDto } from '../../../dtos/CreateCommentDto';
 import { Post } from '../../../entities/Post.entity';
-import { User } from '../../../entities/User.entity';
 import { AuthenticatedUser } from '../../../interfaces/AuthUser';
+import { UpdateCommentDto } from '../../../dtos/UpdateCommentDto';
 
 class CommentService {
   private CommentRepository: Repository<Comment>;
@@ -44,7 +44,7 @@ class CommentService {
     }
     const newComment = this.CommentRepository.create({
       post: post,
-      user: { id: user.id } as any, // Asociar el usuario autenticado al comentario
+      user: { id: user.id },
       text: data.text,
     });
     const savedComment = await this.CommentRepository.save(newComment);
@@ -54,35 +54,24 @@ class CommentService {
   /**
    * Update Comment by Id
    */
-  public async updateCommentById(id: string, updateData: Partial<CreateCommentDto>) {
+  public async updateCommentById(id: string, updateData: UpdateCommentDto): Promise<UpdateResult> {
     logger.info(`${CommentService.name}-updateCommentById with id: ${id}`);
     const comment = await this.getCommentById(id);
     if (!comment) {
       throw new Error(`Comme con ID ${id} no encontrado`);
     }
-    if (updateData.postId) {
-      const post = await this.CommentRepository.manager.findOne(Post, { where: { id: updateData.postId } });
-      if (!post) throw new Error('The post does not exist');
-      comment.post = post;
-    }
-    if (updateData.userId) {
-      const user = await this.CommentRepository.manager.findOne(User, { where: { id: updateData.userId } });
-      if (!user) throw new Error('The user does not exist');
-      comment.user = user;
-    }
     Object.assign(comment, updateData);
-    return this.CommentRepository.save(comment);
+    return await this.CommentRepository.update(id, comment);
   }
 
   /**
    * Delete Comment By Id
    */
-  public async deleteCommentById(id: string) {
+  public async deleteCommentById(id: string): Promise<DeleteResult> {
     logger.info(`${CommentService.name}-deleteCommentById with id: ${id}`);
     const CommentToDelete = await this.getCommentById(id);
-    if (!CommentToDelete) return null;
-    await this.CommentRepository.delete(id);
-    return CommentToDelete;
+    if (!CommentToDelete) throw new Error('comment does not exist');
+    return await this.CommentRepository.delete(id);
   }
 }
 
