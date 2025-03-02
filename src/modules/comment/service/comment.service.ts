@@ -5,6 +5,7 @@ import { logger } from '../../../utils/logger';
 import { CreateCommentDto } from '../../../dtos/CreateCommentDto';
 import { Post } from '../../../entities/Post.entity';
 import { User } from '../../../entities/User.entity';
+import { AuthenticatedUser } from '../../../interfaces/AuthUser';
 
 class CommentService {
   private CommentRepository: Repository<Comment>;
@@ -34,23 +35,20 @@ class CommentService {
   /**
    * Create Comment
    */
-  public async createComment(data: CreateCommentDto): Promise<Comment> {
+  public async createComment(data: CreateCommentDto, user: AuthenticatedUser): Promise<Comment> {
     logger.info(`${CommentService.name} - createComment`);
     const entityManager = this.CommentRepository.manager;
     const post = await entityManager.findOne(Post, { where: { id: data.postId }, select: ['id'] });
     if (!post) {
       throw new Error('The post does not exist');
     }
-    const user = await entityManager.findOne(User, { where: { id: data.userId }, select: ['id'] });
-    if (!user) {
-      throw new Error('The user does not exist');
-    }
     const newComment = this.CommentRepository.create({
       post: post,
-      user: user,
+      user: { id: user.id } as any, // Asociar el usuario autenticado al comentario
       text: data.text,
     });
-    return this.CommentRepository.save(newComment);
+    const savedComment = await this.CommentRepository.save(newComment);
+    return savedComment;
   }
 
   /**
