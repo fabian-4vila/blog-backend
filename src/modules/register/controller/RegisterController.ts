@@ -1,15 +1,13 @@
 import { Request, Response } from 'express';
 import RegisterService from '../service/register.service';
 import { logger } from '../../../utils/logger';
-import UserService from '../../user/services/user.service';
+import { HttpResponse } from '../../../shared/http.response';
 
 class RegisterController {
-  private readonly registerService: RegisterService;
-
-  constructor() {
-    const userService = new UserService();
-    this.registerService = new RegisterService(userService);
-  }
+  constructor(
+    private readonly registerService: RegisterService,
+    private readonly httpResponse: HttpResponse = new HttpResponse(),
+  ) {}
 
   /**
    * registerUser
@@ -19,17 +17,12 @@ class RegisterController {
       const { body: userBody } = req;
       logger.info(`${RegisterController.name}-RegisterUser`);
       const newUser = await this.registerService.registerUser(userBody);
-      res.status(201).json({
-        ok: true,
-        user: newUser,
-        message: 'User registered successfully',
-      });
+      this.httpResponse.Create(res, newUser);
+      return;
     } catch (error) {
       logger.error(`${RegisterController.name}- Error in registerUser: ${error}`);
-      res.status(500).json({
-        ok: false,
-        message: 'Error registering user',
-      });
+      this.httpResponse.Error(res, 'Error registering user');
+      return;
     }
   };
 }

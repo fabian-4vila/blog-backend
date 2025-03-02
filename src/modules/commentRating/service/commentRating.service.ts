@@ -1,10 +1,11 @@
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { CommentRating } from '../../../entities/CommentRating.entity';
 import { AppDataSource } from '../../../config/data.source';
 import { logger } from '../../../utils/logger';
 import { CreateCommentRatingDto } from '../../../dtos/CreateCommentRatingDto';
 import { Comment } from '../../../entities/Comment.entity';
 import { User } from '../../../entities/User.entity';
+import { UpdateCommentRatingDto } from '../../../dtos/UpdateCommentRatingDto';
 
 class CommentRatingService {
   private commentRatingRepository: Repository<CommentRating>;
@@ -27,9 +28,11 @@ class CommentRatingService {
   public async getCommentRatingById(id: string): Promise<CommentRating> {
     logger.info(`${CommentRatingService.name}-getCommentRatingById with id: ${id}`);
     const commentRating = await this.commentRatingRepository.findOne({ where: { id } });
+
     if (!commentRating) {
       throw new Error('Comment Rating not found');
     }
+
     return commentRating;
   }
 
@@ -55,35 +58,32 @@ class CommentRatingService {
   /**
    * Update CommentRating By Id
    */
-  public async updateCommentRatingById(id: string, updateData: Partial<CreateCommentRatingDto>) {
+  public async updateCommentRatingById(id: string, updateData: UpdateCommentRatingDto): Promise<UpdateResult> {
     logger.info(`${CommentRatingService.name}-updateCommentRatingById with id: ${id}`);
     const commentRating = await this.getCommentRatingById(id);
-    if (!commentRating) return null;
-    if (updateData.commentId) {
-      const comment = await this.commentRatingRepository.manager.findOne(Comment, {
-        where: { id: updateData.commentId },
-      });
-      if (!comment) throw new Error('comment not found');
-      commentRating.comment = comment;
+    if (!commentRating) throw new Error(`Comment Rating with Id ${id} not found`);
+    const { commentId, userId, ...otherData } = updateData;
+    const updatedData: Partial<CommentRating> = { ...otherData };
+    if (commentId) {
+      const comment = await this.commentRatingRepository.manager.findOne(Comment, { where: { id: commentId } });
+      if (!comment) throw new Error('Comment not found');
+      updatedData.comment = comment;
     }
-    if (updateData.userId) {
-      const user = await this.commentRatingRepository.manager.findOne(User, { where: { id: updateData.userId } });
-      if (!user) throw new Error('user not found');
-      commentRating.user = user;
+    if (userId) {
+      const user = await this.commentRatingRepository.manager.findOne(User, { where: { id: userId } });
+      if (!user) throw new Error('User not found');
+      updatedData.user = user;
     }
-    Object.assign(commentRating, updateData);
-    return this.commentRatingRepository.save(commentRating);
+    return await this.commentRatingRepository.update(id, updateData);
   }
-
   /**
    * Delete CommentRating By Id
    */
-  public async deleteCommentRatingById(id: string) {
+  public async deleteCommentRatingById(id: string): Promise<DeleteResult> {
     logger.info(`${CommentRatingService.name}-deleteCommentRatingById with id: ${id}`);
     const commentRatingToDelete = await this.getCommentRatingById(id);
-    if (!commentRatingToDelete) return null;
-    await this.commentRatingRepository.delete(id);
-    return commentRatingToDelete;
+    if (!commentRatingToDelete) throw new Error('Comment rating does not exist');
+    return await this.commentRatingRepository.delete(id);
   }
 }
 

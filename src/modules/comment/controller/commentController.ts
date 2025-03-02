@@ -4,11 +4,12 @@ import CommentService from '../service/comment.service';
 import { UpdateCommentDto } from '../../../dtos/UpdateCommentDto';
 import { AuthenticatedUser } from '../../../interfaces/AuthUser';
 
-class CommentController {
-  private readonly CommentService: CommentService = new CommentService();
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  constructor() {}
+class CommentController {
+  constructor(
+    private readonly commentService: CommentService = new CommentService(),
+    private readonly httpResponse: HttpResponse = new HttpResponse(),
+  ) {}
 
   /**
    * Get All Comments
@@ -16,7 +17,7 @@ class CommentController {
   public getAllComments = async (_req: Request, res: Response) => {
     try {
       logger.info(`${CommentController.name}-getAllComments`);
-      const comments = await this.CommentService.getAllComments();
+      const comments = await this.commentService.getAllComments();
       res.status(200).json({
         ok: true,
         comment: comments,
@@ -39,7 +40,7 @@ class CommentController {
     try {
       const { id: CommentId } = req.params;
       logger.info(`${CommentController.name}-getCommentById: ${CommentId}`);
-      const comment = await this.CommentService.getCommentById(CommentId);
+      const comment = await this.commentService.getCommentById(CommentId);
       if (!comment) {
         res.status(404).json({
           ok: false,
@@ -75,6 +76,7 @@ class CommentController {
       }
       logger.info(`${CommentController.name}-CreateComment`);
       const newComment = await this.CommentService.createComment(commentBody, user);
+
       res.status(201).json({
         ok: true,
         comment: newComment,
@@ -97,7 +99,9 @@ class CommentController {
       const { id: commentId } = req.params;
       const updateCommentDto: UpdateCommentDto = req.body;
       logger.info(`${CommentController.name}-updateCommentById: ${commentId}`);
+
       const updateComment = await this.CommentService.updateCommentById(commentId, updateCommentDto);
+
       if (!updateComment) {
         res.status(404).json({
           ok: false,
@@ -127,7 +131,7 @@ class CommentController {
     try {
       const { id: commentId } = req.params;
       logger.info(`${CommentController.name}-deleteUserById: ${commentId}`);
-      const commentDeleted = await this.CommentService.deleteCommentById(commentId);
+      const commentDeleted = await this.commentService.deleteCommentById(commentId);
       if (!commentDeleted) {
         res.status(404).json({
           ok: false,

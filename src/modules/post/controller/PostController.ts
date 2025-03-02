@@ -107,6 +107,7 @@ class PostController {
     } catch (error) {
       logger.error(`${PostController.name}- Error en UpdatePostById: ${error}`);
       this.httpResponse.Error(res, { message: 'Error updating post' });
+
     }
   };
 

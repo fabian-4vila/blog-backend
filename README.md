@@ -41,4 +41,4 @@ El despliegue final estará diseñado para servir como una herramienta educativa
 
 ---
 
-¡Sigue los avances y únete a la comunidad para aprender juntos sobre las mejores prácticas en desarrollo web! 🎉😊
+¡Sigue los avances y únete a la comunidad para aprender juntos sobre las mejores prácticas en desarrollo web! 🎉😊😊
