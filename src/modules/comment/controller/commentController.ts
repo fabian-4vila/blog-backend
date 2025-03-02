@@ -5,7 +5,6 @@ import { UpdateCommentDto } from '../../../dtos/UpdateCommentDto';
 import { AuthenticatedUser } from '../../../interfaces/AuthUser';
 import { HttpResponse } from '../../../shared/http.response';
 import { instanceToPlain } from 'class-transformer';
-import { DeleteResult } from 'typeorm';
 
 class CommentController {
   constructor(
@@ -85,8 +84,8 @@ class CommentController {
       const { id: commentId } = req.params;
       const updateCommentDto: UpdateCommentDto = req.body;
       logger.info(`${CommentController.name}-updateCommentById: ${commentId}`);
-      const updateComment: DeleteResult = await this.commentService.updateCommentById(commentId, updateCommentDto);
-      if (!updateComment.affected) {
+      const updateComment = await this.commentService.updateCommentById(commentId, updateCommentDto);
+      if (!updateComment) {
         this.httpResponse.NotFound(res, 'Comment not found');
         return;
       }
@@ -107,8 +106,8 @@ class CommentController {
     try {
       const { id: commentId } = req.params;
       logger.info(`${CommentController.name}-deleteUserById: ${commentId}`);
-      const commentDeleted: DeleteResult = await this.commentService.deleteCommentById(commentId);
-      if (!commentDeleted.affected) {
+      const commentDeleted = await this.commentService.deleteCommentById(commentId);
+      if (!commentDeleted) {
         this.httpResponse.NotFound(res, 'Comment not found');
         return;
       }
