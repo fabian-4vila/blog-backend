@@ -66,6 +66,7 @@ class CommentController {
         return;
       }
       logger.info(`${CommentController.name}-CreateComment`);
+
       const newComment = await this.commentService.createComment(commentBody, user);
       this.httpResponse.Create(res, {
         comment: instanceToPlain(newComment),

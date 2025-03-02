@@ -65,9 +65,9 @@ class PostService {
   /**
    * Update Post By Id
    */
+
   public async updatePostById(id: string, updatePostDto: UpdatePostDto, files?: Express.Multer.File[]): Promise<Post> {
     const post = await this.postRepository.findOne({ where: { id } });
-
     if (!post) {
       throw new Error(`Post con ID ${id} no encontrado.`);
     }
