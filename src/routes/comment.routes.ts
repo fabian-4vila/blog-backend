@@ -13,8 +13,8 @@ class CommentRoute {
   }
 
   private initRoutes() {
-    this.router.get(`${this.path}s`, this.commentController.getAllComments);
-    this.router.get(`${this.path}/:id`, this.commentController.getCommentById);
+    this.router.get(`${this.path}s`, authenticateJWT, this.commentController.getAllComments);
+    this.router.get(`${this.path}/:id`, authenticateJWT, this.commentController.getCommentById);
     this.router.post(`${this.path}`, authenticateJWT, this.commentController.createComment);
     this.router.put(
       `${this.path}/:id`,
