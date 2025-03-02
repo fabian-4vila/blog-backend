@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { logger } from '../../../utils/logger';
 import CommentService from '../service/comment.service';
 import { UpdateCommentDto } from '../../../dtos/UpdateCommentDto';
+import { AuthenticatedUser } from '../../../interfaces/AuthUser';
 
 class CommentController {
   private readonly CommentService: CommentService = new CommentService();
@@ -67,8 +68,13 @@ class CommentController {
   public createComment = async (req: Request, res: Response) => {
     try {
       const { body: commentBody } = req;
+      const user = req.user as AuthenticatedUser; // Obtener usuario autenticado
+      if (!user) {
+        res.status(401).json({ ok: false, message: 'User not authenticated' });
+        return;
+      }
       logger.info(`${CommentController.name}-CreateComment`);
-      const newComment = await this.CommentService.createComment(commentBody);
+      const newComment = await this.CommentService.createComment(commentBody, user);
       res.status(201).json({
         ok: true,
         comment: newComment,
@@ -80,7 +86,6 @@ class CommentController {
         ok: false,
         message: 'Error creating comment',
       });
-      return;
     }
   };
 
