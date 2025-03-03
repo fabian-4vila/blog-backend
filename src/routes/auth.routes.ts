@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import AuthController from '../modules/Auth/controller/AuthController';
+import { validateLogin } from '../middlewares/login.middleware';
 
 class AuthRoute {
   public path = '/auth';
@@ -11,7 +12,7 @@ class AuthRoute {
   }
 
   private initRoutes() {
-    this.router.post(`${this.path}/login`, async (req, res) => {
+    this.router.post(`${this.path}/login`, validateLogin, async (req, res) => {
       try {
         await this.authController.login(req, res);
       } catch (error) {
