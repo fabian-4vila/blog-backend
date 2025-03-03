@@ -27,7 +27,7 @@ class PostController {
       return;
     } catch (error) {
       logger.error(`${PostController.name}- Error en getAllPosts: ${error}`);
-      this.httpResponse.Error(res, 'Error retrieving posts');
+      this.httpResponse.Error(res, { message: 'Error retrieving posts' });
       return;
     }
   };
@@ -88,7 +88,7 @@ class PostController {
       return;
     } catch (error) {
       logger.error(`${PostController.name}- Error en CreatePost: ${error}`);
-      this.httpResponse.Error(res, { message: 'Error creating post' });
+      this.httpResponse.Error(res, 'Error creating post');
       return;
     }
   };
@@ -107,7 +107,6 @@ class PostController {
     } catch (error) {
       logger.error(`${PostController.name}- Error en UpdatePostById: ${error}`);
       this.httpResponse.Error(res, { message: 'Error updating post' });
-
     }
   };
 

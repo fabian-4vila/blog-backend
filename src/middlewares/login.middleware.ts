@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { validate } from 'class-validator';
 import { LoginDto } from '../dtos/login.dto';
+import { HttpResponse } from '../shared/http.response';
 
+const httpResponse = new HttpResponse();
 export async function validateLogin(req: Request, res: Response, next: NextFunction): Promise<void> {
   const loginDto = Object.assign(new LoginDto(), req.body);
   const errors = await validate(loginDto);
@@ -10,8 +12,7 @@ export async function validateLogin(req: Request, res: Response, next: NextFunct
       property: err.property,
       constraints: Object.values(err.constraints || {}),
     }));
-    res.status(400).json({
-      ok: false,
+    httpResponse.BadRequest(res, {
       message: 'Login data error',
       errors: formattedErrors,
     });

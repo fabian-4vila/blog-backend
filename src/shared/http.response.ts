@@ -30,10 +30,17 @@ export class HttpResponse {
       data,
     });
   }
-  Forbbiden(res: Response, data: any) {
+  Forbiden(res: Response, data: any) {
     return res.status(StatusCodes.FORBIDDEN).json({
       status: StatusCodes.FORBIDDEN,
       statusMesage: ReasonPhrases.FORBIDDEN,
+      data,
+    });
+  }
+  BadRequest(res: Response, data: any) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      status: StatusCodes.BAD_REQUEST,
+      statusMesage: ReasonPhrases.BAD_REQUEST,
       data,
     });
   }
