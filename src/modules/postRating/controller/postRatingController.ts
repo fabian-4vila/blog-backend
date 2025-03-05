@@ -5,6 +5,7 @@ import { logger } from '../../../utils/logger';
 import { HttpResponse } from '../../../shared/http.response';
 import { instanceToPlain } from 'class-transformer';
 import { DeleteResult, UpdateResult } from 'typeorm';
+import { QueryFailedError } from 'typeorm';
 
 class PostRatingController {
   constructor(
@@ -59,19 +60,47 @@ class PostRatingController {
   /**
    * Create PostRating
    */
+  // public createPostRating = async (req: Request, res: Response) => {
+  //   try {
+  //     logger.info(`${PostRatingController.name}-createPostRating`);
+  //     const ratingData: CreatePostRatingDto = req.body;
+  //     const newRating = await this.postRatingService.createPostRating(ratingData);
+  //     this.httpResponse.Create(res, {
+  //       postRating: instanceToPlain(newRating),
+  //     });
+  //     return;
+  //   } catch (error) {
+  //     logger.error(`${PostRatingController.name}- Error en createPostRating: ${error}`);
+  //     this.httpResponse.Error(res, {
+  //       message: `Error creating post rating`,
+  //     });
+  //     return;
+  //   }
+  // };
+
   public createPostRating = async (req: Request, res: Response) => {
     try {
       logger.info(`${PostRatingController.name}-createPostRating`);
       const ratingData: CreatePostRatingDto = req.body;
       const newRating = await this.postRatingService.createPostRating(ratingData);
+
       this.httpResponse.Create(res, {
         postRating: instanceToPlain(newRating),
       });
       return;
     } catch (error) {
       logger.error(`${PostRatingController.name}- Error en createPostRating: ${error}`);
+
+      // Verificar si el error es por restricción única
+      if (error instanceof QueryFailedError && error.message.includes('duplicate key value')) {
+        this.httpResponse.BadRequest(res, {
+          message: 'You can only rate a post once.',
+        });
+        return;
+      }
+
       this.httpResponse.Error(res, {
-        message: `Error creating post rating`,
+        message: 'Error creating post rating',
       });
       return;
     }

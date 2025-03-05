@@ -30,7 +30,7 @@ export class HttpResponse {
       data,
     });
   }
-  Forbiden(res: Response, data: any) {
+  Forbidden(res: Response, data: any) {
     return res.status(StatusCodes.FORBIDDEN).json({
       status: StatusCodes.FORBIDDEN,
       statusMesage: ReasonPhrases.FORBIDDEN,
