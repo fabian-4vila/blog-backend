@@ -1,8 +1,7 @@
 import { Router } from 'express';
 import PostRatingController from '../modules/postRating/controller/postRatingController';
-import { RoleType } from '../types/Role.type';
 import { authenticateJWT } from '../middlewares/auth.middleware';
-import { authorizeRoles } from '../middlewares/role.middleware';
+import { authorizeRatingAction } from '../middlewares/authorizePostRatingAction.middleware';
 
 class PostRatingRoute {
   public path = '/ratingP';
@@ -17,11 +16,16 @@ class PostRatingRoute {
     this.router.get(`${this.path}s`, this.postRatingController.getAllPostRatings);
     this.router.get(`${this.path}/:id`, this.postRatingController.getPostRatingById);
     this.router.post(`${this.path}`, authenticateJWT, this.postRatingController.createPostRating);
-    this.router.put(`${this.path}/:id`, authenticateJWT, this.postRatingController.updatePostRatingById);
+    this.router.put(
+      `${this.path}/:id`,
+      authenticateJWT,
+      authorizeRatingAction,
+      this.postRatingController.updatePostRatingById,
+    );
     this.router.delete(
       `${this.path}/:id`,
       authenticateJWT,
-      authorizeRoles([RoleType.ADMIN]),
+      authorizeRatingAction,
       this.postRatingController.deletePostRatingById,
     );
   }
