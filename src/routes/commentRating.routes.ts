@@ -1,8 +1,7 @@
 import { Router } from 'express';
 import CommentRatingController from '../modules/commentRating/controller/commentRatingController';
-import { RoleType } from '../types/Role.type';
 import { authenticateJWT } from '../middlewares/auth.middleware';
-import { authorizeRoles } from '../middlewares/role.middleware';
+import { authorizeCommentRatingAction } from '../middlewares/authorizeCommentRatingAction.middleware';
 
 class CommentRatingRoute {
   public path = '/ratingC';
@@ -14,14 +13,19 @@ class CommentRatingRoute {
   }
 
   private initRoutes() {
-    this.router.get(`${this.path}s`, this.commentRatingController.getAllCommentRatings);
-    this.router.get(`${this.path}/:id`, this.commentRatingController.getCommentRatingById);
+    this.router.get(`${this.path}s`, authenticateJWT, this.commentRatingController.getAllCommentRatings);
+    this.router.get(`${this.path}/:id`, authenticateJWT, this.commentRatingController.getCommentRatingById);
     this.router.post(`${this.path}`, authenticateJWT, this.commentRatingController.createCommentRating);
-    this.router.put(`${this.path}/:id`, authenticateJWT, this.commentRatingController.updateCommentRatingById);
+    this.router.put(
+      `${this.path}/:id`,
+      authenticateJWT,
+      authorizeCommentRatingAction,
+      this.commentRatingController.updateCommentRatingById,
+    );
     this.router.delete(
       `${this.path}/:id`,
       authenticateJWT,
-      authorizeRoles([RoleType.ADMIN]),
+      authorizeCommentRatingAction,
       this.commentRatingController.deleteCommentRatingById,
     );
   }

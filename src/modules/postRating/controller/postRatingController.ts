@@ -60,24 +60,6 @@ class PostRatingController {
   /**
    * Create PostRating
    */
-  // public createPostRating = async (req: Request, res: Response) => {
-  //   try {
-  //     logger.info(`${PostRatingController.name}-createPostRating`);
-  //     const ratingData: CreatePostRatingDto = req.body;
-  //     const newRating = await this.postRatingService.createPostRating(ratingData);
-  //     this.httpResponse.Create(res, {
-  //       postRating: instanceToPlain(newRating),
-  //     });
-  //     return;
-  //   } catch (error) {
-  //     logger.error(`${PostRatingController.name}- Error en createPostRating: ${error}`);
-  //     this.httpResponse.Error(res, {
-  //       message: `Error creating post rating`,
-  //     });
-  //     return;
-  //   }
-  // };
-
   public createPostRating = async (req: Request, res: Response) => {
     try {
       logger.info(`${PostRatingController.name}-createPostRating`);
