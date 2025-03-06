@@ -42,9 +42,9 @@ class CommentRatingService {
   public async createCommentRating(data: CreateCommentRatingDto): Promise<CommentRating> {
     logger.info(`${CommentRatingService.name}-createCommentRating`);
     const entityManager = this.commentRatingRepository.manager;
-    const comment = await entityManager.findOne(Comment, { where: { id: data.commentId } });
+    const comment = await entityManager.findOne(Comment, { where: { id: data.commentId }, select: ['id'] });
     if (!comment) throw new Error('comment not found');
-    const user = await entityManager.findOne(User, { where: { id: data.userId } });
+    const user = await entityManager.findOne(User, { where: { id: data.userId }, select: ['id'] });
     if (!user) throw new Error('user not found');
     const newCreateCommentRating = this.commentRatingRepository.create({
       comment,
