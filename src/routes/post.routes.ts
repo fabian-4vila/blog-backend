@@ -6,7 +6,6 @@ import { RoleType } from '../types/Role.type';
 import { authenticateJWT } from '../middlewares/auth.middleware';
 import { authorizeRoles } from '../middlewares/role.middleware';
 import { fileFilterMiddleware } from '../middlewares/fileFilter.middleware';
-import { errorHandlerMiddleware } from '../middlewares/errorHandler.middleware'; // Importa el middleware de errores
 
 class PostRoute {
   public path = '/post';
@@ -28,7 +27,6 @@ class PostRoute {
       upload.array('files', 5),
       fileFilterMiddleware,
       this.postController.createPost,
-      errorHandlerMiddleware,
     );
 
     this.router.put(
@@ -38,7 +36,6 @@ class PostRoute {
       upload.array('files', 5),
       fileFilterMiddleware,
       this.postController.updatePostById,
-      errorHandlerMiddleware,
     );
 
     this.router.delete(
@@ -46,7 +43,6 @@ class PostRoute {
       authenticateJWT,
       authorizeRoles([RoleType.ADMIN]),
       this.postController.deletePostById,
-      errorHandlerMiddleware,
     );
   }
 }
