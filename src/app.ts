@@ -14,6 +14,7 @@ import corsConfig from './config/cors.config';
 import { DataSource } from 'typeorm';
 import passport from 'passport';
 import { initializeStrategy } from './Strategies/jwt.strategy';
+import { errorHandlerMiddleware } from './middlewares/errorHandler.middleware';
 
 class App extends ConfigServer {
   public app: express.Application;
@@ -107,7 +108,7 @@ class App extends ConfigServer {
   }
 
   private initializeErrorHandling() {
-    // configure Error handling
+    this.app.use(errorHandlerMiddleware);
   }
 }
 

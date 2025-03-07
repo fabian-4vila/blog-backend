@@ -62,22 +62,7 @@ class CommentRatingController {
   /**
    * Create CommentRating
    */
-  // public createCommentRating = async (req: Request, res: Response) => {
-  //   try {
-  //     logger.info(`${CommentRatingController.name}-createCommentRating`);
-  //     const ratingData: CreateCommentRatingDto = req.body;
-  //     const newRating = await this.commentRatingService.createCommentRating(ratingData);
-  //     this.httpResponse.Create(res, {
-  //       CommentRating: instanceToPlain(newRating),
-  //     });
-  //   } catch (error) {
-  //     logger.error(`${CommentRatingController.name}- Error en CreateCommentRating: ${error}`);
-  //     this.httpResponse.Error(res, {
-  //       message: 'Error creating comment rating',
-  //     });
-  //     return;
-  //   }
-  // };
+
   public createCommentRating = async (req: Request, res: Response) => {
     try {
       logger.info(`${CommentRatingController.name}-createCommentRating`);
@@ -89,7 +74,6 @@ class CommentRatingController {
       return;
     } catch (error) {
       logger.error(`${CommentRatingController.name}- Error en createCommentRating: ${error}`);
-      // Verificar si el error es por restricción única
       if (error instanceof QueryFailedError && error.message.includes('duplicate key value')) {
         this.httpResponse.BadRequest(res, {
           message: 'You can only rate a comment once.',
@@ -102,6 +86,7 @@ class CommentRatingController {
       return;
     }
   };
+
   /**
    * Update CommentRating By Id
    */
