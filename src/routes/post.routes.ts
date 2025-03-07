@@ -8,7 +8,6 @@ import { authorizeRoles } from '../middlewares/role.middleware';
 import { fileFilterMiddleware } from '../middlewares/fileFilter.middleware';
 import { errorHandlerMiddleware } from '../middlewares/errorHandler.middleware'; // Importa el middleware de errores
 
-
 class PostRoute {
   public path = '/post';
   public router = Router();
