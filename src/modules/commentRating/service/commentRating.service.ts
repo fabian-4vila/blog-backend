@@ -47,8 +47,8 @@ class CommentRatingService {
     const user = await entityManager.findOne(User, { where: { id: data.userId }, select: ['id'] });
     if (!user) throw new Error('user not found');
     const newCreateCommentRating = this.commentRatingRepository.create({
-      comment,
-      user,
+      comment: comment as Comment,
+      user: user,
       likeDislike: data.likeDislike,
       stars: data.stars,
     });
