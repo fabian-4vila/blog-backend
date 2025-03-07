@@ -1,4 +1,4 @@
-import { Entity, Unique, Check, PrimaryGeneratedColumn, ManyToOne, Column } from 'typeorm';
+import { Entity, Unique, Check, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn } from 'typeorm';
 import { User } from './User.entity';
 import { Comment } from './Comment.entity';
 
@@ -10,9 +10,11 @@ export class CommentRating {
   id!: string;
 
   @ManyToOne(() => Comment, (comment) => comment.ratings, { nullable: false, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'comment_id' })
   comment!: Comment;
 
   @ManyToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_id' })
   user!: User;
 
   @Column({ type: 'int' })

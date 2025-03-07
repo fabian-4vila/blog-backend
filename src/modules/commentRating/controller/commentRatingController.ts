@@ -62,14 +62,13 @@ class CommentRatingController {
   /**
    * Create CommentRating
    */
-
   public createCommentRating = async (req: Request, res: Response) => {
     try {
       logger.info(`${CommentRatingController.name}-createCommentRating`);
       const ratingData: CreateCommentRatingDto = req.body;
       const newRating = await this.commentRatingService.createCommentRating(ratingData);
       this.httpResponse.Create(res, {
-        commentRating: instanceToPlain(newRating),
+        commentRating: newRating,
       });
       return;
     } catch (error) {

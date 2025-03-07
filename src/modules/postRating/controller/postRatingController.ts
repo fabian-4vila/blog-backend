@@ -72,15 +72,12 @@ class PostRatingController {
       return;
     } catch (error) {
       logger.error(`${PostRatingController.name}- Error en createPostRating: ${error}`);
-
-      // Verificar si el error es por restricción única
       if (error instanceof QueryFailedError && error.message.includes('duplicate key value')) {
         this.httpResponse.BadRequest(res, {
           message: 'You can only rate a post once.',
         });
         return;
       }
-
       this.httpResponse.Error(res, {
         message: 'Error creating post rating',
       });

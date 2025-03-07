@@ -1,4 +1,4 @@
-import { Check, Column, Entity, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Check, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { Post } from './Post.entity';
 import { User } from './User.entity';
 
@@ -10,9 +10,11 @@ export class PostRating {
   id!: string;
 
   @ManyToOne(() => Post, (post) => post.ratings, { nullable: false, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'post_id' })
   post!: Post;
 
   @ManyToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_id' })
   user!: User;
 
   @Column({ type: 'int' })

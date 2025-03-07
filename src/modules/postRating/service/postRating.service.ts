@@ -38,9 +38,9 @@ class PostRatingService {
   public async createPostRating(data: CreatePostRatingDto): Promise<PostRating> {
     logger.info(`${PostRatingService.name}-createPostRating`);
     const entityManager = this.postRatingRepository.manager;
-    const post = await entityManager.findOne(Post, { where: { id: data.postId } });
+    const post = await entityManager.findOne(Post, { where: { id: data.postId }, select: ['id'] });
     if (!post) throw new Error('Post not found');
-    const user = await entityManager.findOne(User, { where: { id: data.userId } });
+    const user = await entityManager.findOne(User, { where: { id: data.userId }, select: ['id'] });
     if (!user) throw new Error('User not found');
     const newPostRating = this.postRatingRepository.create({
       post,
