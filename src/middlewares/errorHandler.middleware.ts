@@ -1,9 +1,20 @@
 import { Request, Response, NextFunction } from 'express';
+import { HttpException } from '../exceptions/httpException';
 import { HttpResponse } from '../shared/http.response';
+import { logger } from '../utils/logger';
 
 const httpResponse = new HttpResponse();
-export const errorHandlerMiddleware = (_err: Error, _req: Request, res: Response, _next: NextFunction): void => {
-  httpResponse.Error(res, {
-    message: 'Ocurrió un error en el servidor',
-  });
+
+export const errorHandlerMiddleware = (err: Error, req: Request, res: Response, _next: NextFunction): void => {
+  let status = 500;
+  let message = 'Ocurrió un error en el servidor';
+
+  if (err instanceof HttpException) {
+    status = err.status;
+    message = err.message;
+  }
+
+  logger.error(`[${req.method}] ${req.path} >> StatusCode:: ${status}, Message:: ${message}, Error:: ${err.stack}`);
+
+  httpResponse.Error(res, { status, message });
 };
