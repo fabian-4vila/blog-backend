@@ -19,6 +19,14 @@ class AuthRoute {
         res.status(500).json({ message: 'Server Error', error: (error as Error).message });
       }
     });
+
+    this.router.post(`${this.path}/logout`, async (req, res) => {
+      try {
+        await this.authController.logout(req, res);
+      } catch (error) {
+        res.status(500).json({ message: 'Server Error', error: (error as Error).message });
+      }
+    });
   }
 }
 
