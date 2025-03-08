@@ -7,11 +7,11 @@ import { AuthenticatedUser } from '../interfaces/AuthUser';
 const JWT_SECRET = process.env.JWT_SECRET;
 
 if (!JWT_SECRET) {
-  throw new Error('FATAL ERROR: Error in the server configuration.');
+  throw new Error('FATAL ERROR: error internal server');
 }
 
 const options = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: ExtractJwt.fromExtractors([(req) => req?.cookies?.auth_token || null]),
   secretOrKey: JWT_SECRET,
 };
 
@@ -24,13 +24,16 @@ const initializeStrategy = () => {
           where: { id: payload.sub },
           select: ['id', 'role', 'permissions'],
         });
+
         if (!user) return done(null, false);
+
         const permissions = Array.isArray(user.permissions) ? user.permissions : [];
         const authenticatedUser: AuthenticatedUser = {
           id: user.id,
           role: user.role,
           permissions,
         };
+
         return done(null, authenticatedUser);
       } catch (error) {
         return done(error, false);
