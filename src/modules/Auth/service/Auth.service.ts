@@ -8,9 +8,10 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const EXPIRES_IN = '1h';
 
 if (!JWT_SECRET) {
-  throw new Error('FATAL ERROR: Error in the server configuration');
+  throw new Error('FATAL ERROR: Missing JWT secret.');
 }
 
+// Generar token JWT
 export const generateToken = (user: User) => {
   const payload = {
     sub: user.id,
@@ -21,24 +22,28 @@ export const generateToken = (user: User) => {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: EXPIRES_IN });
 };
 
+// Verificar contraseña
 export const verifyPassword = async (password: string, hash: string) => {
   try {
-    const isMatch = await bcrypt.compare(password, hash);
-    return isMatch;
+    return await bcrypt.compare(password, hash);
   } catch (error) {
     return false;
   }
 };
 
+// Autenticar usuario
 export const authenticateUser = async (email: string, password: string) => {
   const userRepository = AppDataSource.getRepository(User);
   const user = await userRepository.findOne({ where: { email } });
+
   if (!user) {
     throw new Error('User not found');
   }
+
   const isPasswordValid = await verifyPassword(password, user.password);
   if (!isPasswordValid) {
     throw new Error('Incorrect password');
   }
-  return generateToken(user);
+
+  return user;
 };
