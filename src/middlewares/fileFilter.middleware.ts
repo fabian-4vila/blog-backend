@@ -23,7 +23,7 @@ export const fileFilterMiddleware = (req: Request, res: Response, next: NextFunc
     for (const file of files) {
       if (!allowedMimeTypes.includes(file.mimetype) || excludedMimeTypes.includes(file.mimetype)) {
         res.status(400).json({
-          message: `Formato de archivo no permitido: ${file.mimetype}. Se permiten imágenes, videos y PDFs. Archivos DOCX y TXT están prohibidos.`,
+          message: `File format not allowed: ${file.mimetype}. Images, videos and PDFs are allowed. DOCX and TXT files are prohibited.`,
         });
         return;
       }
