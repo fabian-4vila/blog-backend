@@ -7,7 +7,7 @@ const httpResponse = new HttpResponse();
 
 export const errorHandlerMiddleware = (err: Error, req: Request, res: Response, _next: NextFunction): void => {
   let status = 500;
-  let message = 'Ocurrió un error en el servidor';
+  let message = 'Error occurred on the server';
 
   if (err instanceof HttpException) {
     status = err.status;
