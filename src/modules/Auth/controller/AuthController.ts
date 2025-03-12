@@ -8,10 +8,16 @@ class AuthController {
   public async login(req: Request, res: Response): Promise<Response> {
     try {
       const { email, password } = req.body;
+
+      if (!email || !password) {
+        return this.httpResponse.BadRequest(res, 'Email and password are required');
+      }
+
       const user = await authenticateUser(email, password);
       if (!user) {
-        return this.httpResponse.Unauthorized(res, 'Invalid credentials');
+        return this.httpResponse.Unauthorized(res, 'Invalid email or password');
       }
+
       const token = generateToken(user);
       res.cookie('auth_token', token, {
         httpOnly: true,
@@ -19,9 +25,11 @@ class AuthController {
         sameSite: 'strict',
         maxAge: 60 * 60 * 1000,
       });
+
       return this.httpResponse.Ok(res, { message: 'Login successful' });
     } catch (error) {
-      return this.httpResponse.Error(res, 'Server error');
+      console.error('Login error:', error);
+      return this.httpResponse.Error(res, 'An unexpected error occurred');
     }
   }
 
