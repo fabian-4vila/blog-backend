@@ -4,43 +4,65 @@ import { User } from '../../../entities/User.entity';
 import { RolePermissions } from '../../../types/RolePermissions';
 import { AppDataSource } from '../../../config/data.source';
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || '';
 const EXPIRES_IN = '1h';
 
 if (!JWT_SECRET) {
-  throw new Error('FATAL ERROR: Error on the server.');
+  console.error('⚠️ WARNING: JWT_SECRET is not defined. Tokens cannot be generated.');
 }
 
-export const generateToken = (user: User) => {
-  const payload = {
-    sub: user.id,
-    email: user.email,
-    role: user.role,
-    permissions: RolePermissions[user.role] || [],
-  };
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: EXPIRES_IN });
+/**
+ * Generates a JWT token for a given user.
+ */
+export const generateToken = (user: User): string | null => {
+  if (!JWT_SECRET) return null;
+
+  return jwt.sign(
+    {
+      sub: user.id,
+      email: user.email,
+      role: user.role,
+      permissions: RolePermissions[user.role] || [],
+    },
+    JWT_SECRET,
+    { expiresIn: EXPIRES_IN },
+  );
 };
 
-export const verifyPassword = async (password: string, hash: string) => {
+/**
+ * Compares a plain password with its hashed version.
+ */
+export const verifyPassword = async (password: string, hash: string): Promise<boolean> => {
   try {
     return await bcrypt.compare(password, hash);
   } catch (error) {
+    console.error('Error verifying password:', error);
     return false;
   }
 };
 
-export const authenticateUser = async (email: string, password: string) => {
-  const userRepository = AppDataSource.getRepository(User);
-  const user = await userRepository.findOne({ where: { email } });
+/**
+ * Authenticates a user by email and password.
+ */
+export const authenticateUser = async (email: string, password: string): Promise<User | null> => {
+  try {
+    const userRepository = AppDataSource.getRepository(User);
+    const user = await userRepository.findOne({ where: { email } });
 
-  if (!user) {
-    throw new Error('User not found');
+    if (!user) {
+      console.warn(`⚠️ Login attempt failed for email: ${email}`);
+      return null;
+    }
+
+    const isPasswordValid = await verifyPassword(password, user.password);
+    if (!isPasswordValid) {
+      console.warn(`⚠️ Invalid password attempt for email: ${email}`);
+      return null;
+    }
+
+    return user;
+  } catch (error) {
+    console.error('⚠️ Error during authentication:', error);
+    return null;
   }
-
-  const isPasswordValid = await verifyPassword(password, user.password);
-  if (!isPasswordValid) {
-    throw new Error('Incorrect password');
-  }
-
-  return user;
 };
