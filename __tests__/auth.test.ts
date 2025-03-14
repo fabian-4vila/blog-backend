@@ -1,6 +1,6 @@
 import request from 'supertest';
-import App from '../app';
-import AuthRoute from '../routes/auth.routes';
+import App from '../src/app';
+import AuthRoute from '../src/routes/auth.routes';
 
 const appInstance = new App([new AuthRoute()]);
 const app = appInstance.getServer(); // Obtiene el servidor sin iniciar listen()
