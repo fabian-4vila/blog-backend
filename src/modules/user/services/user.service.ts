@@ -6,6 +6,7 @@ import { CreateUserDto } from '../../../dtos/CreateUserDto';
 import { RoleType } from '../../../types/Role.type';
 import bcrypt from 'bcrypt';
 import { UpdateUserDto } from '../../../dtos/UpdateUserDto';
+import { HttpException } from '../../../exceptions/httpException';
 
 class UserService {
   private userRepository: Repository<User>;
@@ -28,20 +29,17 @@ class UserService {
     logger.info(`${UserService.name}-getUserById with id: ${id}`);
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
-      throw new Error('User not found');
+      throw new HttpException(404, 'User not found');
     }
     return user;
   }
+
   /**
-   * find User By Email
+   * Find User By Email
    */
   public async getUserByEmail(email: string): Promise<User | null> {
     logger.info(`${UserService.name} - findUserByEmail with email: ${email}`);
-    const user = await this.userRepository.findOne({ where: { email } });
-    if (!user) {
-      return null;
-    }
-    return user;
+    return (await this.userRepository.findOne({ where: { email } })) || null;
   }
 
   /**
@@ -63,7 +61,7 @@ class UserService {
     const user = await this.getUserById(id);
     if (!user) throw new Error(`User with ID ${id} not found`);
     if (Object.keys(partialUpdateUserBody).length === 0) {
-      throw new Error('No data provided for update');
+      throw new HttpException(400, 'No data provided for update');
     }
     const updatedData = { ...partialUpdateUserBody };
     if (updatedData.password) {
@@ -91,8 +89,7 @@ class UserService {
    */
   public async deleteUserById(id: string): Promise<DeleteResult> {
     logger.info(`${UserService.name}-DeleteUserById with id: ${id}`);
-    const userToDeleted = await this.getUserById(id);
-    if (!userToDeleted) throw new Error('user does not exist');
+    await this.getUserById(id);
     return await this.userRepository.delete(id);
   }
 
