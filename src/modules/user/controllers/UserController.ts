@@ -100,7 +100,7 @@ class UserController {
     } catch (error) {
       logger.error(`${UserController.name} - Error en partialUpdateUserById: ${error}`);
       this.httpResponse.Error(res, {
-        message: 'Error server side',
+        message: 'Error Updating user',
       });
       return;
     }
