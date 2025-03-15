@@ -4,6 +4,7 @@ import { AppDataSource } from '../../../config/data.source';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { logger } from '../../../utils/logger';
+import { HttpException } from '../../../exceptions/httpException';
 
 class PasswordResetService {
   private userRepository: Repository<User>;
@@ -15,9 +16,11 @@ class PasswordResetService {
   /**
    * GenerateResetToken
    */
-  public async generateResetToken(email: string): Promise<string | null> {
+  public async generateResetToken(email: string): Promise<string> {
     const user = await this.userRepository.findOne({ where: { email } });
-    if (!user) return null;
+    if (!user) {
+      throw new HttpException(404, 'el correo no esta resgitrado');
+    }
 
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET as string, {
       expiresIn: '1h',
