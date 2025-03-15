@@ -16,6 +16,10 @@ class PasswordResetController {
     try {
       const { email } = req.body;
       logger.info(`${PasswordResetController.name} - requestPasswordReset: ${email}`);
+      if (!email) {
+        this.httpResponse.BadRequest(res, 'El correo es obligatorio.');
+        return;
+      }
       const token = await this.passwordResetService.generateResetToken(email);
       if (!token) {
         this.httpResponse.Ok(res, 'If the email is registered, you will receive a password reset link.');
@@ -37,9 +41,13 @@ class PasswordResetController {
       const { token } = req.params;
       const { newPassword } = req.body;
       logger.info(`${PasswordResetController.name} - resetPassword`);
+      if (!token || !newPassword) {
+        this.httpResponse.BadRequest(res, 'El token y la nueva contraseña son obligatorios.');
+        return;
+      }
       const result = await this.passwordResetService.resetPassword(token, newPassword);
       if (!result) {
-        this.httpResponse.Error(res, 'An error occurred while resetting the password. Please try again later.');
+        this.httpResponse.BadRequest(res, 'No se pudo restablecer la contraseña. Verifica tu token.');
         return;
       }
       this.httpResponse.Ok(res, 'Your password has been reset successfully.');
