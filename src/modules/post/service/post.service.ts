@@ -6,6 +6,7 @@ import { User } from '../../../entities/User.entity';
 import uploadService from './upload.service';
 import { UpdatePostDto } from '../../../dtos/UpdatePostDto';
 import { logger } from '../../../utils/logger';
+import { HttpException } from '../../../exceptions/httpException';
 
 class PostService {
   private postRepository: Repository<Post>;
@@ -26,9 +27,9 @@ class PostService {
    * Get Post By Id
    */
   public async getPostById(id: string): Promise<Post> {
-    logger.info(`${PostService.name}-getUserById with id: ${id}`);
+    logger.info(`${PostService.name}-getPostById with id: ${id}`);
     const post = await this.postRepository.findOne({ where: { id } });
-    if (!post) throw new Error('Post not found');
+    if (!post) throw new HttpException(404, 'Post not found');
     return post;
   }
 
@@ -38,7 +39,7 @@ class PostService {
   public async createPost(postBody: CreatePostDto, files?: Express.Multer.File[]): Promise<Post> {
     const user = await this.postRepository.manager.findOne(User, { where: { id: postBody.userId }, select: ['id'] });
     if (!user) {
-      throw new Error('User not found');
+      throw new HttpException(404, 'User not found');
     }
     let uploadedFiles: { type: string; url: string }[] = postBody.files ?? [];
     if (files && files.length > 0) {
@@ -46,7 +47,7 @@ class PostService {
         files.map(async (file) => {
           const uploaded = await uploadService.uploadFile(file);
           if (!uploaded?.url) {
-            throw new Error(`File upload failed for ${file.originalname}`);
+            throw new HttpException(500, `File upload failed for ${file.originalname} error server side`);
           }
           return { type: file.mimetype, url: uploaded.url };
         }),
@@ -76,7 +77,7 @@ class PostService {
     if (updatePostDto.userId) {
       const user = await this.postRepository.manager.findOne(User, { where: { id: updatePostDto.userId } });
       if (!user) {
-        throw new Error(`Usuario con ID ${updatePostDto.userId} no encontrado.`);
+        throw new HttpException(404, `Usuario con ID ${updatePostDto.userId} no encontrado.`);
       }
       post.user = user;
     }
@@ -93,7 +94,7 @@ class PostService {
    */
   public async deletePostById(id: string): Promise<DeleteResult> {
     const post = await this.getPostById(id);
-    if (!post) throw new Error('Post not found');
+    if (!post) throw new HttpException(404, 'Post not found');
     return await this.postRepository.delete(id);
   }
 }
