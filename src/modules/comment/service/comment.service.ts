@@ -6,6 +6,7 @@ import { CreateCommentDto } from '../../../dtos/CreateCommentDto';
 import { Post } from '../../../entities/Post.entity';
 import { AuthenticatedUser } from '../../../interfaces/AuthUser';
 import { UpdateCommentDto } from '../../../dtos/UpdateCommentDto';
+import { HttpException } from '../../../exceptions/httpException';
 
 class CommentService {
   private CommentRepository: Repository<Comment>;
@@ -28,7 +29,7 @@ class CommentService {
   public async getCommentById(id: string): Promise<Comment> {
     logger.info(`${CommentService.name}-getCommentById with id: ${id}`);
     const comment = await this.CommentRepository.findOne({ where: { id } });
-    if (!comment) throw new Error('Comment not found');
+    if (!comment) throw new HttpException(404, 'Comment not found');
     return comment;
   }
 
@@ -40,7 +41,7 @@ class CommentService {
     const entityManager = this.CommentRepository.manager;
     const post = await entityManager.findOne(Post, { where: { id: data.postId }, select: ['id'] });
     if (!post) {
-      throw new Error('The post does not exist');
+      throw new HttpException(400, 'The post does not exist');
     }
     const newComment = this.CommentRepository.create({
       post: post,
@@ -58,7 +59,7 @@ class CommentService {
     logger.info(`${CommentService.name}-updateCommentById with id: ${id}`);
     const comment = await this.getCommentById(id);
     if (!comment) {
-      throw new Error(`Comme con ID ${id} no encontrado`);
+      throw new HttpException(404, `Comme con ID ${id} no encontrado`);
     }
     Object.assign(comment, updateData);
     return await this.CommentRepository.update(id, comment);
