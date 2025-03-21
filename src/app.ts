@@ -15,6 +15,9 @@ import { DataSource } from 'typeorm';
 import passport from 'passport';
 import { initializeStrategy } from './Strategies/jwt.strategy';
 import { errorHandlerMiddleware } from './middlewares/errorHandler.middleware';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerConfig from './config/swagger.config';
+import swaggerUi from 'swagger-ui-express';
 
 class App extends ConfigServer {
   public app: express.Application;
@@ -104,7 +107,9 @@ class App extends ConfigServer {
   }
 
   private initializeSwagger() {
-    //init swagger
+    const specs = swaggerJSDoc(swaggerConfig);
+    this.app.use('/api/v1/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+    logger.info('Swagger Docs available at /api-docs');
   }
 
   private initializeErrorHandling() {
