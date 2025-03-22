@@ -59,7 +59,6 @@ export const authenticateUser = async (email: string, password: string): Promise
       console.warn(`⚠️ Invalid password attempt for email: ${email}`);
       return null;
     }
-
     return user;
   } catch (error) {
     console.error('⚠️ Error during authentication:', error);
