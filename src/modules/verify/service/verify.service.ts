@@ -4,6 +4,7 @@ import { AppDataSource } from '../../../config/data.source';
 import { logger } from '../../../utils/logger';
 import jwt from 'jsonwebtoken';
 import { sendVerificationEmail } from '../../../utils/email';
+import { HttpException } from '../../../exceptions/httpException';
 
 class VerificationService {
   private userRepository: Repository<User>;
@@ -20,7 +21,7 @@ class VerificationService {
 
     const user = await this.userRepository.findOne({ where: { email } });
     if (!user) {
-      throw new Error('User not found');
+      throw new HttpException(404, 'User not found');
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, {
       expiresIn: '1h',
