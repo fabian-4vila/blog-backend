@@ -27,6 +27,7 @@ class UserRoute {
      * @swagger
      * /users:
      *   get:
+     *     operationId: "1_getAllUser"
      *     summary: Obtener todos los usuarios
      *     description: Devuelve una lista de todos los usuarios. Requiere autenticación con cookies.
      *     tags:
@@ -51,6 +52,7 @@ class UserRoute {
      * @swagger
      * /user/{id}:
      *   get:
+     *     operationId: "2_getUserById"
      *     summary: Obtener un usuario por ID
      *     description: Devuelve un usuario especifico segun su ID. solo accesible para administradores.
      *     tags: [Usuarios]
@@ -83,6 +85,7 @@ class UserRoute {
      * @swagger
      * /user:
      *   post:
+     *     operationId: "3_createUser"
      *     summary: Crear un nuevo usuario
      *     description: Permite a un administrador crear un nuevo usuario.
      *     tags: [Usuarios]
@@ -112,8 +115,6 @@ class UserRoute {
      *     responses:
      *       201:
      *         description: Usuario creado exitosamente.
-     *       400:
-     *         description: Datos inválidos.
      *       401:
      *         description: No autorizado.
      *       500:
@@ -124,6 +125,7 @@ class UserRoute {
      * @swagger
      * /user/{id}:
      *   put:
+     *     operationId: "4_updateUser"
      *     summary: Actualizar un usuario
      *     description: Permite a un administrador actualizar los datos de un usuario.
      *     tags: [Usuarios]
@@ -173,6 +175,7 @@ class UserRoute {
      * @swagger
      * /user/{id}:
      *   patch:
+     *     operationId: "5_partialUpdateUser"
      *     summary: Actualización parcial de un usuario
      *     description: Permite a un administrador actualizar parcialmente los datos de un usuario.
      *     tags: [Usuarios]
@@ -223,6 +226,7 @@ class UserRoute {
      * @swagger
      * /user/{id}:
      *   delete:
+     *     operationId: "6_deleteUser"
      *     summary: Eliminar un usuario
      *     description: Permite a un administrador eliminar un usuario.
      *     tags: [Usuarios]
