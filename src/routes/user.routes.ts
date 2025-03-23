@@ -32,12 +32,14 @@ class UserRoute {
      *     tags:
      *       - Usuarios
      *     security:
-     *       - CookieAuth: []  # Usa la cookie para autenticarse
+     *       - CookieAuth: []
      *     responses:
      *       200:
      *         description: Lista de usuarios obtenida con éxito.
      *       401:
      *         description: No autorizado. Token ausente o inválido.
+     *       500:
+     *         description: Error en el servidor.
      */
     this.router.get(
       `${this.path}s`,
@@ -46,6 +48,7 @@ class UserRoute {
       this.userController.getAllUsers,
     );
     /**
+     * @swagger
      * /user/{id}:
      *   get:
      *     summary: Obtener un usuario por ID
@@ -63,14 +66,10 @@ class UserRoute {
      *     responses:
      *       200:
      *         description: Usuario encontrado.
-     *       400:
-     *         description: ID inválido.
      *       404:
      *         description: Usuario no encontrado.
      *       401:
      *         description: No autorizado.
-     *       403:
-     *         description: Prohibido. Se requieren permisos de administrador.
      *       500:
      *         description: Error en el servidor.
      */
@@ -95,20 +94,21 @@ class UserRoute {
      *         application/json:
      *           schema:
      *             type: object
+     *             required:
+     *               - name
+     *               - email
+     *               - password
      *             properties:
      *               name:
      *                 type: string
-     *                 example: "Juan Pérez"
+     *                 description: Nombre del usuario.
      *               email:
      *                 type: string
-     *                 example: "juan@example.com"
+     *                 format: email
+     *                 description: Correo electrónico del usuario.
      *               password:
      *                 type: string
-     *                 example: "password123"
-     *               role:
-     *                 type: string
-     *                 enum: [SUBSCRIBED, ADMIN]
-     *                 example: "SUBSCRIBED"
+     *                 description: Contraseña del usuario.
      *     responses:
      *       201:
      *         description: Usuario creado exitosamente.
@@ -116,8 +116,6 @@ class UserRoute {
      *         description: Datos inválidos.
      *       401:
      *         description: No autorizado.
-     *       403:
-     *         description: Prohibido. Se requieren permisos de administrador.
      *       500:
      *         description: Error en el servidor.
      */
@@ -137,7 +135,7 @@ class UserRoute {
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID del usuario
+     *         description: ID del usuario a actualizar.
      *     requestBody:
      *       required: true
      *       content:
@@ -147,23 +145,19 @@ class UserRoute {
      *             properties:
      *               name:
      *                 type: string
-     *                 example: "Juan Pérez"
+     *                 description: Nuevo nombre del usuario.
      *               email:
      *                 type: string
-     *                 example: "juan@example.com"
-     *               role:
+     *                 format: email
+     *                 description: Nuevo correo electrónico del usuario.
+     *               password:
      *                 type: string
-     *                 enum: [SUBSCRIBED, ADMIN]
-     *                 example: "SUBSCRIBED"
+     *                 description: Nueva contraseña del usuario.
      *     responses:
      *       200:
      *         description: Usuario actualizado correctamente.
-     *       400:
-     *         description: Datos inválidos.
      *       401:
      *         description: No autorizado.
-     *       403:
-     *         description: Prohibido. Se requieren permisos de administrador.
      *       404:
      *         description: Usuario no encontrado.
      *       500:
@@ -190,7 +184,7 @@ class UserRoute {
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID del usuario
+     *         description: ID del usuario.
      *     requestBody:
      *       required: true
      *       content:
@@ -200,23 +194,19 @@ class UserRoute {
      *             properties:
      *               name:
      *                 type: string
-     *                 example: "Juan Pérez"
+     *                 description: Nuevo nombre del usuario (opcional).
      *               email:
      *                 type: string
-     *                 example: "juan@example.com"
-     *               role:
+     *                 format: email
+     *                 description: Nuevo correo electrónico del usuario (opcional).
+     *               password:
      *                 type: string
-     *                 enum: [SUBSCRIBED, ADMIN]
-     *                 example: "SUBSCRIBED"
+     *                 description: Nueva contraseña del usuario (opcional).
      *     responses:
      *       200:
      *         description: Usuario actualizado correctamente.
-     *       400:
-     *         description: Datos inválidos.
      *       401:
      *         description: No autorizado.
-     *       403:
-     *         description: Prohibido. Se requieren permisos de administrador.
      *       404:
      *         description: Usuario no encontrado.
      *       500:
@@ -250,8 +240,6 @@ class UserRoute {
      *         description: Usuario eliminado correctamente.
      *       401:
      *         description: No autorizado.
-     *       403:
-     *         description: Prohibido. Se requieren permisos de administrador.
      *       404:
      *         description: Usuario no encontrado.
      *       500:
