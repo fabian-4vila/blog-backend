@@ -20,7 +20,7 @@ class PostRoute {
     /**
      * @swagger
      * tags:
-     *   name: Posts
+     *   name: Posteos
      *   description: Endpoints para la gestion de publicaciones
      */
 
@@ -32,7 +32,7 @@ class PostRoute {
      *     summary: obtener todas las publicaciones
      *     description: Devuelve una lista de todas las publicaciones disponibles.
      *     tags:
-     *       - Posts
+     *       - Posteos
      *     responses:
      *       200:
      *         description: Lista de publicaciones obtenida con exito.
@@ -48,7 +48,7 @@ class PostRoute {
      *     summary: Obtener una publicacion por ID
      *     description: Devuelve una publicacion especifica segun su ID.
      *     tags:
-     *       - Post
+     *       - Posteos
      *     parameters:
      *       - in: path
      *         name: id
@@ -65,7 +65,49 @@ class PostRoute {
      *         description: Error en el servidor.
      */
     this.router.get(`${this.path}/:id`, this.postController.getPostById);
-
+    /**
+     * @swagger
+     * /post:
+     *   post:
+     *     operationId: "3_createPost"
+     *     summary: Crear una nueva publicación
+     *     description: Crea una nueva publicación. Solo accesible para administradores.
+     *     tags:
+     *       - Posteos
+     *     security:
+     *       - BearerAuth: []
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         multipart/form-data:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               title:
+     *                 type: string
+     *                 description: Título de la publicación.
+     *               content:
+     *                 type: string
+     *                 description: Contenido de la publicación.
+     *               user_id:
+     *                 type: string
+     *                 description: ID del usuario que crea la publicación.
+     *               files:
+     *                 type: array
+     *                 items:
+     *                   type: string
+     *                   format: binary
+     *                 description: Archivos adjuntos.
+     *     responses:
+     *       201:
+     *         description: Publicación creada con éxito.
+     *       400:
+     *         description: Datos inválidos.
+     *       401:
+     *         description: No autorizado.
+     *       500:
+     *         description: Error en el servidor.
+     */
     this.router.post(
       `${this.path}`,
       authenticateJWT,
@@ -74,7 +116,55 @@ class PostRoute {
       fileFilterMiddleware,
       this.postController.createPost,
     );
-
+    /**
+     * @swagger
+     * /post/{id}:
+     *   put:
+     *     operationId: "4_updatePostById"
+     *     summary: Actualizar una publicacion por ID
+     *     description: Modifica los datoa de una publicacion existente. Solo accesible para administradores.
+     *     tags:
+     *       - Posteos
+     *     security:
+     *       - BearerAuth: []
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: ID de la publicacion
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         multipart/form-data:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               title:
+     *                 type: string
+     *                 description: Nuevo titulo de la publicacion.
+     *               content:
+     *                 type: text
+     *                 description: Nuevo contenido de la publicacion.
+     *               files:
+     *                 type: array
+     *                 items:
+     *                   type: string
+     *                   format: binary
+     *                 description: Nuevos archivos adjuntos.
+     *     responses:
+     *       200:
+     *         description: Publicacion actualizada con exito.
+     *       400:
+     *         description: Datos invalidos.
+     *       401:
+     *         description: No autorizado.
+     *       404:
+     *         description: Publicacion no encontrada.
+     *       500:
+     *         description: Error en el servidor.
+     */
     this.router.put(
       `${this.path}/:id`,
       authenticateJWT,
@@ -83,7 +173,34 @@ class PostRoute {
       fileFilterMiddleware,
       this.postController.updatePostById,
     );
-
+    /**
+     * @swagger
+     *  /post/{id}:
+     *    delete:
+     *      operationId: "5_deletePostById"
+     *      summary: Eliminar una publicacion por ID
+     *      description: Elimina una publicacion existente. Solo accesible para admisnitadores
+     *      tags:
+     *        - Posteos
+     *      security:
+     *        - BearerAuth: []
+     *      parameters:
+     *        - in: path
+     *          name: id
+     *          required: true
+     *          schema:
+     *            type: string
+     *          description: ID dela publicacion a eliminar
+     *      responses:
+     *        200:
+     *          description: Publicacion eliminada con exito.
+     *        401:
+     *          description: No autorizado.
+     *        404:
+     *          descriptio: publicacion no encontrada.
+     *        500:
+     *          description: Error en el servidor.
+     */
     this.router.delete(
       `${this.path}/:id`,
       authenticateJWT,
