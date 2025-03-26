@@ -11,10 +11,17 @@ class BaseRoute implements Routes {
   public initBaseRoutes() {
     /**
      * @swagger
+     * tags:
+     *   name: Servidor
+     *   description: Endpoints para verificar si el servidor esta en ejecucion
+     */
+    /**
+     * @swagger
      * /alive:
      *   get:
      *     summary: Verifica si el servidor está en ejecución.
      *     description: Retorna un estado 200 si el servidor está activo.
+     *     tags: [Servidor]
      *     responses:
      *       200:
      *         description: El servidor está en ejecución.
