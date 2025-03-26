@@ -15,6 +15,7 @@ class BaseRoute implements Routes {
      *   name: Servidor
      *   description: Endpoints para verificar si el servidor esta en ejecucion
      */
+
     /**
      * @swagger
      * /alive:

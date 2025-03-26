@@ -17,13 +17,6 @@ class RegisterRoute {
   private initRoutes() {
     /**
      * @swagger
-     * tags:
-     *   name: Registro
-     *   description: Endpoints para registrarse
-     */
-
-    /**
-     * @swagger
      * /register:
      *   post:
      *     summary: Registrar un nuevo usuario
