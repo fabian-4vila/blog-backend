@@ -14,6 +14,13 @@ class AuthRoute {
   private initRoutes() {
     /**
      * @swagger
+     * tags:
+     *   name: Autenticacion
+     *   description: Endpoints para iniciar y cerrar sesion
+     */
+
+    /**
+     * @swagger
      * /auth/login:
      *  post:
      *    summary: Iniciar sesion
