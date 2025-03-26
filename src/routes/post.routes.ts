@@ -19,13 +19,6 @@ class PostRoute {
   private initRoutes() {
     /**
      * @swagger
-     * tags:
-     *   name: Posteos
-     *   description: Endpoints para la gestion de publicaciones
-     */
-
-    /**
-     * @swagger
      * /posts:
      *   get:
      *     operationId: "1_getAllPost"
