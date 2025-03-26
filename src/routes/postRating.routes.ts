@@ -15,13 +15,6 @@ class PostRatingRoute {
   private initRoutes() {
     /**
      * @swagger
-     * tags:
-     *   name: PostRatings
-     *   description: Endpoints para gestionar las calificaciones de los posts
-     */
-
-    /**
-     * @swagger
      * /ratingPs:
      *   get:
      *     summary: Obtener todas las calificaciones de los posts

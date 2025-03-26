@@ -13,13 +13,6 @@ class VerificationRoute {
   private initRoutes() {
     /**
      * @swagger
-     * tags:
-     *   name: Verificacion
-     *   description: Endpoints para envio de correo de verificacion
-     */
-
-    /**
-     * @swagger
      * /verification/send-email:
      *   post:
      *     summary: Enviar correo de verificacion

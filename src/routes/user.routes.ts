@@ -18,13 +18,6 @@ class UserRoute {
   private initRoutes() {
     /**
      * @swagger
-     * tags:
-     *   name: Usuarios
-     *   description: Endpoints para la gestion de usuarios
-     */
-
-    /**
-     * @swagger
      * /users:
      *   get:
      *     operationId: "1_getAllUser"

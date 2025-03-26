@@ -29,6 +29,16 @@ const swaggerDefinition: SwaggerOptions = {
         CookieAuth: [],
       },
     ],
+    tags: [
+      { name: 'Servidor', description: 'Endpoints para verificar si el servidor está en ejecución' },
+      { name: 'Registro', description: 'Endpoints para registrarse' },
+      { name: 'Verificacion', description: 'Endpoints para envío de correo de verificación' },
+      { name: 'Autenticacion', description: 'Endpoints para iniciar y cerrar sesión' },
+      { name: 'Restablecimiento', description: 'Endpoints para solicitar y restablecer la contraseña de usuario' },
+      { name: 'Usuarios', description: 'Endpoints para la gestión de usuarios' },
+      { name: 'Posteos', description: 'Endpoints para la gestión de publicaciones' },
+      { name: 'PostRatings', description: 'Endpoints para gestionar las calificaciones de los posts' },
+    ],
   },
   apis: ['./src/routes/*.ts'],
 };
