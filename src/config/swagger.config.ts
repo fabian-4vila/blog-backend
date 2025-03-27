@@ -38,6 +38,7 @@ const swaggerDefinition: SwaggerOptions = {
       { name: 'Usuarios', description: 'Endpoints para la gestión de usuarios' },
       { name: 'Posteos', description: 'Endpoints para la gestión de publicaciones' },
       { name: 'PostRatings', description: 'Endpoints para gestionar las calificaciones de los posts' },
+      { name: 'Comentarios', description: 'Endpoints para gestionar los comentarios' },
     ],
   },
   apis: ['./src/routes/*.ts'],
