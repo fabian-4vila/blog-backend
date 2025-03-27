@@ -18,7 +18,7 @@ class PostRatingRoute {
      * /ratingPs:
      *   get:
      *     summary: Obtener todas las calificaciones de los posts
-     *     tags: [PostRatings]
+     *     tags: [Calificacion de Post]
      *     responses:
      *       200:
      *         description: Lista de calificaciones obtenida correctamente.
@@ -34,7 +34,7 @@ class PostRatingRoute {
      * /ratingP/{id}:
      *   get:
      *     summary: Obtener una calificación específica por ID
-     *     tags: [PostRatings]
+     *     tags: [Calificacion de Post]
      *     parameters:
      *       - in: path
      *         name: id
@@ -57,7 +57,7 @@ class PostRatingRoute {
      * /ratingP:
      *   post:
      *     summary: Crear una nueva calificación para un post
-     *     tags: [PostRatings]
+     *     tags: [Calificacion de Post]
      *     security:
      *       - CookieAuth: []
      *     requestBody:
@@ -94,7 +94,7 @@ class PostRatingRoute {
      * /ratingP/{id}:
      *   put:
      *     summary: Actualizar una calificación existente
-     *     tags: [PostRatings]
+     *     tags: [Calificacion de Post]
      *     security:
      *       - CookieAuth: []
      *     parameters:
@@ -138,7 +138,7 @@ class PostRatingRoute {
      * /ratingP/{id}:
      *   delete:
      *     summary: Eliminar una calificación por ID
-     *     tags: [PostRatings]
+     *     tags: [Calificacion de Post]
      *     security:
      *       - CookieAuth: []
      *     parameters:

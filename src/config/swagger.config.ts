@@ -37,7 +37,7 @@ const swaggerDefinition: SwaggerOptions = {
       { name: 'Restablecimiento', description: 'Endpoints para solicitar y restablecer la contraseña de usuario' },
       { name: 'Usuarios', description: 'Endpoints para la gestión de usuarios' },
       { name: 'Posteos', description: 'Endpoints para la gestión de publicaciones' },
-      { name: 'PostRatings', description: 'Endpoints para gestionar las calificaciones de los posts' },
+      { name: 'Calificacion de Post', description: 'Endpoints para gestionar las calificaciones de los posts' },
       { name: 'Comentarios', description: 'Endpoints para gestionar los comentarios' },
     ],
   },
