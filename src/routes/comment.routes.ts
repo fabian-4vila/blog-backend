@@ -33,6 +33,34 @@ class CommentRoute {
      *         description: Error en el servidor.
      */
     this.router.get(`${this.path}s`, authenticateJWT, this.commentController.getAllComments);
+    /**
+     * @swagger
+     * /comment/{id}:
+     *   get:
+     *     operationId: "2_getCommentById"
+     *     summary: Obtener un comentario por su ID
+     *     descriptio: Devuelve un comentario espesifico segun su ID.
+     *     tags:
+     *       - Comentarios
+     *     security:
+     *       -BearerAuth: []
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: ID del comentario
+     *     responses:
+     *       200:
+     *         description: Comentario encontrado.
+     *       401:
+     *         description: No autorizado.
+     *       404:
+     *         description: Comentario no encontrado.
+     *       500:
+     *         description: Error en el servidor.
+     */
     this.router.get(`${this.path}/:id`, authenticateJWT, this.commentController.getCommentById);
     this.router.post(`${this.path}`, authenticateJWT, this.commentController.createComment);
     this.router.put(
