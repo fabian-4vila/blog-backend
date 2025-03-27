@@ -13,6 +13,25 @@ class CommentRoute {
   }
 
   private initRoutes() {
+    /**
+     * @swagger
+     * /comments:
+     *   get:
+     *     operationId: "1_getAllComments"
+     *     summary: obtener todos los comentarios
+     *     description: Devuelve una lista de todos los comentarios disponibles.
+     *     tags:
+     *       - Comentarios
+     *     security:
+     *       - BearerAuth: []
+     *     responses:
+     *       200:
+     *         description: Lista de comentarios obtenida con exito.
+     *       401:
+     *         description: No autorizado.
+     *       500:
+     *         description: Error en el servidor.
+     */
     this.router.get(`${this.path}s`, authenticateJWT, this.commentController.getAllComments);
     this.router.get(`${this.path}/:id`, authenticateJWT, this.commentController.getCommentById);
     this.router.post(`${this.path}`, authenticateJWT, this.commentController.createComment);
