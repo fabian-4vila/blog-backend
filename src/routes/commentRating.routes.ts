@@ -18,7 +18,7 @@ class CommentRatingRoute {
      * /ratingCs:
      *   get:
      *     summary: Obtener todas las calificaciones de comentarios
-     *     tags: [Calificacion de Comentario]
+     *     tags: [Calificacion de Comentarios]
      *     security:
      *       - CookieAuth: []
      *     responses:
@@ -32,6 +32,29 @@ class CommentRatingRoute {
      *         description: Error en el servidor.
      */
     this.router.get(`${this.path}s`, authenticateJWT, this.commentRatingController.getAllCommentRatings);
+    /**
+     * @swagger
+     * /ratingC/{id}:
+     *   get:
+     *     summary: Obtener una calificación específica de un comentario por ID
+     *     tags: [Calificacion de Comentarios]
+     *     security:
+     *       - CookieAuth: []
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: ID de la calificación del comentario
+     *     responses:
+     *       200:
+     *         description: Calificación encontrada.
+     *       404:
+     *         description: Calificación no encontrada.
+     *       500:
+     *         description: Error en el servidor.
+     */
     this.router.get(`${this.path}/:id`, authenticateJWT, this.commentRatingController.getCommentRatingById);
     this.router.post(`${this.path}`, authenticateJWT, this.commentRatingController.createCommentRating);
     this.router.put(
