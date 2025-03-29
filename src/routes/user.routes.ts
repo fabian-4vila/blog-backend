@@ -32,6 +32,8 @@ class UserRoute {
      *         description: Lista de usuarios obtenida con éxito.
      *       401:
      *         description: No autorizado. Token ausente o inválido.
+     *       403:
+     *         description: Acceso denegado. Faltan permisos de administrador.
      *       500:
      *         description: Error en el servidor.
      */
