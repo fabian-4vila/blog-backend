@@ -106,11 +106,15 @@ class App extends ConfigServer {
     });
   }
 
+  //Swagger
+
   private initializeSwagger() {
     const specs = swaggerJSDoc(swaggerConfig);
     this.app.use('/api/v1/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
     logger.info('Swagger Docs available at /api-docs');
   }
+
+  //ErrorMidleware
 
   private initializeErrorHandling() {
     this.app.use(errorHandlerMiddleware);
