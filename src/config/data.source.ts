@@ -20,10 +20,10 @@ const configDBConnection: DataSourceOptions = {
   migrations: [join(__dirname, '../**/*.migration{.ts,.js}')],
   subscribers: [join(__dirname, '../**/*.subscriber{.ts,.js}')],
   namingStrategy: new SnakeNamingStrategy(),
-  // extra: {
-  //   ssl: {
-  //     rejectUnauthorized: false, // Importante para conexiones seguras
-  //   },
-  // },
+  extra: {
+    ssl: {
+      rejectUnauthorized: false, // Importante para conexiones seguras
+    },
+  },
 };
 export const AppDataSource: DataSource = new DataSource(configDBConnection);
