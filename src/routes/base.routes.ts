@@ -1,24 +1,21 @@
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
 import { Routes } from '../interfaces/route.interface';
+import { StatusController } from '../modules/status/controller/statusController';
 
-class BaseRoute implements Routes {
-  public path?: string = '/alive';
+class StatusRoute implements Routes {
+  public path: string = '/';
   public router = Router();
-  constructor() {
-    this.initBaseRoutes();
-  }
-  //initBaseRoutes
-  public initBaseRoutes() {
-    /**
-     * @swagger
-     * tags:
-     *   name: Servidor
-     *   description: Endpoints para verificar si el servidor esta en ejecucion
-     */
+  private statusController: StatusController;
 
+  constructor() {
+    this.statusController = new StatusController();
+    this.initRoutes();
+  }
+
+  private initRoutes() {
     /**
      * @swagger
-     * /alive:
+     * /:
      *   get:
      *     summary: Verifica si el servidor está en ejecución.
      *     description: Retorna un estado 200 si el servidor está activo.
@@ -39,13 +36,8 @@ class BaseRoute implements Routes {
      *                   example: "Running"
      */
 
-    this.router.get(`${this.path}`, (_req: Request, res: Response) => {
-      res.status(200).json({
-        ok: true,
-        message: `Runnig`,
-      });
-    });
+    this.router.get(this.path, this.statusController.getStatus.bind(this.statusController));
   }
 }
 
-export default BaseRoute;
+export default StatusRoute;
