@@ -9,6 +9,7 @@
     "start:dev": "cross-env NODE_ENV=development ts-node-dev ./src/index.ts",
     "start:test": "cross-env NODE_ENV=test ts-node ./src/index.ts",
     "start:prod": "cross-env NODE_ENV=production node build/index.js",
+    "migrate:prod": "node ./node_modules/typeorm/cli.js migration:run -d build/config/data.source.js",
     "build": "npm run clean && tsc",
     "clean": "rm -rf build",
     "lint": "eslint .",
