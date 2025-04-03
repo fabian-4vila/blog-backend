@@ -1,5 +1,9 @@
 import { SwaggerOptions } from 'swagger-ui-express';
 
+const serverUrl = process.env.SERVER_URL
+  ? `${process.env.SERVER_URL}/api/${process.env.API_VERSION}`
+  : 'http://localhost:3000/api/v1';
+
 const swaggerDefinition: SwaggerOptions = {
   definition: {
     openapi: '3.0.0',
@@ -10,8 +14,8 @@ const swaggerDefinition: SwaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:5000/api/v1',
-        description: 'Servidor de desarrollo',
+        url: serverUrl,
+        description: process.env.NODE_ENV === 'production' ? 'Servidor de producción' : 'Servidor de desarrollo',
       },
     ],
     components: {
