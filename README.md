@@ -18,8 +18,8 @@ Este proyecto es un **blog full-stack** desarrollado con tecnologías modernas, 
 
 ### 🎨 Frontend
 
-- 🅰️ **Angular** → Framework potente para una interfaz de usuario dinámica y responsiva.
-- 🎯 **TypeScript** → Consistencia con el backend y tipado estático para mayor seguridad en el código.
+- 🅰️ **Angular** → Framework potente para una interfaz de usuario dinámica y responsiva.  
+  🚧 *Actualmente en desarrollo...*
 
 ### 📦 Contenedores
 
@@ -33,11 +33,12 @@ Este blog está concebido como una plataforma integral para explorar y aplicar *
 - 📈 **Escalabilidad** → Arquitectura preparada para crecer con nuevas funcionalidades.
 - 🔒 **Seguridad** → Protección de datos y validación en todas las capas de la aplicación.
 
-## 📌 Estado del Proyecto
+## 🚀 ¡Mañana es el Despliegue de la API!
 
-**🚧 En desarrollo... ¡Se vienen grandes cosas! 🚀**
+📅 **Fecha de despliegue:** *Mañana*  
+🔧 La API está lista para producción y será desplegada en Render. Actualmente, se están realizando las últimas pruebas y ajustes para garantizar su correcto funcionamiento.  
 
-El despliegue final servirá como una herramienta educativa y de documentación personal, compartiendo experiencias y aprendizajes en el camino del desarrollo web.
+⚠️ **Estado del frontend:** *Aún en desarrollo.*  
 
 ---
 
