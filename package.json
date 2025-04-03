@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn src/index.ts",
     "start": "node build/index.js",
+    "typeorm:migrate": "node build/src/config/1743652624601-Inicial.js",
     "start:dev": "cross-env NODE_ENV=development ts-node-dev ./src/index.ts",
     "start:test": "cross-env NODE_ENV=test ts-node ./src/index.ts",
     "start:prod": "cross-env NODE_ENV=production node build/index.js",
