@@ -2,7 +2,6 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class Inicial1743652624601 implements MigrationInterface {
   name = 'Inicial1743652624601';
-
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
             CREATE TABLE "post_rating" (
