@@ -13,7 +13,7 @@ const swaggerDefinition: SwaggerOptions = {
     servers: [
       {
         url: serverUrl,
-        description: 'Servidor de producción',
+        description: 'Servidor de Produccion',
       },
     ],
     components: {
