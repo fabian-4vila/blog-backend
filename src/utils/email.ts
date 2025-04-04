@@ -7,12 +7,12 @@ dotenv.config();
 const SENDER_EMAIL = process.env.SENDER_EMAIL as string;
 const SENDER_NAME = process.env.SENDER_NAME as string;
 const BASE_URL = process.env.BASE_URL as string;
-
+const SERVER_URL = process.env.SERVER_URL as string;
 /**
  * Enviar correo de verificación
  */
 export const sendVerificationEmail = async (email: string, token: string) => {
-  const verificationLink = `${BASE_URL}/verification/verify/${token}`;
+  const verificationLink = `${SERVER_URL}api/v1/verification/verify/${token}`;
 
   const emailData = {
     sender: { email: SENDER_EMAIL, name: SENDER_NAME },
