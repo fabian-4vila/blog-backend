@@ -28,6 +28,7 @@ class VerificationService {
     });
     await sendVerificationEmail(email, token);
   }
+
   public async verifyEmailToken(token: string): Promise<User | null> {
     try {
       logger.info(`${VerificationService.name} - verifyEmailToken`);
