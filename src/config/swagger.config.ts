@@ -1,8 +1,6 @@
 import { SwaggerOptions } from 'swagger-ui-express';
 
-const serverUrl = process.env.SERVER_URL
-  ? `${process.env.SERVER_URL}/api/${process.env.API_VERSION}`
-  : 'http://localhost:3000/api/v1';
+const serverUrl = `${process.env.SERVER_URL}/api/${process.env.API_VERSION}`;
 
 const swaggerDefinition: SwaggerOptions = {
   definition: {
@@ -15,7 +13,7 @@ const swaggerDefinition: SwaggerOptions = {
     servers: [
       {
         url: serverUrl,
-        description: process.env.NODE_ENV === 'production' ? 'Servidor de producción' : 'Servidor de desarrollo',
+        description: 'Servidor de producción',
       },
     ],
     components: {
@@ -23,7 +21,7 @@ const swaggerDefinition: SwaggerOptions = {
         CookieAuth: {
           type: 'apiKey',
           in: 'cookie',
-          name: 'auth_token', // Nombre de la cookie
+          name: 'auth_token',
           description: 'Token de sesión almacenado en cookies',
         },
       },
