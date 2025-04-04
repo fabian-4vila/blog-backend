@@ -6,7 +6,6 @@ dotenv.config();
 
 const SENDER_EMAIL = process.env.SENDER_EMAIL as string;
 const SENDER_NAME = process.env.SENDER_NAME as string;
-const BASE_URL = process.env.BASE_URL as string;
 const SERVER_URL = process.env.SERVER_URL as string;
 /**
  * Enviar correo de verificación
@@ -37,7 +36,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
  * Enviar correo de restablecimiento de contraseña
  */
 export const sendPasswordResetEmail = async (email: string, token: string) => {
-  const resetLink = `${BASE_URL}/password-reset/reset/${token}`;
+  const resetLink = `${SERVER_URL}api/v1/password-reset/reset/${token}`;
 
   const emailData = {
     sender: { email: SENDER_EMAIL, name: SENDER_NAME },
