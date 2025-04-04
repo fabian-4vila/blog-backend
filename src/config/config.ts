@@ -4,7 +4,7 @@ import { AppDataSource } from './data.source';
 
 config();
 
-const env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV || 'production';
 
 config({ path: `.env.${env}.local` });
 
