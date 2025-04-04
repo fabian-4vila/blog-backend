@@ -11,7 +11,7 @@ const SERVER_URL = process.env.SERVER_URL as string;
  * Enviar correo de verificación
  */
 export const sendVerificationEmail = async (email: string, token: string) => {
-  const verificationLink = `${SERVER_URL}api/v1/verification/verify/${token}`;
+  const verificationLink = `${SERVER_URL}/api/v1/verification/verify/${token}`;
 
   const emailData = {
     sender: { email: SENDER_EMAIL, name: SENDER_NAME },
@@ -36,7 +36,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
  * Enviar correo de restablecimiento de contraseña
  */
 export const sendPasswordResetEmail = async (email: string, token: string) => {
-  const resetLink = `${SERVER_URL}api/v1/password-reset/reset/${token}`;
+  const resetLink = `${SERVER_URL}/api/v1/password-reset/reset/${token}`;
 
   const emailData = {
     sender: { email: SENDER_EMAIL, name: SENDER_NAME },
