@@ -48,9 +48,9 @@ class UserRoute {
      * /user/{id}:
      *   get:
      *     operationId: "2_getUserById"
-     *     summary: Obtener un usuario por ID
-     *     description: Devuelve un usuario especifico segun su ID. solo accesible para administradores.
-     *     tags: [Usuarios]
+     *     summary: Get user by ID
+     *     description: Returns a specific user by ID. Only accessible to administrators.
+     *     tags: [Users]
      *     security:
      *       - BearerAuth: []
      *     parameters:
@@ -59,16 +59,16 @@ class UserRoute {
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID del usuario
+     *         description: User ID
      *     responses:
      *       200:
-     *         description: Usuario encontrado.
+     *         description: User found.
      *       404:
-     *         description: Usuario no encontrado.
+     *         description: User not found.
      *       401:
-     *         description: No autorizado.
+     *         description: Unauthorized.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.get(
       `${this.path}/:id`,
@@ -81,9 +81,9 @@ class UserRoute {
      * /user:
      *   post:
      *     operationId: "3_createUser"
-     *     summary: Crear un nuevo usuario
-     *     description: Permite a un administrador crear un nuevo usuario.
-     *     tags: [Usuarios]
+     *     summary: Create a new user
+     *     description: Allows an administrator to create a new user.
+     *     tags: [Users]
      *     security:
      *       - BearerAuth: []
      *     requestBody:
@@ -99,21 +99,21 @@ class UserRoute {
      *             properties:
      *               name:
      *                 type: string
-     *                 description: Nombre del usuario.
+     *                 description: Name of the user.
      *               email:
      *                 type: string
      *                 format: email
-     *                 description: Correo electrónico del usuario.
+     *                 description: User's email address.
      *               password:
      *                 type: string
-     *                 description: Contraseña del usuario.
+     *                 description: User's password.
      *     responses:
      *       201:
-     *         description: Usuario creado exitosamente.
+     *         description: User successfully created.
      *       401:
-     *         description: No autorizado.
+     *         description: Unauthorized.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.post(`${this.path}`, authenticateJWT, authorizeRoles([RoleType.ADMIN]), this.userController.createUser);
     /**
