@@ -44,10 +44,10 @@ class VerificationRoute {
      * @swagger
      * /verification/verify/{token}:
      *   get:
-     *     summary: Verificar token de correo electronico
-     *     description: Verifica el token enviado al correo electronico del usuario.
+     *     summary: Verify email token
+     *     description: Verifies the token sent to the user's email.
      *     tags:
-     *       - Verificacion
+     *       - Verification
      *     parameters:
      *       - in: path
      *         name: token
@@ -55,14 +55,14 @@ class VerificationRoute {
      *         schema:
      *           type: string
      *           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM3NTU4MjIzLTU1NTEtNGY0My1hOGZlLTIzZjgzMDEwYWUzZCIsImlhdCI6MTc0MjYxMjUyMH0.4c1-ZQYp9gT-ZKj0rRvX5xw6wkaxgpCV-1KiX5Eq3W4
-     *         description: Token de verificacion enciado por correo.
+     *         description: Verification token sent by email.
      *     responses:
      *       200:
-     *         description: Cuenta verificada exitosamente.
+     *         description: Account successfully verified.
      *       400:
-     *         description: Token invalido o expirado.
+     *         description: Invalid or expired token.
      *       500:
-     *         descruption: Error en el servidor.
+     *         description: Server error.
      */
     this.router.get(`${this.path}/verify/:token`, this.verificationController.verifyEmailToken);
   }
