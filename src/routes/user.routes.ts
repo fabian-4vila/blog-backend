@@ -121,9 +121,9 @@ class UserRoute {
      * /user/{id}:
      *   put:
      *     operationId: "4_updateUser"
-     *     summary: Actualizar un usuario
-     *     description: Permite a un administrador actualizar los datos de un usuario.
-     *     tags: [Usuarios]
+     *     summary: Update a user
+     *     description: Allows an administrator to update a user's data.
+     *     tags: [Users]
      *     security:
      *       - BearerAuth: []
      *     parameters:
@@ -132,7 +132,7 @@ class UserRoute {
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID del usuario a actualizar.
+     *         description: ID of the user to update.
      *     requestBody:
      *       required: true
      *       content:
@@ -142,23 +142,23 @@ class UserRoute {
      *             properties:
      *               name:
      *                 type: string
-     *                 description: Nuevo nombre del usuario.
+     *                 description: New name of the user.
      *               email:
      *                 type: string
      *                 format: email
-     *                 description: Nuevo correo electrónico del usuario.
+     *                 description: New email of the user.
      *               password:
      *                 type: string
-     *                 description: Nueva contraseña del usuario.
+     *                 description: New password of the user.
      *     responses:
      *       200:
-     *         description: Usuario actualizado correctamente.
+     *         description: User successfully updated.
      *       401:
-     *         description: No autorizado.
+     *         description: Unauthorized.
      *       404:
-     *         description: Usuario no encontrado.
+     *         description: User not found.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.put(
       `${this.path}/:id`,
@@ -171,9 +171,9 @@ class UserRoute {
      * /user/{id}:
      *   patch:
      *     operationId: "5_partialUpdateUser"
-     *     summary: Actualización parcial de un usuario
-     *     description: Permite a un administrador actualizar parcialmente los datos de un usuario.
-     *     tags: [Usuarios]
+     *     summary: Partially update a user
+     *     description: Allows an administrator to partially update a user's data.
+     *     tags: [Users]
      *     security:
      *       - BearerAuth: []
      *     parameters:
@@ -182,7 +182,7 @@ class UserRoute {
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID del usuario.
+     *         description: User ID.
      *     requestBody:
      *       required: true
      *       content:
@@ -192,25 +192,24 @@ class UserRoute {
      *             properties:
      *               name:
      *                 type: string
-     *                 description: Nuevo nombre del usuario (opcional).
+     *                 description: New name of the user (optional).
      *               email:
      *                 type: string
      *                 format: email
-     *                 description: Nuevo correo electrónico del usuario (opcional).
+     *                 description: New email of the user (optional).
      *               password:
      *                 type: string
-     *                 description: Nueva contraseña del usuario (opcional).
+     *                 description: New password of the user (optional).
      *     responses:
      *       200:
-     *         description: Usuario actualizado correctamente.
+     *         description: User successfully updated.
      *       401:
-     *         description: No autorizado.
+     *         description: Unauthorized.
      *       404:
-     *         description: Usuario no encontrado.
+     *         description: User not found.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
-
     this.router.patch(
       `${this.path}/:id`,
       authenticateJWT,
@@ -222,9 +221,9 @@ class UserRoute {
      * /user/{id}:
      *   delete:
      *     operationId: "6_deleteUser"
-     *     summary: Eliminar un usuario
-     *     description: Permite a un administrador eliminar un usuario.
-     *     tags: [Usuarios]
+     *     summary: Delete a user
+     *     description: Allows an administrator to delete a user.
+     *     tags: [Users]
      *     security:
      *       - BearerAuth: []
      *     parameters:
@@ -233,16 +232,16 @@ class UserRoute {
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID del usuario
+     *         description: User ID
      *     responses:
      *       200:
-     *         description: Usuario eliminado correctamente.
+     *         description: User successfully deleted.
      *       401:
-     *         description: No autorizado.
+     *         description: Unauthorized.
      *       404:
-     *         description: Usuario no encontrado.
+     *         description: User not found.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.delete(
       `${this.path}/:id`,
