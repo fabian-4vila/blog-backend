@@ -15,10 +15,10 @@ class VerificationRoute {
      * @swagger
      * /verification/send-email:
      *   post:
-     *     summary: Enviar correo de verificacion
-     *     description: Envia un correo electronico con un enlace para verificar la cuenta
+     *     summary: Send verification email
+     *     description: Sends an email with a link to verify the account.
      *     tags:
-     *       - Verificacion
+     *       - Verification
      *     requestBody:
      *       required: true
      *       content:
@@ -33,11 +33,11 @@ class VerificationRoute {
      *                 example: marcos@gmail.com
      *     responses:
      *       200:
-     *         description: Correo de verificacion enviado exitosamente.
+     *         description: Verification email sent successfully.
      *       400:
-     *         description: Error en la solicitud (datos invalidos).
+     *         description: Bad request (invalid data).
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.post(`${this.path}/send-email`, this.verificationController.sendVerificationEmail);
     /**
