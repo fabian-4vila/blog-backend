@@ -21,21 +21,21 @@ class UserRoute {
      * /users:
      *   get:
      *     operationId: "1_getAllUser"
-     *     summary: Obtener todos los usuarios
-     *     description: Devuelve una lista de todos los usuarios. Requiere autenticación con cookies.
+     *     summary: Get all users
+     *     description: Returns a list of all users. Requires cookie-based authentication.
      *     tags:
-     *       - Usuarios
+     *       - Users
      *     security:
      *       - CookieAuth: []
      *     responses:
      *       200:
-     *         description: Lista de usuarios obtenida con éxito.
+     *         description: Successfully retrieved user list.
      *       401:
-     *         description: No autorizado. Token ausente o inválido.
+     *         description: Unauthorized. Token is missing or invalid.
      *       403:
-     *         description: Acceso denegado. Faltan permisos de administrador.
+     *         description: Access denied. Admin permissions required.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.get(
       `${this.path}s`,
