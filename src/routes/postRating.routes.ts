@@ -28,27 +28,26 @@ class PostRatingRoute {
      *         description: Server error.
      */
     this.router.get(`${this.path}s`, this.postRatingController.getAllPostRatings);
-
     /**
      * @swagger
      * /ratingP/{id}:
      *   get:
-     *     summary: Obtener una calificación específica por ID
-     *     tags: [Calificacion de Posteos]
+     *     summary: Get a specific rating by ID
+     *     tags: [Post Ratings]
      *     parameters:
      *       - in: path
      *         name: id
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID de la calificación
+     *         description: ID of the rating
      *     responses:
      *       200:
-     *         description: Calificaion encontrada.
+     *         description: Rating found.
      *       404:
-     *         description: Calificación no encontrada
+     *         description: Rating not found.
      *       500:
-     *         description: Error en el servidor
+     *         description: Server error.
      */
     this.router.get(`${this.path}/:id`, this.postRatingController.getPostRatingById);
 
