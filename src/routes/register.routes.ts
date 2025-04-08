@@ -19,9 +19,9 @@ class RegisterRoute {
      * @swagger
      * /register:
      *   post:
-     *     summary: Registrar un nuevo usuario
-     *     description: Permite a un usuario crear una cuenta en el sistema.
-     *     tags: [Registro]
+     *     summary: Register a new user
+     *     description: Allows a user to create an account in the system.
+     *     tags: [Registration]
      *     requestBody:
      *       required: true
      *       content:
@@ -31,21 +31,21 @@ class RegisterRoute {
      *             properties:
      *               name:
      *                 type: string
-     *                 description: Nombre del usuario.
+     *                 description: User's name.
      *               email:
      *                 type: string
      *                 format: email
-     *                 description: Correo electrónico del usuario.
+     *                 description: User's email address.
      *               password:
      *                 type: string
-     *                 description: Contraseña del usuario.
+     *                 description: User's password.
      *     responses:
      *       201:
-     *         description: Usuario registrado exitosamente.
+     *         description: User successfully registered.
      *       400:
-     *         description: Datos inválidos o usuario ya registrado.
+     *         description: Invalid data or user already registered.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.post(`${this.path}`, this.registerController.registerUser);
   }
