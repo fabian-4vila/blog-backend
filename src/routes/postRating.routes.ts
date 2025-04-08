@@ -50,13 +50,12 @@ class PostRatingRoute {
      *         description: Server error.
      */
     this.router.get(`${this.path}/:id`, this.postRatingController.getPostRatingById);
-
     /**
      * @swagger
      * /ratingP:
      *   post:
-     *     summary: Crear una nueva calificación para un post
-     *     tags: [Calificacion de Posteos]
+     *     summary: Create a new rating for a post
+     *     tags: [Post Ratings]
      *     security:
      *       - CookieAuth: []
      *     requestBody:
@@ -80,20 +79,19 @@ class PostRatingRoute {
      *                 example: 18
      *     responses:
      *       201:
-     *         description: Calificación creada exitosamente
+     *         description: Rating created successfully.
      *       401:
-     *         description: No autorizado
+     *         description: Unauthorized.
      *       500:
-     *         description: Error en el servidor
+     *         description: Server error.
      */
     this.router.post(`${this.path}`, authenticateJWT, this.postRatingController.createPostRating);
-
     /**
      * @swagger
      * /ratingP/{id}:
      *   put:
-     *     summary: Actualizar una calificación existente
-     *     tags: [Calificacion de Posteos]
+     *     summary: Update an existing rating
+     *     tags: [Post Ratings]
      *     security:
      *       - CookieAuth: []
      *     parameters:
@@ -102,7 +100,7 @@ class PostRatingRoute {
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID de la calificación a actualizar
+     *         description: ID of the rating to update
      *     requestBody:
      *       required: true
      *       content:
@@ -118,13 +116,13 @@ class PostRatingRoute {
      *                 example: true
      *     responses:
      *       200:
-     *         description: Calificación actualizada exitosamente
+     *         description: Rating updated successfully.
      *       401:
-     *         description: No autorizado
+     *         description: Unauthorized.
      *       404:
-     *         description: Calificación no encontrada
+     *         description: Rating not found.
      *       500:
-     *         description: Error en el servidor
+     *         description: Server error.
      */
     this.router.put(
       `${this.path}/:id`,
