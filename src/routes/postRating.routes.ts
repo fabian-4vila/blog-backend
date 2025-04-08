@@ -17,15 +17,15 @@ class PostRatingRoute {
      * @swagger
      * /ratingPs:
      *   get:
-     *     summary: Obtener todas las calificaciones de los posts
-     *     tags: [Calificacion de Posteos]
+     *     summary: Get all post ratings
+     *     tags: [Post Ratings]
      *     responses:
      *       200:
-     *         description: Lista de calificaciones obtenida correctamente.
+     *         description: List of ratings retrieved successfully.
      *       404:
-     *         description: Calificación no encontrada
+     *         description: Rating not found.
      *       500:
-     *         description: Error en el servidor
+     *         description: Server error.
      */
     this.router.get(`${this.path}s`, this.postRatingController.getAllPostRatings);
 
