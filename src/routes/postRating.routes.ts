@@ -134,8 +134,8 @@ class PostRatingRoute {
      * @swagger
      * /ratingP/{id}:
      *   delete:
-     *     summary: Eliminar una calificación por ID
-     *     tags: [Calificacion de Posteos]
+     *     summary: Delete a rating by ID
+     *     tags: [Post Ratings]
      *     security:
      *       - CookieAuth: []
      *     parameters:
@@ -144,14 +144,14 @@ class PostRatingRoute {
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID de la calificación a eliminar
+     *         description: ID of the rating to delete
      *     responses:
      *       200:
-     *         description: Calificación eliminada exitosamente
+     *         description: Rating deleted successfully.
      *       404:
-     *         description: Calificación no encontrada
+     *         description: Rating not found.
      *       500:
-     *         description: Error en el servidor
+     *         description: Server error.
      */
     this.router.delete(
       `${this.path}/:id`,
