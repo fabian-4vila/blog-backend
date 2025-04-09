@@ -21,16 +21,15 @@ class PostRoute {
      * @swagger
      * /posts:
      *   get:
-     *     operationId: "1_getAllPost"
-     *     summary: obtener todas las publicaciones
-     *     description: Devuelve una lista de todas las publicaciones disponibles.
+     *     summary: Get all posts
+     *     description: Returns a list of all available posts.
      *     tags:
-     *       - Posteos
+     *       - Posts
      *     responses:
      *       200:
-     *         description: Lista de publicaciones obtenida con exito.
+     *         description: List of posts retrieved successfully.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.get(`${this.path}s`, this.postController.getAllPosts);
     /**
