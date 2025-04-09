@@ -37,24 +37,24 @@ class PostRoute {
      * /post/{id}:
      *   get:
      *     operationId: "2_getPostById"
-     *     summary: Obtener una publicacion por ID
-     *     description: Devuelve una publicacion especifica segun su ID.
+     *     summary: Get a post by ID
+     *     description: Returns a specific post by its ID.
      *     tags:
-     *       - Posteos
+     *       - Posts
      *     parameters:
      *       - in: path
      *         name: id
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID de la publicacion
+     *         description: ID of the post
      *     responses:
      *       200:
-     *         description: Publicacion encontrada.
+     *         description: Post found.
      *       404:
-     *         description: publicacion no encontrada.
+     *         description: Post not found.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.get(`${this.path}/:id`, this.postController.getPostById);
     /**
@@ -62,10 +62,10 @@ class PostRoute {
      * /post:
      *   post:
      *     operationId: "3_createPost"
-     *     summary: Crear una nueva publicación
-     *     description: Crea una nueva publicación. Solo accesible para administradores.
+     *     summary: Create a new post
+     *     description: Creates a new post. Only accessible to administrators.
      *     tags:
-     *       - Posteos
+     *       - Posts
      *     security:
      *       - BearerAuth: []
      *     requestBody:
@@ -77,28 +77,28 @@ class PostRoute {
      *             properties:
      *               title:
      *                 type: string
-     *                 description: Título de la publicación.
+     *                 description: Title of the post.
      *               content:
      *                 type: string
-     *                 description: Contenido de la publicación.
+     *                 description: Content of the post.
      *               user_id:
      *                 type: string
-     *                 description: ID del usuario que crea la publicación.
+     *                 description: ID of the user creating the post.
      *               files:
      *                 type: array
      *                 items:
      *                   type: string
      *                   format: binary
-     *                 description: Archivos adjuntos.
+     *                 description: Attached files.
      *     responses:
      *       201:
-     *         description: Publicación creada con éxito.
+     *         description: Post created successfully.
      *       400:
-     *         description: Datos inválidos.
+     *         description: Invalid data.
      *       401:
-     *         description: No autorizado.
+     *         description: Unauthorized.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.post(
       `${this.path}`,
@@ -113,10 +113,10 @@ class PostRoute {
      * /post/{id}:
      *   put:
      *     operationId: "4_updatePostById"
-     *     summary: Actualizar una publicacion por ID
-     *     description: Modifica los datoa de una publicacion existente. Solo accesible para administradores.
+     *     summary: Update a post by ID
+     *     description: Modifies the data of an existing post. Only accessible to administrators.
      *     tags:
-     *       - Posteos
+     *       - Posts
      *     security:
      *       - BearerAuth: []
      *     parameters:
@@ -125,7 +125,7 @@ class PostRoute {
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID de la publicacion
+     *         description: ID of the post
      *     requestBody:
      *       required: true
      *       content:
@@ -135,27 +135,27 @@ class PostRoute {
      *             properties:
      *               title:
      *                 type: string
-     *                 description: Nuevo titulo de la publicacion.
+     *                 description: New title of the post.
      *               content:
-     *                 type: text
-     *                 description: Nuevo contenido de la publicacion.
+     *                 type: string
+     *                 description: New content of the post.
      *               files:
      *                 type: array
      *                 items:
      *                   type: string
      *                   format: binary
-     *                 description: Nuevos archivos adjuntos.
+     *                 description: New attached files.
      *     responses:
      *       200:
-     *         description: Publicacion actualizada con exito.
+     *         description: Post updated successfully.
      *       400:
-     *         description: Datos invalidos.
+     *         description: Invalid data.
      *       401:
-     *         description: No autorizado.
+     *         description: Unauthorized.
      *       404:
-     *         description: Publicacion no encontrada.
+     *         description: Post not found.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.put(
       `${this.path}/:id`,
@@ -170,10 +170,10 @@ class PostRoute {
      *  /post/{id}:
      *    delete:
      *      operationId: "5_deletePostById"
-     *      summary: Eliminar una publicacion por ID
-     *      description: Elimina una publicacion existente. Solo accesible para admisnitadores
+     *      summary: Delete a post by ID
+     *      description: Deletes an existing post. Only accessible to administrators.
      *      tags:
-     *        - Posteos
+     *        - Posts
      *      security:
      *        - BearerAuth: []
      *      parameters:
@@ -182,16 +182,16 @@ class PostRoute {
      *          required: true
      *          schema:
      *            type: string
-     *          description: ID dela publicacion a eliminar
+     *          description: ID of the post to delete
      *      responses:
      *        200:
-     *          description: Publicacion eliminada con exito.
+     *          description: Post deleted successfully.
      *        401:
-     *          description: No autorizado.
+     *          description: Unauthorized.
      *        404:
-     *          descriptio: publicacion no encontrada.
+     *          description: Post not found.
      *        500:
-     *          description: Error en el servidor.
+     *          description: Server error.
      */
     this.router.delete(
       `${this.path}/:id`,
