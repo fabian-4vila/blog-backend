@@ -23,8 +23,7 @@ class PostRoute {
      *   get:
      *     summary: Get all posts
      *     description: Returns a list of all available posts.
-     *     tags:
-     *       - Posts
+     *     tags: [Post]
      *     responses:
      *       200:
      *         description: List of posts retrieved successfully.
@@ -36,11 +35,9 @@ class PostRoute {
      * @swagger
      * /post/{id}:
      *   get:
-     *     operationId: "2_getPostById"
      *     summary: Get a post by ID
      *     description: Returns a specific post by its ID.
-     *     tags:
-     *       - Posts
+     *     tags: [Post]
      *     parameters:
      *       - in: path
      *         name: id
@@ -61,11 +58,9 @@ class PostRoute {
      * @swagger
      * /post:
      *   post:
-     *     operationId: "3_createPost"
      *     summary: Create a new post
      *     description: Creates a new post. Only accessible to administrators.
-     *     tags:
-     *       - Posts
+     *     tags: [Post]
      *     security:
      *       - BearerAuth: []
      *     requestBody:
@@ -112,11 +107,9 @@ class PostRoute {
      * @swagger
      * /post/{id}:
      *   put:
-     *     operationId: "4_updatePostById"
      *     summary: Update a post by ID
      *     description: Modifies the data of an existing post. Only accessible to administrators.
-     *     tags:
-     *       - Posts
+     *     tags: [Post]
      *     security:
      *       - BearerAuth: []
      *     parameters:
@@ -169,11 +162,9 @@ class PostRoute {
      * @swagger
      *  /post/{id}:
      *    delete:
-     *      operationId: "5_deletePostById"
      *      summary: Delete a post by ID
      *      description: Deletes an existing post. Only accessible to administrators.
-     *      tags:
-     *        - Posts
+     *      tags: [Post]
      *      security:
      *        - BearerAuth: []
      *      parameters:
