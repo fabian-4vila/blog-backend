@@ -13,10 +13,10 @@ class ResetPasswordRoute {
    * @swagger
    * /password-reset/request:
    *   post:
-   *     summary: Solicitar restablecimiento de contraseña
-   *     description: Enviar una solicitud para restablecer la contraseña. Se envía un correo con un token de restablecimiento.
+   *     summary: Request password reset
+   *     description: Send a request to reset the password. An email with a reset token will be sent.
    *     tags:
-   *       - Restablecimiento
+   *       - Password Reset
    *     requestBody:
    *       required: true
    *       content:
@@ -27,14 +27,14 @@ class ResetPasswordRoute {
    *               email:
    *                 type: string
    *                 format: email
-   *                 example: usuario@example.com
+   *                 example: user@example.com
    *     responses:
    *       200:
-   *         description: Se ha enviado un correo con instrucciones para restablecer la contraseña.
+   *         description: An email with password reset instructions has been sent.
    *       400:
-   *         description: Falta el correo electrónico o tiene un formato inválido.
+   *         description: Email is missing or has an invalid format.
    *       500:
-   *         description: Error interno del servidor.
+   *         description: Internal server error.
    */
   private initRoutes() {
     this.router.post(`${this.path}/request`, this.passwordReset.requestPasswordReset);
