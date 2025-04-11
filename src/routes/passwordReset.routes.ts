@@ -15,8 +15,7 @@ class ResetPasswordRoute {
    *   post:
    *     summary: Request password reset
    *     description: Send a request to reset the password. An email with a reset token will be sent.
-   *     tags:
-   *       - Password Reset
+   *     tags: [Password Reset]
    *     requestBody:
    *       required: true
    *       content:
@@ -38,20 +37,18 @@ class ResetPasswordRoute {
    */
   private initRoutes() {
     this.router.post(`${this.path}/request`, this.passwordReset.requestPasswordReset);
-
     /**
      * @swagger
      * /password-reset/reset/{token}:
      *   post:
-     *     summary: Restablecer contraseña
-     *     description: Permite al usuario establecer una nueva contraseña utilizando un token válido.
-     *     tags:
-     *       - Restablecimiento
+     *     summary: Reset password
+     *     description: Allows the user to set a new password using a valid token.
+     *     tags: [Password Reset]
      *     parameters:
      *       - name: token
      *         in: path
      *         required: true
-     *         description: Token de restablecimiento de contraseña proporcionado en el correo.
+     *         description: Password reset token provided in the email.
      *         schema:
      *           type: string
      *     requestBody:
@@ -64,16 +61,16 @@ class ResetPasswordRoute {
      *               newPassword:
      *                 type: string
      *                 format: password
-     *                 example: NuevaContraseña123
+     *                 example: NewPassword123
      *     responses:
      *       200:
-     *         description: Contraseña restablecida con éxito.
+     *         description: Password successfully reset.
      *       400:
-     *         description: Falta la nueva contraseña o el token es inválido.
+     *         description: New password is missing or the token is invalid.
      *       401:
-     *         description: Token expirado o inválido.
+     *         description: Token has expired or is invalid.
      *       500:
-     *         description: Error interno del servidor.
+     *         description: Internal server error.
      */
     this.router.post(`${this.path}/reset/:token`, this.passwordReset.resetPassword);
   }
