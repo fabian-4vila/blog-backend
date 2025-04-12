@@ -17,19 +17,19 @@ class CommentRatingRoute {
      * @swagger
      * /ratingCs:
      *   get:
-     *     summary: Obtener todas las calificaciones de comentarios
-     *     tags: [Calificacion de Comentarios]
+     *     summary: Get all comment ratings
+     *     tags: [Comment Rating]
      *     security:
      *       - CookieAuth: []
      *     responses:
      *       200:
-     *         description: Lista de calificaciones obtenida correctamente.
+     *         description: List of ratings retrieved successfully.
      *       401:
-     *         description: No autorizado.
+     *         description: Unauthorized.
      *       404:
-     *         description: Calificacion no encontrada.
+     *         description: Rating not found.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.get(`${this.path}s`, authenticateJWT, this.commentRatingController.getAllCommentRatings);
     /**
