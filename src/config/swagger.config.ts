@@ -37,7 +37,7 @@ const swaggerDefinition: SwaggerOptions = {
       { name: 'Verification', description: 'Endpoints for sending verification emails' },
       { name: 'Authentication', description: 'Endpoints to log in and log out' },
       { name: 'Password Reset', description: 'Endpoints to request and reset user passwords' },
-      { name: 'Users', description: 'Endpoints for user management' },
+      { name: 'User', description: 'Endpoints for user management' },
       { name: 'Post', description: 'Endpoints for managing posts' },
       { name: 'Post Ratings', description: 'Endpoints to manage post ratings' },
       { name: 'Comments', description: 'Endpoints to manage comments' },

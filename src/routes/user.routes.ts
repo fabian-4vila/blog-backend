@@ -20,11 +20,9 @@ class UserRoute {
      * @swagger
      * /users:
      *   get:
-     *     operationId: "1_getAllUser"
      *     summary: Get all users
      *     description: Returns a list of all users. Requires cookie-based authentication.
-     *     tags:
-     *       - Users
+     *     tags: [User]
      *     security:
      *       - CookieAuth: []
      *     responses:
@@ -47,10 +45,9 @@ class UserRoute {
      * @swagger
      * /user/{id}:
      *   get:
-     *     operationId: "2_getUserById"
      *     summary: Get user by ID
      *     description: Returns a specific user by ID. Only accessible to administrators.
-     *     tags: [Users]
+     *     tags: [User]
      *     security:
      *       - BearerAuth: []
      *     parameters:
@@ -80,10 +77,9 @@ class UserRoute {
      * @swagger
      * /user:
      *   post:
-     *     operationId: "3_createUser"
      *     summary: Create a new user
      *     description: Allows an administrator to create a new user.
-     *     tags: [Users]
+     *     tags: [User]
      *     security:
      *       - BearerAuth: []
      *     requestBody:
@@ -120,10 +116,9 @@ class UserRoute {
      * @swagger
      * /user/{id}:
      *   put:
-     *     operationId: "4_updateUser"
      *     summary: Update a user
      *     description: Allows an administrator to update a user's data.
-     *     tags: [Users]
+     *     tags: [User]
      *     security:
      *       - BearerAuth: []
      *     parameters:
@@ -170,10 +165,9 @@ class UserRoute {
      * @swagger
      * /user/{id}:
      *   patch:
-     *     operationId: "5_partialUpdateUser"
      *     summary: Partially update a user
      *     description: Allows an administrator to partially update a user's data.
-     *     tags: [Users]
+     *     tags: [User]
      *     security:
      *       - BearerAuth: []
      *     parameters:
@@ -220,10 +214,9 @@ class UserRoute {
      * @swagger
      * /user/{id}:
      *   delete:
-     *     operationId: "6_deleteUser"
      *     summary: Delete a user
      *     description: Allows an administrator to delete a user.
-     *     tags: [Users]
+     *     tags: [User]
      *     security:
      *       - BearerAuth: []
      *     parameters:
