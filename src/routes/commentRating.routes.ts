@@ -61,7 +61,7 @@ class CommentRatingRoute {
      * /ratingC:
      *   post:
      *     summary: Create a new comment rating
-     *     tags: [Comment Ratings]
+     *     tags: [Comment Rating]
      *     security:
      *       - CookieAuth: []
      *     requestBody:
