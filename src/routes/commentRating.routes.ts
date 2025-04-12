@@ -36,8 +36,8 @@ class CommentRatingRoute {
      * @swagger
      * /ratingC/{id}:
      *   get:
-     *     summary: Obtener una calificación específica de un comentario por ID
-     *     tags: [Calificacion de Comentarios]
+     *     summary: Get a specific comment rating by ID
+     *     tags: [Comment Rating]
      *     security:
      *       - CookieAuth: []
      *     parameters:
@@ -46,22 +46,22 @@ class CommentRatingRoute {
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID de la calificación del comentario
+     *         description: Comment rating ID
      *     responses:
      *       200:
-     *         description: Calificación encontrada.
+     *         description: Rating found.
      *       404:
-     *         description: Calificación no encontrada.
+     *         description: Rating not found.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.get(`${this.path}/:id`, authenticateJWT, this.commentRatingController.getCommentRatingById);
     /**
      * @swagger
      * /ratingC:
      *   post:
-     *     summary: Crear una nueva calificación para un comentario
-     *     tags: [Calificacion de Comentarios]
+     *     summary: Create a new comment rating
+     *     tags: [Comment Ratings]
      *     security:
      *       - CookieAuth: []
      *     requestBody:
@@ -85,11 +85,11 @@ class CommentRatingRoute {
      *                 example: 42
      *     responses:
      *       201:
-     *         description: Calificación creada exitosamente.
+     *         description: Rating created successfully.
      *       401:
-     *         description: No autorizado.
+     *         description: Unauthorized.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.post(`${this.path}`, authenticateJWT, this.commentRatingController.createCommentRating);
     /**
