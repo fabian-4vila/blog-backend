@@ -96,8 +96,8 @@ class CommentRatingRoute {
      * @swagger
      * /ratingC/{id}:
      *   put:
-     *     summary: Actualizar una calificación de comentario existente
-     *     tags: [Calificacion de Comentarios]
+     *     summary: Update an existing comment rating
+     *     tags: [Comment Rating]
      *     security:
      *       - CookieAuth: []
      *     parameters:
@@ -106,7 +106,7 @@ class CommentRatingRoute {
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID de la calificación a actualizar
+     *         description: ID of the rating to update
      *     requestBody:
      *       required: true
      *       content:
@@ -122,13 +122,13 @@ class CommentRatingRoute {
      *                 example: true
      *     responses:
      *       200:
-     *         description: Calificación actualizada exitosamente.
+     *         description: Rating updated successfully.
      *       401:
-     *         description: No autorizado.
+     *         description: Unauthorized.
      *       404:
-     *         description: Calificación no encontrada.
+     *         description: Rating not found.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.put(
       `${this.path}/:id`,
@@ -140,8 +140,8 @@ class CommentRatingRoute {
      * @swagger
      * /ratingC/{id}:
      *   delete:
-     *     summary: Eliminar una calificación de comentario por ID
-     *     tags: [Calificacion de Comentarios]
+     *     summary: Delete a comment rating by ID
+     *     tags: [Comment Rating]
      *     security:
      *       - CookieAuth: []
      *     parameters:
@@ -150,14 +150,14 @@ class CommentRatingRoute {
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID de la calificación a eliminar
+     *         description: ID of the rating to delete
      *     responses:
      *       200:
-     *         description: Calificación eliminada exitosamente.
+     *         description: Rating deleted successfully.
      *       404:
-     *         description: Calificación no encontrada.
+     *         description: Rating not found.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.delete(
       `${this.path}/:id`,
