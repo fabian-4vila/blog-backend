@@ -37,28 +37,28 @@ class CommentRoute {
      * /comment/{id}:
      *   get:
      *     operationId: "2_getCommentById"
-     *     summary: Obtener un comentario por su ID
-     *     descriptio: Devuelve un comentario espesifico segun su ID.
+     *     summary: Get a comment by ID
+     *     description: Returns a specific comment by its ID.
      *     tags:
-     *       - Comentarios
+     *       - Comments
      *     security:
-     *       -BearerAuth: []
+     *       - BearerAuth: []
      *     parameters:
      *       - in: path
      *         name: id
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID del comentario
+     *         description: ID of the comment
      *     responses:
      *       200:
-     *         description: Comentario encontrado.
+     *         description: Comment found.
      *       401:
-     *         description: No autorizado.
+     *         description: Unauthorized.
      *       404:
-     *         description: Comentario no encontrado.
+     *         description: Comment not found.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.get(`${this.path}/:id`, authenticateJWT, this.commentController.getCommentById);
     /**
