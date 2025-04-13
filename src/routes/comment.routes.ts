@@ -17,7 +17,6 @@ class CommentRoute {
      * @swagger
      * /comments:
      *   get:
-     *     operationId: "1_getAllComments"
      *     summary: Get all comments
      *     description: Returns a list of all available comments.
      *     tags: [Comment]
@@ -36,11 +35,9 @@ class CommentRoute {
      * @swagger
      * /comment/{id}:
      *   get:
-     *     operationId: "2_getCommentById"
      *     summary: Get a comment by ID
      *     description: Returns a specific comment by its ID.
-     *     tags:
-     *       - Comments
+     *     tags: [Comment]
      *     security:
      *       - BearerAuth: []
      *     parameters:
@@ -65,11 +62,9 @@ class CommentRoute {
      * @swagger
      * /comment:
      *   post:
-     *     operationId: "3_createComment"
      *     summary: Create a new comment
      *     description: Creates a new comment on a post.
-     *     tags:
-     *       - Comments
+     *     tags: [Comment]
      *     security:
      *       - BearerAuth: []
      *     requestBody:
@@ -98,11 +93,9 @@ class CommentRoute {
      * @swagger
      * /comment/{id}:
      *   put:
-     *     operationId: "4_updateCommentById"
      *     summary: Update a comment by ID
      *     description: Modifies the data of an existing comment.
-     *     tags:
-     *       - Comments
+     *     tags: [Comment]
      *     security:
      *       - BearerAuth: []
      *     parameters:
@@ -142,7 +135,6 @@ class CommentRoute {
      * @swagger
      * /comment/{id}:
      *   delete:
-     *     operationId: "5_deleteCommentById"
      *     summary: Delete a comment by ID
      *     description: Deletes an existing comment.
      *     tags: [Comment]
