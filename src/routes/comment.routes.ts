@@ -18,19 +18,18 @@ class CommentRoute {
      * /comments:
      *   get:
      *     operationId: "1_getAllComments"
-     *     summary: obtener todos los comentarios
-     *     description: Devuelve una lista de todos los comentarios disponibles.
-     *     tags:
-     *       - Comentarios
+     *     summary: Get all comments
+     *     description: Returns a list of all available comments.
+     *     tags: [Comment]
      *     security:
      *       - BearerAuth: []
      *     responses:
      *       200:
-     *         description: Lista de comentarios obtenida con exito.
+     *         description: List of comments successfully retrieved.
      *       401:
-     *         description: No autorizado.
+     *         description: Unauthorized.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.get(`${this.path}s`, authenticateJWT, this.commentController.getAllComments);
     /**
