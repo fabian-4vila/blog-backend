@@ -66,12 +66,12 @@ class CommentRoute {
      * /comment:
      *   post:
      *     operationId: "3_createComment"
-     *     summary: Crear un nuevo comentario
-     *     description: Crea un nuevo comentario en una publicacion.
+     *     summary: Create a new comment
+     *     description: Creates a new comment on a post.
      *     tags:
-     *       - Comentarios
+     *       - Comments
      *     security:
-     *       -BearerAuth: []
+     *       - BearerAuth: []
      *     requestBody:
      *       required: true
      *       content:
@@ -81,17 +81,17 @@ class CommentRoute {
      *             properties:
      *               postId:
      *                 type: string
-     *                 description: ID de la publicacion asociada.
+     *                 description: ID of the associated post.
      *               content:
      *                 type: string
-     *                 description: COntenido del comentario.
+     *                 description: Content of the comment.
      *     responses:
      *       201:
-     *         description: Comentario creado con exito.
+     *         description: Comment successfully created.
      *       401:
-     *         description: No autorizado.
+     *         description: Unauthorized.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.post(`${this.path}`, authenticateJWT, this.commentController.createComment);
     /**
@@ -99,10 +99,10 @@ class CommentRoute {
      * /comment/{id}:
      *   put:
      *     operationId: "4_updateCommentById"
-     *     summary: Actualizar un comentario por ID
-     *     description: Modifica los datos de un comentario existente.
+     *     summary: Update a comment by ID
+     *     description: Modifies the data of an existing comment.
      *     tags:
-     *       - Comentarios
+     *       - Comments
      *     security:
      *       - BearerAuth: []
      *     parameters:
@@ -111,7 +111,7 @@ class CommentRoute {
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID del comentario
+     *         description: ID of the comment
      *     requestBody:
      *       required: true
      *       content:
@@ -121,16 +121,16 @@ class CommentRoute {
      *             properties:
      *               content:
      *                 type: string
-     *                 description: Nuevo contenido del comentario.
+     *                 description: New content of the comment.
      *     responses:
      *       200:
-     *         description: Comentario actualizado con éxito.
+     *         description: Comment successfully updated.
      *       401:
-     *         description: No autorizado.
+     *         description: Unauthorized.
      *       404:
-     *         description: Comentario no encontrado.
+     *         description: Comment not found.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.put(
       `${this.path}/:id`,
@@ -143,10 +143,9 @@ class CommentRoute {
      * /comment/{id}:
      *   delete:
      *     operationId: "5_deleteCommentById"
-     *     summary: Eliminar un comentario por ID
-     *     description: Elimina un comentario existente.
-     *     tags:
-     *       - Comentarios
+     *     summary: Delete a comment by ID
+     *     description: Deletes an existing comment.
+     *     tags: [Comment]
      *     security:
      *       - BearerAuth: []
      *     parameters:
@@ -155,16 +154,16 @@ class CommentRoute {
      *         required: true
      *         schema:
      *           type: string
-     *         description: ID del comentario a eliminar
+     *         description: ID of the comment to delete
      *     responses:
      *       200:
-     *         description: Comentario eliminado con éxito.
+     *         description: Comment successfully deleted.
      *       401:
-     *         description: No autorizado.
+     *         description: Unauthorized.
      *       404:
-     *         description: Comentario no encontrado.
+     *         description: Comment not found.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.delete(
       `${this.path}/:id`,
