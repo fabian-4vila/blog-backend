@@ -17,8 +17,7 @@ class VerificationRoute {
      *   post:
      *     summary: Send verification email
      *     description: Sends an email with a link to verify the account.
-     *     tags:
-     *       - Verification
+     *     tags: [Verification]
      *     requestBody:
      *       required: true
      *       content:
@@ -46,8 +45,7 @@ class VerificationRoute {
      *   get:
      *     summary: Verify email token
      *     description: Verifies the token sent to the user's email.
-     *     tags:
-     *       - Verification
+     *     tags: [Verification]
      *     parameters:
      *       - in: path
      *         name: token
