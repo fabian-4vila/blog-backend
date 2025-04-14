@@ -17,8 +17,8 @@ class PostRatingRoute {
      * @swagger
      * /ratingPs:
      *   get:
-     *     summary: Get all post ratings
-     *     tags: [Post Ratings]
+     *     summary: Get all Post Rating
+     *     tags: [Post Rating]
      *     responses:
      *       200:
      *         description: List of ratings retrieved successfully.
@@ -33,7 +33,7 @@ class PostRatingRoute {
      * /ratingP/{id}:
      *   get:
      *     summary: Get a specific rating by ID
-     *     tags: [Post Ratings]
+     *     tags: [Post Rating]
      *     parameters:
      *       - in: path
      *         name: id
@@ -55,7 +55,7 @@ class PostRatingRoute {
      * /ratingP:
      *   post:
      *     summary: Create a new rating for a post
-     *     tags: [Post Ratings]
+     *     tags: [Post Rating]
      *     security:
      *       - CookieAuth: []
      *     requestBody:
@@ -91,7 +91,7 @@ class PostRatingRoute {
      * /ratingP/{id}:
      *   put:
      *     summary: Update an existing rating
-     *     tags: [Post Ratings]
+     *     tags: [Post Rating]
      *     security:
      *       - CookieAuth: []
      *     parameters:
@@ -135,7 +135,7 @@ class PostRatingRoute {
      * /ratingP/{id}:
      *   delete:
      *     summary: Delete a rating by ID
-     *     tags: [Post Ratings]
+     *     tags: [Post Rating]
      *     security:
      *       - CookieAuth: []
      *     parameters:
