@@ -33,7 +33,7 @@ const swaggerDefinition: SwaggerOptions = {
     ],
     tags: [
       { name: 'Server', description: 'Endpoints to verify if the server is running' },
-      { name: 'Register', description: 'Endpoints for user registration' },
+      { name: 'Registration', description: 'Endpoints for user registration' },
       { name: 'Verification', description: 'Endpoints for sending verification emails' },
       { name: 'Authentication', description: 'Endpoints to log in and log out' },
       { name: 'Password Reset', description: 'Endpoints to request and reset user passwords' },
