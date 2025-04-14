@@ -41,7 +41,7 @@ const swaggerDefinition: SwaggerOptions = {
       { name: 'Post', description: 'Endpoints for managing posts' },
       { name: 'Post Rating', description: 'Endpoints to manage post ratings' },
       { name: 'Comment', description: 'Endpoints to manage comments' },
-      { name: 'Comment Ratings', description: 'Endpoints to manage comment ratings' },
+      { name: 'Comment Rating', description: 'Endpoints to manage comment ratings' },
     ],
   },
   apis: ['./src/routes/*.ts'],
