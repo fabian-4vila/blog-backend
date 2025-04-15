@@ -4,6 +4,9 @@ export class Inicial1743652624601 implements MigrationInterface {
   name = 'Inicial1743652624601';
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
+        CREATE TYPE "user_role_enum" AS ENUM ('admin', 'subscribed');
+      `);
+    await queryRunner.query(`
             CREATE TABLE "post_rating" (
                 "id" SERIAL NOT NULL,
                 "stars" integer NOT NULL,
