@@ -63,15 +63,15 @@ class AuthRoute {
      * @swagger
      * /auth/logout:
      *   post:
-     *     summary: Cerrar sesion
-     *     description: cierra la sesion del usuario actual.
+     *     summary: Log out
+     *     description: Logs out the current user.
      *     tags:
-     *       - Autenticacion
+     *       - Authentication
      *     responses:
      *       200:
-     *         description: Sesion cerrada exitosamente.
+     *         description: Successfully logged out.
      *       500:
-     *         description: Error en el servidor.
+     *         description: Server error.
      */
     this.router.post(`${this.path}/logout`, async (req, res) => {
       try {
