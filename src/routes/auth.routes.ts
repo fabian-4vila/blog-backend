@@ -18,8 +18,7 @@ class AuthRoute {
      *  post:
      *    summary: Log in
      *    description: Allows a user to log in with their credentials.
-     *    tags:
-     *      - Authentication
+     *    tags: [Authentication]
      *    requestBody:
      *       required: true
      *       content:
@@ -65,8 +64,7 @@ class AuthRoute {
      *   post:
      *     summary: Log out
      *     description: Logs out the current user.
-     *     tags:
-     *       - Authentication
+     *     tags: [Authentication]
      *     responses:
      *       200:
      *         description: Successfully logged out.
