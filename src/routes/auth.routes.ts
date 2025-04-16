@@ -16,10 +16,10 @@ class AuthRoute {
      * @swagger
      * /auth/login:
      *  post:
-     *    summary: Iniciar sesion
-     *    description: Permite a un usuario iniciar sesion con sus credenciales.
+     *    summary: Log in
+     *    description: Allows a user to log in with their credentials.
      *    tags:
-     *      - Autenticacion
+     *      - Authentication
      *    requestBody:
      *       required: true
      *       content:
@@ -38,19 +38,19 @@ class AuthRoute {
      *                    example: "12345678"
      *    responses:
      *      200:
-     *        description: Inicio de sesion exitoso.
+     *        description: Successful login.
      *        content:
      *          application/json:
-     *            shema:
+     *            schema:
      *              type: object
      *              properties:
      *                token:
      *                  type: string
      *                  example: "eyJhbGciOiJIUzI1NiIsInR..."
      *      400:
-     *        description: Error en la solicitud (datos ivalidos).
+     *        description: Bad request (invalid data).
      *      500:
-     *        description: Error en el servidor.
+     *        description: Server error.
      */
     this.router.post(`${this.path}/login`, validateLogin, async (req, res) => {
       try {
