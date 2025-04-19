@@ -58,6 +58,7 @@ class AuthRoute {
         res.status(500).json({ message: 'Server Error', error: (error as Error).message });
       }
     });
+
     /**
      * @swagger
      * /auth/logout:
