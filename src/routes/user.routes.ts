@@ -41,6 +41,7 @@ class UserRoute {
       authorizeRoles([RoleType.ADMIN]),
       this.userController.getAllUsers,
     );
+
     /**
      * @swagger
      * /user/{id}:
