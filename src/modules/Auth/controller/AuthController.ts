@@ -37,6 +37,17 @@ class AuthController {
     res.clearCookie('auth_token');
     return this.httpResponse.Ok(res, { message: 'Logout successful' });
   }
+  
+  public async me(req: Request, res: Response): Promise<Response> {
+  try {
+    const user = req.user;
+    return this.httpResponse.Ok(res, { user });
+  } catch (error) {
+    console.error("Error en /auth/me:", error);
+    return this.httpResponse.Error(res, "No se pudo obtener el usuario autenticado");
+  }
+}
+
 }
 
 export default AuthController;
