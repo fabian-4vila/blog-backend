@@ -5,6 +5,7 @@ export const corsConfig = {
   methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
   credetials: true,
   origin: ORIGIN,
+  preflightContinue: false,
 };
 
 export default corsConfig;
