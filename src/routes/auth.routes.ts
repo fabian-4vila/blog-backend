@@ -1,6 +1,8 @@
+import passport from "passport";
 import { Router } from 'express';
 import AuthController from '../modules/Auth/controller/AuthController';
 import { validateLogin } from '../middlewares/login.middleware';
+
 
 class AuthRoute {
   public path = '/auth';
@@ -79,6 +81,31 @@ class AuthRoute {
         res.status(500).json({ message: 'Server Error', error: (error as Error).message });
       }
     });
+    /**
+ * @swagger
+ * /auth/me:
+ *   get:
+ *     summary: Obtener usuario autenticado
+ *     description: Retorna la información del usuario autenticado si el token en la cookie es válido.
+ *     tags: [Authentication]
+ *     responses:
+ *       200:
+ *         description: Usuario autenticado retornado exitosamente.
+ *       401:
+ *         description: No autorizado. Token inválido o ausente.
+ *       500:
+ *         description: Error interno del servidor.
+ */
+    this.router.get(`${this.path}/me`,
+    passport.authenticate('jwt', { session: false }),
+    async (req, res) => {
+      try {
+        await this.authController.me(req, res);
+      } catch (error) {
+        res.status(500).json({ message: 'Server Error', error: (error as Error).message });
+        }
+      }
+    );
   }
 }
 
